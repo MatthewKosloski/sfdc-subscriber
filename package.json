@@ -16,7 +16,8 @@
     "cometd-nodejs-client": "^1.0.3",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
-    "jsforce": "^1.9.1"
+    "jsforce": "^1.9.1",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "jest": "^24.8.0",
