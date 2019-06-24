@@ -3,12 +3,12 @@ const SFDCClient = require('./SFDCClient');
 describe('SFDCClient', () => {
 
     const buildSubscriptionMock = (isFailedSubscription = false) => {
-        const implementation = (channel, _, resCallback) => {
+        const implementation = (channel, _, subscribeCallback) => {
             const typeOfLogin = isFailedSubscription ? 'unsuccessful' : 'successful';
             const fakeResponse = {successful: !isFailedSubscription, subscription: channel};
 
             console.log(`Simulating a(n) ${typeOfLogin} subscription to channel ${channel}.`);
-            resCallback(fakeResponse);
+            subscribeCallback(fakeResponse);
         };
 
         return jest.fn(implementation);
@@ -82,13 +82,13 @@ describe('SFDCClient', () => {
         // Haven't subscribed yet, so no handshake should have occurred.
         expect(client.handshakeCount).toBe(0);
 
-        await client.subscribe(firstChannelName, emptyCallback);
+        await client.subscribe(firstChannelName, emptyCallback, emptyCallback);
 
         // Subscribed, so a handshake should have occurred.
         expect(client.handshakeCount).toBe(1);
 
-        await client.subscribe(secondChannelName, emptyCallback);
-        await client.subscribe(thirdChannelName, emptyCallback);
+        await client.subscribe(secondChannelName, emptyCallback, emptyCallback);
+        await client.subscribe(thirdChannelName, emptyCallback, emptyCallback);
 
         // Count should still be 1 after subsequent subscriptions.
         expect(client.handshakeCount).toBe(1);
@@ -104,7 +104,7 @@ describe('SFDCClient', () => {
         client.jsforce.login = buildLoginMock();
         client.cometd.handshake = buildHandshakeMock();
 
-        await client.subscribe(channelName, emptyCallback);
+        await client.subscribe(channelName, emptyCallback, emptyCallback);
 
         const firstArgument = mockSubscribe.mock.calls[0][0];
         const secondArgument = mockSubscribe.mock.calls[0][1];
@@ -122,7 +122,7 @@ describe('SFDCClient', () => {
         client.cometd.handshake = buildHandshakeMock();
 
         try {
-            await client.subscribe(channels[0], emptyCallback);
+            await client.subscribe(channels[0], emptyCallback, emptyCallback);
         } catch(e) {
             expect(e).toBeInstanceOf(Error);
         }
@@ -142,18 +142,26 @@ describe('SFDCClient', () => {
         }
     });
 
-    test('Should throw Error when failing to subscribe to channel', async () => {
+    test('Should send object when failing to subscribe to channel', async () => {
         
         // Mock these methods as we don't want to be making network calls
         client.cometd.subscribe = buildSubscriptionMock(true);
         client.jsforce.login = buildLoginMock();
         client.cometd.handshake = buildHandshakeMock();
 
-        try {
-            await client.subscribe(channels[0], emptyCallback);
-        } catch(e) {
-            expect(e).toBeInstanceOf(Error);
-        }
+        const subscribeCallback = jest.fn();
+
+        await client.subscribe(channels[0], emptyCallback, subscribeCallback);
+
+        const actualResponseFromSubscribeCallback = subscribeCallback.mock.calls[0][0];
+
+        const expectedResponseFromSubscribeCallback = {
+            successful: false,
+            subscription: channels[0]
+        };
+
+        expect(subscribeCallback.mock.calls.length).toBe(1);
+        expect(actualResponseFromSubscribeCallback).toEqual(expectedResponseFromSubscribeCallback);
 
     });
 

@@ -32,22 +32,14 @@ class SFDCClient {
      * @public Can be used by API consumers.
      * @throws Will throw an Error if unable to subscribe to channel.
      */
-    async subscribe(channel, callback) {
+    async subscribe(channel, callback, subscribeCallback) {
         const didNotShakeHands = this.handshakeCount === 0;
 
         if(didNotShakeHands) {
             await this._handshake();
         }
 
-        await this.cometd.subscribe(channel, callback, 
-            ({successful, subscription}) => {
-                if(successful) {
-                    console.log(`Now subscribing to ${subscription}...`);
-                } else {
-                    throw new Error(`Failed to subscribe to ${subscription}.`);
-                }
-            }
-        );
+        await this.cometd.subscribe(channel, callback, subscribeCallback);
     }
 
     /**
