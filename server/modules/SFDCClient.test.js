@@ -1,7 +1,3 @@
-require('cometd-nodejs-client').adapt();
-const cometdLib = require('cometd');
-const jsforceLib = require('jsforce');
-
 const SFDCClient = require('./SFDCClient');
 
 describe('SFDCClient', () => {
@@ -61,21 +57,13 @@ describe('SFDCClient', () => {
         password = 'password',
         apiVersion = '43';
 
-    const cometd = new cometdLib.CometD();
-    const jsforce = new jsforceLib.Connection({
-        oauth2 : { clientId, clientSecret }
-    });
-
     let client;
 
     beforeEach(() => {
-        client = new SFDCClient(cometd, jsforce, username, password, apiVersion);
+        client = new SFDCClient(clientId, clientSecret, username, password, apiVersion);
     });
 
     test('Should set instance variables', () => {
-
-        expect(client.cometd).toBe(cometd);
-        expect(client.jsforce).toBe(jsforce);
         expect(client.username).toBe(username);
         expect(client.password).toBe(password);
         expect(client.apiVersion).toBe(apiVersion);

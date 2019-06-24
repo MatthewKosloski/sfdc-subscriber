@@ -1,3 +1,7 @@
+require('cometd-nodejs-client').adapt();
+const cometdLib = require('cometd');
+const jsforceLib = require('jsforce');
+
 /**
  * Facilitates the process of subscribing to
  * Salesforce Platform Events by logging into Salesforce
@@ -5,10 +9,16 @@
  */
 class SFDCClient {
 
-    constructor(cometd, jsforce, username, password, apiVersion) {
+    constructor(cliendId, clientSecret, username, password, apiVersion) {
 
-        this.cometd = cometd;
-        this.jsforce = jsforce;
+        this.cometd = new cometdLib.CometD();
+        this.jsforce = new jsforceLib.Connection({
+            oauth2 : { 
+                CLIENT_ID: cliendId,
+                CLIENT_SECRET: clientSecret
+            }
+        });
+    
         this.username = username;
         this.password = password;
         this.apiVersion = apiVersion;
