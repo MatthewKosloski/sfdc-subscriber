@@ -30,6 +30,11 @@ class SFDCClient {
      * A wrapper for CometD.subscribe. Performs a handshake if
      * necessary.
      * @public Can be used by API consumers.
+     * @param {string} channel The cometd channel to subscribe to. If subscribing
+     * to Salesforce Platform Events, the channel name is `/event/My_Event__e`.
+     * @param {function} callback The callback to call when a message is received.
+     * @param {function} subscribeCallback The callback that is called when the
+     * subscription is acknowledged.
      * @throws Will throw an Error if unable to subscribe to channel.
      */
     async subscribe(channel, callback, subscribeCallback) {
