@@ -40,11 +40,11 @@ class SFDCClient {
         }
 
         await this.cometd.subscribe(channel, callback, 
-            (res) => {
-                if(res.successful) {
-                    console.log(`Now subscribing to ${res.subscription}...`);
+            ({successful, subscription}) => {
+                if(successful) {
+                    console.log(`Now subscribing to ${subscription}...`);
                 } else {
-                    throw new Error(`Failed to subscribe to ${res.subscription}.`);
+                    throw new Error(`Failed to subscribe to ${subscription}.`);
                 }
             }
         );
@@ -58,8 +58,8 @@ class SFDCClient {
     async _handshake() {
         await this._configureCometD();
 
-        await this.cometd.handshake((res) => {
-            const didFailToShakeHands = !res.successful;
+        await this.cometd.handshake(({successful}) => {
+            const didFailToShakeHands = !successful;
             if (didFailToShakeHands) {
                 throw new Error('Failed to shake hands with the Salesforce CometD server.');
             }
