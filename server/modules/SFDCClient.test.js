@@ -94,7 +94,7 @@ describe('SFDCClient', () => {
         expect(client.handshakeCount).toBe(1);
     });
 
-    test('Should call ClientD.subscribe with channel and callback when subscribing', async () => {
+    test('Should call ClientD.subscribe with channel, callback, and subscribe callback', async () => {
 
         const [channelName,,] = channels;
 
@@ -108,10 +108,12 @@ describe('SFDCClient', () => {
 
         const firstArgument = mockSubscribe.mock.calls[0][0];
         const secondArgument = mockSubscribe.mock.calls[0][1];
+        const thirdArgument = mockSubscribe.mock.calls[0][2];
 
         expect(mockSubscribe.mock.calls.length).toBe(1);
         expect(firstArgument).toBe(channelName);
         expect(secondArgument).toBe(emptyCallback);
+        expect(thirdArgument).toBe(emptyCallback);
     });
 
     test('Should throw Error when failing to login with Salesforce', async () => {
