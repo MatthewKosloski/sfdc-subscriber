@@ -1,19 +1,70 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import io from 'socket.io-client';
+
+import socketEvents from '../../socketEvents';
+
 import './App.css';
 
 export default class App extends Component {
 
-  componentDidMount() {
-    const socket = io('http://localhost:3001');
-    socket.on('DATA_CENTER_NAME_EVENT', (data) => {
-      console.log(data.payload);
-    });
-  }
+	constructor(props) {
+		super(props);
+		this._socket = io('http://localhost:3001');
 
-  render() {
-    return (
-      <p>Hello world</p>
-    );
-  }
+		this.handleButtonClick = this.handleButtonClick.bind(this);
+	}
+
+	componentDidMount() {
+		const {
+			PLATFORM_EVENT_SUBSCRIPTION_SUCCESS,
+			PLATFORM_EVENT_SUBSCRIPTION_FAILURE,
+			DATA_CENTER_NAME_EVENT
+		} = socketEvents;
+		
+		this._socket.on(PLATFORM_EVENT_SUBSCRIPTION_SUCCESS, this.handleSubscriptionSuccess);
+		this._socket.on(PLATFORM_EVENT_SUBSCRIPTION_FAILURE, this.handleSubscriptionFailure);
+		this._socket.on(DATA_CENTER_NAME_EVENT, this.handleDataCenterNameEvent);
+	}
+
+	handleSubscriptionSuccess({payload: {subscription}}) {
+		console.info(`Now subscribing to ${subscription}...`);
+	}
+
+	handleSubscriptionFailure({payload: {subscription}}) {
+		console.error(`Failed to subscribe to ${subscription}.`);
+	}
+
+	handleDataCenterNameEvent({payload}) {
+		console.log(payload);
+	}
+
+	/**
+	 * Makes a request to the server to subscribe to the provided `cometdChannel`.
+	 * If the server is able to subscribe to the channel, a `PLATFORM_EVENT_SUBSCRIPTION_SUCCESS`
+	 * event will be emitted. If the server is unable to subscribe to the event, a 
+	 * `PLATFORM_EVENT_SUBSCRIPTION_FAILURE` event will be emitted.  When an event occurs,
+	 * a `socketEvent` event will be emitted, containing data.
+	 * @param {string} cometdChannel The CometD channel to subscribe to.
+	 * @param {string} socketEvent The socket event emitted when a CometD event
+	 * occurs.
+	 */
+	createEventSubscriptionRequest(cometdChannel, socketEvent) {
+		this._socket.emit(socketEvents.PLATFORM_EVENT_SUBSCRIPTION_REQUEST, 
+		{payload: {cometdChannel, socketEvent}});
+	}
+
+	handleButtonClick() {
+		this.createEventSubscriptionRequest('/event/Data_Center_Name__e',
+		socketEvents.DATA_CENTER_NAME_EVENT);
+	}
+
+	render() {
+		return (
+			<Fragment>
+				<h1>SFDC Platform Event Subscriber</h1>
+				<p>Click on the button below to subscribe to the <code>Data_Center_Name__e</code> event.</p>
+				<button onClick={this.handleButtonClick}>Subscribe</button>
+			</Fragment>
+		);
+	}
 }
