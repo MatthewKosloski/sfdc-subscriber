@@ -2,7 +2,38 @@
 
 A Node app that subscribes to Salesforce Platform Events via CometD.
 
+## Usage
+
+### Development
+
+1. Start up the client.
+    ```
+    cd client
+    npm start
+    ```
+2. Start up the server.
+    ```
+    cd server
+    npm start
+    ```
+### Production
+
+```
+cd client
+npm run build
+```
+
+
+
 ## Tests
+
+### Client
+
+```
+npm run test
+```
+
+### Server
 
 Running tests with console output:
 
