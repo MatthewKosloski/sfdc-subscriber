@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import io from 'socket.io-client';
 
 import socketEvents from '../../socketEvents';
+import Chart from '../Chart';
 
 import './App.css';
 
@@ -9,9 +10,15 @@ export default class App extends Component {
 
 	constructor(props) {
 		super(props);
-		this._socket = io('http://localhost:3001');
 
 		this.handleButtonClick = this.handleButtonClick.bind(this);
+		this.handleDataCenterNameEvent = this.handleDataCenterNameEvent.bind(this);
+
+		this.socket = io('http://localhost:3001');
+
+		this.state = {
+			data: []
+		}
 	}
 
 	componentDidMount() {
@@ -21,21 +28,9 @@ export default class App extends Component {
 			DATA_CENTER_NAME_EVENT
 		} = socketEvents;
 		
-		this._socket.on(PLATFORM_EVENT_SUBSCRIPTION_SUCCESS, this.handleSubscriptionSuccess);
-		this._socket.on(PLATFORM_EVENT_SUBSCRIPTION_FAILURE, this.handleSubscriptionFailure);
-		this._socket.on(DATA_CENTER_NAME_EVENT, this.handleDataCenterNameEvent);
-	}
-
-	handleSubscriptionSuccess({payload: {subscription}}) {
-		console.info(`Now subscribing to ${subscription}...`);
-	}
-
-	handleSubscriptionFailure({payload: {subscription}}) {
-		console.error(`Failed to subscribe to ${subscription}.`);
-	}
-
-	handleDataCenterNameEvent({payload}) {
-		console.log(payload);
+		this.socket.on(PLATFORM_EVENT_SUBSCRIPTION_SUCCESS, this.handleSubscriptionSuccess);
+		this.socket.on(PLATFORM_EVENT_SUBSCRIPTION_FAILURE, this.handleSubscriptionFailure);
+		this.socket.on(DATA_CENTER_NAME_EVENT, this.handleDataCenterNameEvent);
 	}
 
 	/**
@@ -49,8 +44,23 @@ export default class App extends Component {
 	 * occurs.
 	 */
 	createEventSubscriptionRequest(cometdChannel, socketEvent) {
-		this._socket.emit(socketEvents.PLATFORM_EVENT_SUBSCRIPTION_REQUEST, 
+		this.socket.emit(socketEvents.PLATFORM_EVENT_SUBSCRIPTION_REQUEST, 
 		{payload: {cometdChannel, socketEvent}});
+	}
+
+	handleSubscriptionSuccess({payload: {subscription}}) {
+		console.info(`Now subscribing to ${subscription}...`);
+	}
+
+	handleSubscriptionFailure({payload: {subscription}}) {
+		console.error(`Failed to subscribe to ${subscription}.`);
+	}
+
+	handleDataCenterNameEvent({payload}) {
+		this.setState({
+			data: [...this.state.data, payload.data.payload]
+		});
+		console.log(this.state.data);
 	}
 
 	handleButtonClick() {
@@ -61,9 +71,12 @@ export default class App extends Component {
 	render() {
 		return (
 			<Fragment>
-				<h1>SFDC Platform Event Subscriber</h1>
-				<p>Click on the button below to subscribe to the <code>Data_Center_Name__e</code> event.</p>
-				<button onClick={this.handleButtonClick}>Subscribe</button>
+				<div className="container">
+					<h1>SFDC Platform Event Subscriber</h1>
+					<p>Click on the button below to subscribe to the <code>Data_Center_Name__e</code> event.</p>
+					<button onClick={this.handleButtonClick}>Subscribe</button>
+					<Chart data={this.state.data}/>
+				</div>
 			</Fragment>
 		);
 	}
