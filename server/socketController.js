@@ -15,6 +15,7 @@ module.exports = function(sfdcClient, socket) {
 		
 		const callback = (payload) => {
 			socket.emit(socketEvent, {payload});
+			console.log(`Sent a payload to clients listening to ${socketEvent}.`);
 		}
 
 		const subscribeCallback = ({successful, subscription}) => {
