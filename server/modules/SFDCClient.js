@@ -44,7 +44,17 @@ class SFDCClient {
             await this._handshake();
         }
 
-        await this.cometd.subscribe(channel, callback, subscribeCallback);
+        this.cometd.subscribe(channel, callback, subscribeCallback);
+
+    }
+
+    /**
+     * A wrapper for CometD.disconnect.
+     * @param {function} disconnectCallback Function to be invoked to acknowledge disconnect.
+     */
+    disconnect(disconnectCallback) {
+        console.log('SFDCClient.disconnect');
+        this.cometd.disconnect(disconnectCallback);
     }
 
     /**
