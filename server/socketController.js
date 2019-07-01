@@ -15,7 +15,7 @@ module.exports = function(sfdcClient, socket) {
 		
 		const callback = (payload) => {
 			socket.emit(socketEvent, {payload});
-			console.log(`Sent a payload to clients listening to ${socketEvent}.`);
+			console.log(`Sent a(n) ${socketEvent} event to socket ${socket.id}.`);
 		}
 
 		const subscribeCallback = ({successful, subscription}) => {
@@ -23,16 +23,30 @@ module.exports = function(sfdcClient, socket) {
 
 			if(successful) {
 				socket.emit(PLATFORM_EVENT_SUBSCRIPTION_SUCCESS, {payload});
-				console.log(`Now subscribing to ${subscription}...`);
+				console.log(`Socket ${socket.id} is now subscribing to ${subscription}...`);
 			} else {
 				socket.emit(PLATFORM_EVENT_SUBSCRIPTION_FAILURE, {payload});
-				console.log(`Failed to subscribe to ${subscription}.`);
+				console.log(`Socket ${socket.id} failed to subscribe to ${subscription}.`);
 			}
 		}
 		
 		sfdcClient.subscribe(cometdChannel, callback, subscribeCallback);
 	}
 
+	const handleDisconnect = async (reason) => {
+		console.log(`Socket ${socket.id} has disconnected. Reason: ${reason}`);
+
+		sfdcClient.disconnect(({successful}) => {
+			if(successful) {
+				console.log('Successfully disconnected from the CometD server.');
+			} else {
+				console.log('Failed to disconnect from the CometD server.');
+			}
+		});
+
+	}
+
 	socket.on(PLATFORM_EVENT_SUBSCRIPTION_REQUEST, handleSubscriptionRequest);
+	socket.on('disconnect', handleDisconnect);
 
 };
