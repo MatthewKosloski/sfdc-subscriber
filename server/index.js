@@ -15,12 +15,13 @@ const {
 	SFDC_SUBSCRIBER_PASSWORD: PASSWORD, 
 	SFDC_SUBSCRIBER_API_VERSION: API_VERSION } = process.env;
 	
-const client = new SFDCClient(CLIENT_ID, CLIENT_SECRET, USERNAME, PASSWORD, API_VERSION);
-
 const port = process.env.PORT || 3001;
 
 server.listen(port, () => {
 	console.log(`Express server running at http://localhost:${port}/`);
 });
 
-io.on('connection', socketController.bind(null, client));
+io.on('connection', (socket) => {
+	const client = new SFDCClient(CLIENT_ID, CLIENT_SECRET, USERNAME, PASSWORD, API_VERSION);
+	socketController(client, socket);
+});
