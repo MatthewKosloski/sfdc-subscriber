@@ -94,7 +94,7 @@ describe('SFDCClient', () => {
         expect(client.handshakeCount).toBe(1);
     });
 
-    test('Should call ClientD.subscribe with channel, callback, and subscribe callback', async () => {
+    test('Should call ClientD.subscribe once when calling subscribe', async () => {
 
         const [channelName,,] = channels;
 
@@ -114,6 +114,18 @@ describe('SFDCClient', () => {
         expect(firstArgument).toBe(channelName);
         expect(secondArgument).toBe(emptyCallback);
         expect(thirdArgument).toBe(emptyCallback);
+    });
+
+    test('Should call ClientD.disconnect once when calling disconnect', () => {
+        const mockDisconnect = jest.fn();
+        client.cometd.disconnect = mockDisconnect;
+
+        client.disconnect(emptyCallback);
+
+        const firstArgument = mockDisconnect.mock.calls[0][0];
+
+        expect(mockDisconnect.mock.calls.length).toBe(1);
+        expect(firstArgument).toBe(emptyCallback);
     });
 
     test('Should throw Error when failing to login with Salesforce', async () => {
