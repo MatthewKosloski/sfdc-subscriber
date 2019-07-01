@@ -10,6 +10,7 @@ const jsforceLib = require('jsforce');
 class SFDCClient {
 
     constructor(cliendId, clientSecret, username, password, apiVersion) {
+        console.log('Creating a new instance of SFDCClient for a socket.');
 
         this.cometd = new cometdLib.CometD();
         this.jsforce = new jsforceLib.Connection({
@@ -38,6 +39,7 @@ class SFDCClient {
      * @throws Will throw an Error if unable to subscribe to channel.
      */
     async subscribe(channel, callback, subscribeCallback) {
+        console.log('SFDCClient.subscribe');
         const didNotShakeHands = this.handshakeCount === 0;
 
         if(didNotShakeHands) {
