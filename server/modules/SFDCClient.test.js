@@ -102,7 +102,8 @@ describe('SFDCClient', () => {
         clientSecret = 'clientSecret',
         username = 'username',
         password = 'password',
-        apiVersion = '43';
+        apiVersion = '43',
+        isDebugMode = true;
 
 
     let client, cometd, jsforce;
@@ -115,7 +116,7 @@ describe('SFDCClient', () => {
                 CLIENT_SECRET: clientSecret
             }
         });
-        client = new SFDCClient(cometd, jsforce, username, password, apiVersion);
+        client = new SFDCClient(cometd, jsforce, username, password, apiVersion, isDebugMode);
     });
 
     describe('#subscribe', () => {
