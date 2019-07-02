@@ -29,22 +29,25 @@ class SFDCClient {
      * @param {function} callback The callback to call when a message is received.
      * @param {function} subscribeCallback The callback that is called when the
      * subscription is acknowledged.
-     * @throws Will throw an Error if unable to subscribe to channel.
+     * @throws Will throw an Error if attempting to subscribe to a channel more than once.
+     * @throws Will throw an Error if unable to handshake with CometD.
+     * @throws Will throw an Error if unable to log into SFDC.
      */
     async subscribe(channel, callback, subscribeCallback) {
         this._log('SFDCClient.subscribe');
 
         const didNotShakeHands = !this._didShakeHands;
-        const hasNoSubscription = !this.hasSubscription(channel);
 
         if(didNotShakeHands) {
             await this._handshake();
         }
 
-        if(hasNoSubscription) {
-            this._subscriptions[channel] = this._cometd.subscribe(
-                channel, callback, subscribeCallback);
+        if(this.hasSubscription(channel)) {
+            throw new Error(`Cannot subscribe to ${channel} because a subscription for that channel already exists.`);
         }
+
+        this._subscriptions[channel] = this._cometd.subscribe(
+            channel, callback, subscribeCallback);
     }
 
     /**
@@ -53,20 +56,26 @@ class SFDCClient {
      * @param {string} channel The channel to unsubscribe from. 
      * @param {function} unsubscribeCallback The callback to invoke when 
      * an unsubscription occurs.
+     * @throws Will thrown an Error if trying to unsubscribe from a channel
+     * that has no subscription.
      */
     unsubscribe(channel, unsubscribeCallback) {
         this._log('SFDCClient.unsubscribe');
 
-        if(this.hasSubscription(channel)) {
-            const subscription = this._subscriptions[channel];
+        const hasNoSubscription = !this.hasSubscription(channel);
 
-            this._cometd.unsubscribe(subscription, (unsubscribeReply) => {
-                if(unsubscribeReply.successful) {
-                    delete this._subscriptions[channel];
-                }
-                unsubscribeCallback(unsubscribeReply);
-            });
-        }
+        if(hasNoSubscription) {
+            throw new Error(`Cannot unsubscribe from ${channel} because no subscription to that channel exists.`);
+        } 
+
+        const subscription = this._subscriptions[channel];
+
+        this._cometd.unsubscribe(subscription, (unsubscribeReply) => {
+            if(unsubscribeReply.successful) {
+                delete this._subscriptions[channel];
+            }
+            unsubscribeCallback(unsubscribeReply);
+        });
     }
 
     /**

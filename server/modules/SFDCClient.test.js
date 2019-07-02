@@ -170,7 +170,7 @@ describe('SFDCClient', () => {
             expect(cometdHandshakeMock.mock.calls.length).toBe(1);
         });
     
-        test('Should only subscribe to a channel if no subscription exists', async () => {  
+        test('Should throw an Error when subscribing to a channel more than once', async () => {  
             const cometdSubscribeMock = cometd_subscribe_mock();
             const jsforceLoginMock = jsforce_login_mock();
             const cometdHandshakeMock = cometd_handshake_mock();
@@ -183,7 +183,14 @@ describe('SFDCClient', () => {
             expect(client.hasSubscription(channels[0])).toBeFalsy();
 
             await client.subscribe(channels[0], noop, noop);
-            await client.subscribe(channels[0], noop, noop);
+
+            expect(client.hasSubscription(channels[0])).toBeTruthy();
+
+            try {
+                await client.subscribe(channels[0], noop, noop);
+            } catch(e) {
+                expect(e).toBeInstanceOf(Error);
+            }
     
             expect(client.hasSubscription(channels[0])).toBeTruthy();
     
@@ -336,6 +343,19 @@ describe('SFDCClient', () => {
             expect(unsubscribeCallback.mock.calls[0][0]).toHaveProperty('successful', true);
         });
 
+        test('Should throw an Error when trying to unsubscribe from a channel that has no subscription', () => {
+            const cometdUnsubscribeMock = cometd_unsubscribe_mock();
+            cometd.unsubscribe = cometdUnsubscribeMock;
+
+            let unsubscribeCallback;
+            
+            expect(() => {
+                unsubscribeCallback = jest.fn();
+                client.unsubscribe(channels[0], unsubscribeCallback);
+            }).toThrow();
+
+            expect(unsubscribeCallback.mock.calls.length).toBe(0);
+        });
     });
 
 });
