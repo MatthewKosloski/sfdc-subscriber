@@ -9,6 +9,8 @@ describe('SFDCClient', () => {
 
             console.log(`Simulating a(n) ${typeOfLogin} subscription to channel ${channel}.`);
             subscribeCallback(fakeResponse);
+
+            return {};
         };
 
         return jest.fn(implementation);
@@ -177,6 +179,26 @@ describe('SFDCClient', () => {
         expect(subscribeCallback.mock.calls.length).toBe(1);
         expect(actualResponseFromSubscribeCallback).toEqual(expectedResponseFromSubscribeCallback);
 
+    });
+
+    test('Should only subscribe to a channel if no subscription exists', async () => {
+        const { cometd, jsforce } = client;
+
+        const mockSubscribe = buildSubscriptionMock();
+        const mockLogin = buildLoginMock();
+        const mockHandshake = buildHandshakeMock();
+
+       cometd.subscribe = mockSubscribe;
+       cometd.handshake = mockHandshake;
+       jsforce.login = mockLogin;
+
+        await client.subscribe(channels[0], emptyCallback, emptyCallback);
+        await client.subscribe(channels[0], emptyCallback, emptyCallback);
+
+        expect(client.hasSubscription(channels[0])).toBeTruthy();
+
+        // even though we called SFDCClient.subscribe twice, CometD.subscribe should have only been called once.
+        expect(mockSubscribe.mock.calls.length).toBe(1);
     });
 
 });
