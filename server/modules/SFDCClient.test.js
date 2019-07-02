@@ -103,18 +103,18 @@ describe('SFDCClient', () => {
         jsforce.login = mockLogin;
 
         // Haven't subscribed yet, so no handshake should have occurred.
-        expect(client.handshakeCount).toBe(0);
+        expect(mockHandshake.mock.calls.length).toBe(0);
 
         await client.subscribe(channels[0], emptyCallback, emptyCallback);
 
         // Subscribed, so a handshake should have occurred.
-        expect(client.handshakeCount).toBe(1);
+        expect(mockHandshake.mock.calls.length).toBe(1);
 
         await client.subscribe(channels[1], emptyCallback, emptyCallback);
         await client.subscribe(channels[2], emptyCallback, emptyCallback);
 
         // Count should still be 1 after subsequent subscriptions.
-        expect(client.handshakeCount).toBe(1);
+        expect(mockHandshake.mock.calls.length).toBe(1);
     });
 
     test('Should call ClientD.subscribe once when calling subscribe', async () => {
@@ -200,7 +200,6 @@ describe('SFDCClient', () => {
         
         // simulate a failed subscription
         const mockSubscribe = cometd_subscribe_mock(false);
-
         const mockLogin = jsforce_login_mock();
         const mockHandshake = cometd_handshake_mock();
 

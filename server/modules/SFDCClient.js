@@ -24,7 +24,7 @@ class SFDCClient {
         this.password = password;
         this.apiVersion = apiVersion;
 
-        this.handshakeCount = 0;
+        this.didShakeHands = false;
 
         this.subscriptions = {};
     }
@@ -43,7 +43,7 @@ class SFDCClient {
     async subscribe(channel, callback, subscribeCallback) {
         console.log('SFDCClient.subscribe');
 
-        const didNotShakeHands = this.handshakeCount === 0;
+        const didNotShakeHands = !this.didShakeHands;
         const hasNoSubscription = !this.hasSubscription(channel);
 
         if(didNotShakeHands) {
@@ -91,7 +91,7 @@ class SFDCClient {
             console.log('Successfully shook hands with the Salesforce CometD server.');
         });
 
-        this.handshakeCount++;
+        this.didShakeHands = true;
     }
 
     /**
