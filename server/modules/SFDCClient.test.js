@@ -1,3 +1,6 @@
+const cometdLib = require('cometd');
+const jsforceLib = require('jsforce');
+
 const SFDCClient = require('./SFDCClient');
 
 describe('SFDCClient', () => {
@@ -78,21 +81,21 @@ describe('SFDCClient', () => {
         password = 'password',
         apiVersion = '43';
 
-    let client;
+
+    let client, cometd, jsforce;
 
     beforeEach(() => {
-        client = new SFDCClient(clientId, clientSecret, username, password, apiVersion);
-    });
-
-    test('Should set instance variables', () => {
-        expect(client.username).toBe(username);
-        expect(client.password).toBe(password);
-        expect(client.apiVersion).toBe(apiVersion);
+        cometd = new cometdLib.CometD();
+        jsforce = new jsforceLib.Connection({
+            oauth2 : { 
+                CLIENT_ID: clientId,
+                CLIENT_SECRET: clientSecret
+            }
+        });
+        client = new SFDCClient(cometd, jsforce, username, password, apiVersion);
     });
 
     test('Should only handshake with CometD when subscribing for the first time', async () => {
-        const { cometd, jsforce } = client;
-
         const mockSubscribe = cometd_subscribe_mock();
         const mockLogin = jsforce_login_mock();
         const mockHandshake = cometd_handshake_mock();
@@ -118,8 +121,6 @@ describe('SFDCClient', () => {
     });
 
     test('Should call ClientD.subscribe once when calling subscribe', async () => {
-        const { cometd, jsforce } = client;
-        
         const mockSubscribe = cometd_subscribe_mock();
         const mockLogin = jsforce_login_mock();
         const mockHandshake = cometd_handshake_mock();
@@ -142,8 +143,6 @@ describe('SFDCClient', () => {
     });
 
     test('Should call ClientD.disconnect once when calling disconnect', () => {
-        const { cometd } = client;
-
         const mockDisconnect = cometd_disconnect_mock();
         cometd.disconnect = mockDisconnect;
 
@@ -156,8 +155,6 @@ describe('SFDCClient', () => {
     });
 
     test('Should throw Error when failing to login with Salesforce', async () => {
-        const { cometd, jsforce } = client;
-        
         const mockSubscribe = cometd_subscribe_mock();
         // simulate a failed login
         const mockLogin = jsforce_login_mock(false);
@@ -176,8 +173,6 @@ describe('SFDCClient', () => {
     });
 
     test('Should throw Error when failing to handshake with the Salesforce CometD server', async () => {
-        const { cometd, jsforce } = client;
-        
         const mockSubscribe = cometd_subscribe_mock();
         const mockLogin = jsforce_login_mock();
         // simulate a failed handshake
@@ -196,8 +191,6 @@ describe('SFDCClient', () => {
     });
 
     test('Should send an object when failing to subscribe to a channel', async () => {
-        const { cometd, jsforce } = client;
-        
         // simulate a failed subscription
         const mockSubscribe = cometd_subscribe_mock(false);
         const mockLogin = jsforce_login_mock();
@@ -224,9 +217,7 @@ describe('SFDCClient', () => {
 
     });
 
-    test('Should only subscribe to a channel if no subscription exists', async () => {
-        const { cometd, jsforce } = client;
-        
+    test('Should only subscribe to a channel if no subscription exists', async () => {  
         const mockSubscribe = cometd_subscribe_mock();
         const mockLogin = jsforce_login_mock();
         const mockHandshake = cometd_handshake_mock();

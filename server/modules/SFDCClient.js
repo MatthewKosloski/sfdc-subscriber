@@ -3,30 +3,22 @@ const cometdLib = require('cometd');
 const jsforceLib = require('jsforce');
 
 /**
- * Facilitates the process of subscribing to
- * Salesforce Platform Events by logging into Salesforce
+ * Facilitates the process of subscribing and unsubscribing
+ * to Salesforce Platform Events by logging into Salesforce
  * and shaking hands with the CometD server for long-polling.
  */
 class SFDCClient {
 
-    constructor(cliendId, clientSecret, username, password, apiVersion) {
+    constructor(cometd, jsforce, username, password, apiVersion) {
         console.log('Creating a new instance of SFDCClient for a socket.');
 
-        this.cometd = new cometdLib.CometD();
-        this.jsforce = new jsforceLib.Connection({
-            oauth2 : { 
-                CLIENT_ID: cliendId,
-                CLIENT_SECRET: clientSecret
-            }
-        });
-    
-        this.username = username;
-        this.password = password;
-        this.apiVersion = apiVersion;
-
-        this.didShakeHands = false;
-
-        this.subscriptions = {};
+        this._cometd = cometd;
+        this._jsforce = jsforce;
+        this._username = username;
+        this._password = password;
+        this._apiVersion = apiVersion;
+        this._didShakeHands = false;
+        this._subscriptions = {};
     }
 
     /**
@@ -43,7 +35,7 @@ class SFDCClient {
     async subscribe(channel, callback, subscribeCallback) {
         console.log('SFDCClient.subscribe');
 
-        const didNotShakeHands = !this.didShakeHands;
+        const didNotShakeHands = !this._didShakeHands;
         const hasNoSubscription = !this.hasSubscription(channel);
 
         if(didNotShakeHands) {
@@ -51,7 +43,8 @@ class SFDCClient {
         }
 
         if(hasNoSubscription) {
-            this.subscriptions[channel] = this.cometd.subscribe(channel, callback, subscribeCallback);
+            this._subscriptions[channel] = this._cometd.subscribe(
+                channel, callback, subscribeCallback);
         }
     }
 
@@ -62,7 +55,7 @@ class SFDCClient {
      */
     disconnect(disconnectCallback) {
         console.log('SFDCClient.disconnect');
-        this.cometd.disconnect(disconnectCallback);
+        this._cometd.disconnect(disconnectCallback);
     }
 
     /**
@@ -71,7 +64,7 @@ class SFDCClient {
      * @param {string} channel The channel to use for the subscription check. 
      */
     hasSubscription(channel) {
-        return this.subscriptions[channel] !== undefined;
+        return this._subscriptions[channel] !== undefined;
     }
 
     /**
@@ -82,7 +75,7 @@ class SFDCClient {
     async _handshake() {
         await this._configureCometD();
 
-        await this.cometd.handshake(({successful}) => {
+        await this._cometd.handshake(({successful}) => {
             const didFailToShakeHands = !successful;
             if (didFailToShakeHands) {
                 throw new Error('Failed to shake hands with the Salesforce CometD server.');
@@ -91,7 +84,7 @@ class SFDCClient {
             console.log('Successfully shook hands with the Salesforce CometD server.');
         });
 
-        this.didShakeHands = true;
+        this._didShakeHands = true;
     }
 
     /**
@@ -101,7 +94,7 @@ class SFDCClient {
      */
     async _configureCometD() {
         const { accessToken, instanceUrl } = await this._login();
-        this.cometd.configure({
+        this._cometd.configure({
             url: `${instanceUrl}/cometd/${this.apiVersion}/`,
             appendMessageTypeToURL: false,
             requestHeaders: {
@@ -120,9 +113,9 @@ class SFDCClient {
      * 
      */
     async _login() {
-        const { username, password } = this;
+        const { _username, _password } = this;
 
-        await this.jsforce.login(username, password, (err) => {
+        await this._jsforce.login(_username, _password, (err) => {
             if (err) { 
                 console.log('Failed to log into Salesforce.');
                 throw new Error(err);
@@ -131,7 +124,7 @@ class SFDCClient {
             console.log('Successfully logged into Salesforce.');
         });
 
-        return this.jsforce;
+        return this._jsforce;
     }
 
 }
