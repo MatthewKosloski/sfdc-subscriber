@@ -91,7 +91,7 @@ describe('SFDCClient', () => {
     };
 
     // Variables used in unit tests
-    const emptyCallback = () => {};
+    const noop = () => {};
     const channels = [
         '/event/Dummy_Event_1__e', 
         '/event/Dummy_Event_2__e', 
@@ -129,7 +129,7 @@ describe('SFDCClient', () => {
             cometd.handshake = cometdHandshakeMock;
             jsforce.login = jsforceLoginMock;
     
-            await client.subscribe(channels[0], emptyCallback, emptyCallback);
+            await client.subscribe(channels[0], noop, noop);
     
             const firstArgument = cometdSubscribeMock.mock.calls[0][0];
             const secondArgument = cometdSubscribeMock.mock.calls[0][1];
@@ -140,8 +140,8 @@ describe('SFDCClient', () => {
     
             // the arguments we passed to subscribe should have been passed to CometD.subscribe.
             expect(firstArgument).toBe(channels[0]);
-            expect(secondArgument).toBe(emptyCallback);
-            expect(thirdArgument).toBe(emptyCallback);
+            expect(secondArgument).toBe(noop);
+            expect(thirdArgument).toBe(noop);
         });
 
         test('Should only handshake with CometD once, after the first subscription', async () => {
@@ -157,13 +157,13 @@ describe('SFDCClient', () => {
             // Haven't subscribed yet, so no handshake should have occurred.
             expect(cometdHandshakeMock.mock.calls.length).toBe(0);
     
-            await client.subscribe(channels[0], emptyCallback, emptyCallback);
+            await client.subscribe(channels[0], noop, noop);
     
             // Subscribed, so a handshake should have occurred.
             expect(cometdHandshakeMock.mock.calls.length).toBe(1);
     
-            await client.subscribe(channels[1], emptyCallback, emptyCallback);
-            await client.subscribe(channels[2], emptyCallback, emptyCallback);
+            await client.subscribe(channels[1], noop, noop);
+            await client.subscribe(channels[2], noop, noop);
     
             // No more handshakes should occur
             expect(cometdHandshakeMock.mock.calls.length).toBe(1);
@@ -181,8 +181,8 @@ describe('SFDCClient', () => {
     
             expect(client.hasSubscription(channels[0])).toBeFalsy();
 
-            await client.subscribe(channels[0], emptyCallback, emptyCallback);
-            await client.subscribe(channels[0], emptyCallback, emptyCallback);
+            await client.subscribe(channels[0], noop, noop);
+            await client.subscribe(channels[0], noop, noop);
     
             expect(client.hasSubscription(channels[0])).toBeTruthy();
     
@@ -202,7 +202,7 @@ describe('SFDCClient', () => {
             jsforce.login = jsforceLoginMock;
     
             try {
-                await client.subscribe(channels[0], emptyCallback, emptyCallback);
+                await client.subscribe(channels[0], noop, noop);
             } catch(e) {
                 expect(e).toBeInstanceOf(Error);
             }
@@ -220,7 +220,7 @@ describe('SFDCClient', () => {
             jsforce.login = jsforceLoginMock;
     
             try {
-                await client.subscribe(channels[0], emptyCallback);
+                await client.subscribe(channels[0], noop);
             } catch(e) {
                 expect(e).toBeInstanceOf(Error);
             }
@@ -234,12 +234,12 @@ describe('SFDCClient', () => {
             const mockDisconnect = cometd_disconnect_mock();
             cometd.disconnect = mockDisconnect;
     
-            client.disconnect(emptyCallback);
+            client.disconnect(noop);
     
             const firstArgument = mockDisconnect.mock.calls[0][0];
     
             expect(mockDisconnect.mock.calls.length).toBe(1);
-            expect(firstArgument).toBe(emptyCallback);
+            expect(firstArgument).toBe(noop);
         });
     });
 
@@ -259,11 +259,11 @@ describe('SFDCClient', () => {
 
             expect(client.hasSubscription(channels[0])).toBeFalsy();
 
-            await client.subscribe(channels[0], emptyCallback, emptyCallback);
+            await client.subscribe(channels[0], noop, noop);
 
             expect(client.hasSubscription(channels[0])).toBeTruthy();
             
-            client.unsubscribe(channels[0], emptyCallback);
+            client.unsubscribe(channels[0], noop);
 
             // No longer subscribed, so should be false.
             expect(client.hasSubscription(channels[0])).toBeFalsy(); 
@@ -284,11 +284,11 @@ describe('SFDCClient', () => {
 
             expect(client.hasSubscription(channels[0])).toBeFalsy();
 
-            await client.subscribe(channels[0], emptyCallback, emptyCallback);
+            await client.subscribe(channels[0], noop, noop);
 
             expect(client.hasSubscription(channels[0])).toBeTruthy();
             
-            client.unsubscribe(channels[0], emptyCallback);
+            client.unsubscribe(channels[0], noop);
 
             // Simulated an unsuccessful unsubscription, so we are still subscribed.
             expect(client.hasSubscription(channels[0])).toBeTruthy();
@@ -306,9 +306,9 @@ describe('SFDCClient', () => {
             cometd.handshake = cometdHandshakeMock;
             jsforce.login = jsforceLoginMock;
 
-            await client.subscribe(channels[0], emptyCallback, emptyCallback);
+            await client.subscribe(channels[0], noop, noop);
 
-            client.unsubscribe(channels[0], emptyCallback);
+            client.unsubscribe(channels[0], noop);
 
             expect(cometdUnsubscribeMock.mock.calls.length).toBe(1);
        });
@@ -325,7 +325,7 @@ describe('SFDCClient', () => {
             cometd.handshake = cometdHandshakeMock;
             jsforce.login = jsforceLoginMock;
 
-            await client.subscribe(channels[0], emptyCallback, emptyCallback);
+            await client.subscribe(channels[0], noop, noop);
 
             const unsubscribeCallback = jest.fn();
 
