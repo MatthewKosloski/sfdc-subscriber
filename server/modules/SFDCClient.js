@@ -25,6 +25,8 @@ class SFDCClient {
         this.apiVersion = apiVersion;
 
         this.handshakeCount = 0;
+
+        this.subscriptions = {};
     }
 
     /**
@@ -40,23 +42,36 @@ class SFDCClient {
      */
     async subscribe(channel, callback, subscribeCallback) {
         console.log('SFDCClient.subscribe');
+
         const didNotShakeHands = this.handshakeCount === 0;
+        const hasNoSubscription = !this.hasSubscription(channel);
 
         if(didNotShakeHands) {
             await this._handshake();
         }
 
-        this.cometd.subscribe(channel, callback, subscribeCallback);
-
+        if(hasNoSubscription) {
+            this.subscriptions[channel] = this.cometd.subscribe(channel, callback, subscribeCallback);
+        }
     }
 
     /**
      * A wrapper for CometD.disconnect.
+     * @public Can be used by API consumers.
      * @param {function} disconnectCallback Function to be invoked to acknowledge disconnect.
      */
     disconnect(disconnectCallback) {
         console.log('SFDCClient.disconnect');
         this.cometd.disconnect(disconnectCallback);
+    }
+
+    /**
+     * Indicates if there is a subscription to the channel.
+     * @public Can be used by API consumers.
+     * @param {string} channel The channel to use for the subscription check. 
+     */
+    hasSubscription(channel) {
+        return this.subscriptions[channel] !== undefined;
     }
 
     /**
