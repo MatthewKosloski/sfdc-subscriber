@@ -2,10 +2,14 @@ const SFDCClient = require('./SFDCClient');
 
 describe('SFDCClient', () => {
 
-    const buildSubscriptionMock = (isFailedSubscription = false) => {
+    /**
+     * Builds a mock for CometD.subscribe.
+     * @param {boolean} isSuccessful Indicates if the subscription should succeed.
+     */
+    const cometd_subscribe_mock = (isSuccessful = true) => {
         const implementation = (channel, _, subscribeCallback) => {
-            const typeOfLogin = isFailedSubscription ? 'unsuccessful' : 'successful';
-            const fakeResponse = {successful: !isFailedSubscription, subscription: channel};
+            const typeOfLogin = isSuccessful ? 'successful' : 'unsuccessful';
+            const fakeResponse = {successful: isSuccessful, subscription: channel};
 
             console.log(`Simulating a(n) ${typeOfLogin} subscription to channel ${channel}.`);
             subscribeCallback(fakeResponse);
@@ -16,10 +20,14 @@ describe('SFDCClient', () => {
         return jest.fn(implementation);
     };
 
-    const buildHandshakeMock = (isFailedHandshake = false) => {
+    /**
+     * Builds a mock for Cometd.handshake.
+     * @param {boolean} isSuccessful Indicates if the handshake should succeed.
+     */
+    const cometd_handshake_mock = (isSuccessful = true) => {
         const implementation = (callback) => {
-            const typeOfHandshake = isFailedHandshake ? 'unsuccessful' : 'successful';
-            const fakeResponse = {successful: !isFailedHandshake};
+            const typeOfHandshake = isSuccessful ? 'successful' : 'unsuccessful';
+            const fakeResponse = {successful: isSuccessful};
 
             console.log(`Simulating a(n) ${typeOfHandshake} handshake with the CometD server.`);
             callback(fakeResponse);
@@ -28,16 +36,27 @@ describe('SFDCClient', () => {
         return jest.fn(implementation);
     };
 
-    const buildLoginMock = (isFailedLogin = false, accessToken = '', instanceUrl = '') => {
+    /**
+     * Builds a mock for CometD.disconnect.
+     */
+    const cometd_disconnect_mock = () => {
+        return jest.fn();
+    }
+
+    /**
+     * Builds a mock for jsforce.login.
+     * @param {boolean} isSuccessful Indicates if the login should succeed.
+     */
+    const jsforce_login_mock = (isSuccessful = true) => {
 
         const err = new Error('Fake error about failing to login');
 
         const implementation = (username, password, callback) => {
-            const typeOfLogin = isFailedLogin ? 'unsuccessful' : 'successful';
-            const fakeResponse = {accessToken, instanceUrl};
+            const typeOfLogin = isSuccessful ? 'successful' : 'unsuccessful';
+            const fakeResponse = {accessToken: 'accessToken', instanceUrl: 'instanceUrl'};
 
             console.log(`Simulating a(n) ${typeOfLogin} login with Salesforce with username \"${username}\" and password \"${password}\".`);
-            callback(isFailedLogin ? err : null);
+            callback(isSuccessful ? null : err);
 
             return fakeResponse;
         };
@@ -72,55 +91,61 @@ describe('SFDCClient', () => {
     });
 
     test('Should only handshake with CometD when subscribing for the first time', async () => {
-
-        const [firstChannelName, secondChannelName, thirdChannelName] = channels;
         const { cometd, jsforce } = client;
 
+        const mockSubscribe = cometd_subscribe_mock();
+        const mockLogin = jsforce_login_mock();
+        const mockHandshake = cometd_handshake_mock();
+
         // Mock these methods as we don't want to be making network calls
-        cometd.subscribe = buildSubscriptionMock();
-        jsforce.login = buildLoginMock();
-        cometd.handshake = buildHandshakeMock();
+        cometd.subscribe = mockSubscribe;
+        cometd.handshake = mockHandshake;
+        jsforce.login = mockLogin;
 
         // Haven't subscribed yet, so no handshake should have occurred.
         expect(client.handshakeCount).toBe(0);
 
-        await client.subscribe(firstChannelName, emptyCallback, emptyCallback);
+        await client.subscribe(channels[0], emptyCallback, emptyCallback);
 
         // Subscribed, so a handshake should have occurred.
         expect(client.handshakeCount).toBe(1);
 
-        await client.subscribe(secondChannelName, emptyCallback, emptyCallback);
-        await client.subscribe(thirdChannelName, emptyCallback, emptyCallback);
+        await client.subscribe(channels[1], emptyCallback, emptyCallback);
+        await client.subscribe(channels[2], emptyCallback, emptyCallback);
 
         // Count should still be 1 after subsequent subscriptions.
         expect(client.handshakeCount).toBe(1);
     });
 
     test('Should call ClientD.subscribe once when calling subscribe', async () => {
-
-        const [channelName,,] = channels;
+        const { cometd, jsforce } = client;
+        
+        const mockSubscribe = cometd_subscribe_mock();
+        const mockLogin = jsforce_login_mock();
+        const mockHandshake = cometd_handshake_mock();
 
         // Mock these methods as we don't want to be making network calls
-        const mockSubscribe = buildSubscriptionMock();
-        client.cometd.subscribe = mockSubscribe;
-        client.jsforce.login = buildLoginMock();
-        client.cometd.handshake = buildHandshakeMock();
+        cometd.subscribe = mockSubscribe;
+        cometd.handshake = mockHandshake;
+        jsforce.login = mockLogin;
 
-        await client.subscribe(channelName, emptyCallback, emptyCallback);
+        await client.subscribe(channels[0], emptyCallback, emptyCallback);
 
         const firstArgument = mockSubscribe.mock.calls[0][0];
         const secondArgument = mockSubscribe.mock.calls[0][1];
         const thirdArgument = mockSubscribe.mock.calls[0][2];
 
         expect(mockSubscribe.mock.calls.length).toBe(1);
-        expect(firstArgument).toBe(channelName);
+        expect(firstArgument).toBe(channels[0]);
         expect(secondArgument).toBe(emptyCallback);
         expect(thirdArgument).toBe(emptyCallback);
     });
 
     test('Should call ClientD.disconnect once when calling disconnect', () => {
-        const mockDisconnect = jest.fn();
-        client.cometd.disconnect = mockDisconnect;
+        const { cometd } = client;
+
+        const mockDisconnect = cometd_disconnect_mock();
+        cometd.disconnect = mockDisconnect;
 
         client.disconnect(emptyCallback);
 
@@ -131,11 +156,17 @@ describe('SFDCClient', () => {
     });
 
     test('Should throw Error when failing to login with Salesforce', async () => {
+        const { cometd, jsforce } = client;
+        
+        const mockSubscribe = cometd_subscribe_mock();
+        // simulate a failed login
+        const mockLogin = jsforce_login_mock(false);
+        const mockHandshake = cometd_handshake_mock();
 
         // Mock these methods as we don't want to be making network calls
-        client.cometd.subscribe = buildSubscriptionMock();
-        client.jsforce.login = buildLoginMock(true);
-        client.cometd.handshake = buildHandshakeMock();
+        cometd.subscribe = mockSubscribe;
+        cometd.handshake = mockHandshake;
+        jsforce.login = mockLogin;
 
         try {
             await client.subscribe(channels[0], emptyCallback, emptyCallback);
@@ -145,11 +176,17 @@ describe('SFDCClient', () => {
     });
 
     test('Should throw Error when failing to handshake with the Salesforce CometD server', async () => {
+        const { cometd, jsforce } = client;
+        
+        const mockSubscribe = cometd_subscribe_mock();
+        const mockLogin = jsforce_login_mock();
+        // simulate a failed handshake
+        const mockHandshake = cometd_handshake_mock(false);
 
         // Mock these methods as we don't want to be making network calls
-        client.cometd.subscribe = buildSubscriptionMock();
-        client.jsforce.login = buildLoginMock();
-        client.cometd.handshake = buildHandshakeMock(true);
+        cometd.subscribe = mockSubscribe;
+        cometd.handshake = mockHandshake;
+        jsforce.login = mockLogin;
 
         try {
             await client.subscribe(channels[0], emptyCallback);
@@ -158,39 +195,47 @@ describe('SFDCClient', () => {
         }
     });
 
-    test('Should send object when failing to subscribe to channel', async () => {
+    test('Should send an object when failing to subscribe to a channel', async () => {
+        const { cometd, jsforce } = client;
         
+        // simulate a failed subscription
+        const mockSubscribe = cometd_subscribe_mock(false);
+
+        const mockLogin = jsforce_login_mock();
+        const mockHandshake = cometd_handshake_mock();
+
         // Mock these methods as we don't want to be making network calls
-        client.cometd.subscribe = buildSubscriptionMock(true);
-        client.jsforce.login = buildLoginMock();
-        client.cometd.handshake = buildHandshakeMock();
+        cometd.subscribe = mockSubscribe;
+        cometd.handshake = mockHandshake;
+        jsforce.login = mockLogin;
 
         const subscribeCallback = jest.fn();
 
         await client.subscribe(channels[0], emptyCallback, subscribeCallback);
 
-        const actualResponseFromSubscribeCallback = subscribeCallback.mock.calls[0][0];
+        const actual = subscribeCallback.mock.calls[0][0];
 
-        const expectedResponseFromSubscribeCallback = {
+        const expected = {
             successful: false,
             subscription: channels[0]
         };
 
         expect(subscribeCallback.mock.calls.length).toBe(1);
-        expect(actualResponseFromSubscribeCallback).toEqual(expectedResponseFromSubscribeCallback);
+        expect(actual).toEqual(expected);
 
     });
 
     test('Should only subscribe to a channel if no subscription exists', async () => {
         const { cometd, jsforce } = client;
+        
+        const mockSubscribe = cometd_subscribe_mock();
+        const mockLogin = jsforce_login_mock();
+        const mockHandshake = cometd_handshake_mock();
 
-        const mockSubscribe = buildSubscriptionMock();
-        const mockLogin = buildLoginMock();
-        const mockHandshake = buildHandshakeMock();
-
-       cometd.subscribe = mockSubscribe;
-       cometd.handshake = mockHandshake;
-       jsforce.login = mockLogin;
+        // Mock these methods as we don't want to be making network calls
+        cometd.subscribe = mockSubscribe;
+        cometd.handshake = mockHandshake;
+        jsforce.login = mockLogin;
 
         await client.subscribe(channels[0], emptyCallback, emptyCallback);
         await client.subscribe(channels[0], emptyCallback, emptyCallback);
