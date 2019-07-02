@@ -1,6 +1,4 @@
 require('cometd-nodejs-client').adapt();
-const cometdLib = require('cometd');
-const jsforceLib = require('jsforce');
 
 /**
  * Facilitates the process of subscribing and unsubscribing
@@ -45,6 +43,28 @@ class SFDCClient {
         if(hasNoSubscription) {
             this._subscriptions[channel] = this._cometd.subscribe(
                 channel, callback, subscribeCallback);
+        }
+    }
+
+    /**
+     * A wrapper for CometD.unsubscribe. Unsubscribes from a channel.
+     * @public Can be used by API consumers.
+     * @param {string} channel The channel to unsubscribe from. 
+     * @param {function} unsubscribeCallback The callback to invoke when 
+     * an unsubscription occurs.
+     */
+    unsubscribe(channel, unsubscribeCallback) {
+        console.log('SFDCClient.unsubscribe');
+
+        if(this.hasSubscription(channel)) {
+            const subscription = this._subscriptions[channel];
+
+            this._cometd.unsubscribe(subscription, (unsubscribeReply) => {
+                if(unsubscribeReply.successful) {
+                    delete this._subscriptions[channel];
+                }
+                unsubscribeCallback(unsubscribeReply);
+            });
         }
     }
 
