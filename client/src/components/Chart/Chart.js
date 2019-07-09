@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import * as d3 from 'd3';
 
 import timeSeriesChart from './timeSeriesChart';
@@ -14,8 +14,8 @@ export default class Chart extends Component {
         this.chart = timeSeriesChart()
             .circleColor('#df4747')
             .circleRadius(15)
-            .duration(10000)
-            .width(1200)
+            // .duration(60000)
+            .width(980)
             .height(500);
     }
 
@@ -34,11 +34,7 @@ export default class Chart extends Component {
 
     render() {
         return(
-            <Fragment>
-                <div style={{padding: '10px'}}>
-                    <svg ref={this.svgRef}></svg>
-                </div>
-            </Fragment>
+            <svg ref={this.svgRef}></svg>
         );
     }
 }
