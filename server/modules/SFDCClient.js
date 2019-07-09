@@ -128,7 +128,7 @@ class SFDCClient {
         this._log('SFDCClient._configureCometD');
         const { accessToken, instanceUrl } = await this._login();
         this._cometd.configure({
-            url: `${instanceUrl}/cometd/${this.apiVersion}/`,
+            url: `${instanceUrl}/cometd/${this._apiVersion}/`,
             appendMessageTypeToURL: false,
             requestHeaders: {
                 Authorization: `Bearer ${accessToken}`
