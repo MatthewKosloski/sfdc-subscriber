@@ -2,40 +2,38 @@ import React, { Component, Fragment } from 'react';
 import io from 'socket.io-client';
 
 import socketEvents from '../../socketEvents';
+// import Chart from '../Chart';
 
 import './App.css';
+
+const {
+	PLATFORM_EVENT_SUBSCRIPTION_SUCCESS,
+	PLATFORM_EVENT_SUBSCRIPTION_FAILURE,
+	PLATFORM_EVENT_UNSUBSCRIPTION_SUCCESS,
+	PLATFORM_EVENT_UNSUBSCRIPTION_FAILURE,
+	PLATFORM_EVENT_SUBSCRIPTION_REQUEST,
+	PLATFORM_EVENT_UNSUBSCRIPTION_REQUEST,
+	DATA_CENTER_NAME_EVENT,
+} = socketEvents;
 
 export default class App extends Component {
 
 	constructor(props) {
 		super(props);
-		this._socket = io('http://localhost:3001');
 
-		this.handleButtonClick = this.handleButtonClick.bind(this);
+		this.handleSocketEvent = this.handleSocketEvent.bind(this);
+		this.handleSubscribe = this.handleSubscribe.bind(this);
+		this.handleUnsubscribe = this.handleUnsubscribe.bind(this);
+
+		this.socket = io('http://localhost:3001');
 	}
 
 	componentDidMount() {
-		const {
-			PLATFORM_EVENT_SUBSCRIPTION_SUCCESS,
-			PLATFORM_EVENT_SUBSCRIPTION_FAILURE,
-			DATA_CENTER_NAME_EVENT
-		} = socketEvents;
-		
-		this._socket.on(PLATFORM_EVENT_SUBSCRIPTION_SUCCESS, this.handleSubscriptionSuccess);
-		this._socket.on(PLATFORM_EVENT_SUBSCRIPTION_FAILURE, this.handleSubscriptionFailure);
-		this._socket.on(DATA_CENTER_NAME_EVENT, this.handleDataCenterNameEvent);
-	}
-
-	handleSubscriptionSuccess({payload: {subscription}}) {
-		console.info(`Now subscribing to ${subscription}...`);
-	}
-
-	handleSubscriptionFailure({payload: {subscription}}) {
-		console.error(`Failed to subscribe to ${subscription}.`);
-	}
-
-	handleDataCenterNameEvent({payload}) {
-		console.log(payload);
+		this.socket.on(PLATFORM_EVENT_SUBSCRIPTION_SUCCESS, this.handleSubscriptionSuccess);
+		this.socket.on(PLATFORM_EVENT_SUBSCRIPTION_FAILURE, this.handleSubscriptionFailure);
+		this.socket.on(PLATFORM_EVENT_UNSUBSCRIPTION_SUCCESS, this.handleUnsubscriptionSuccess);
+		this.socket.on(PLATFORM_EVENT_UNSUBSCRIPTION_FAILURE, this.handleUnsubscriptionFailure);
+		this.socket.on(DATA_CENTER_NAME_EVENT, this.handleSocketEvent);
 	}
 
 	/**
@@ -49,21 +47,54 @@ export default class App extends Component {
 	 * occurs.
 	 */
 	createEventSubscriptionRequest(cometdChannel, socketEvent) {
-		this._socket.emit(socketEvents.PLATFORM_EVENT_SUBSCRIPTION_REQUEST, 
+		this.socket.emit(PLATFORM_EVENT_SUBSCRIPTION_REQUEST, 
 		{payload: {cometdChannel, socketEvent}});
 	}
 
-	handleButtonClick() {
+	createEventUnsubscriptionRequest(cometdChannel) {
+		this.socket.emit(PLATFORM_EVENT_UNSUBSCRIPTION_REQUEST,
+		{payload: {cometdChannel}});
+	}
+
+	handleSubscriptionSuccess({payload: {subscription}}) {
+		console.info(`Now subscribing to ${subscription}...`);
+	}
+
+	handleSubscriptionFailure({payload: {subscription}}) {
+		console.error(`Failed to subscribe to ${subscription}.`);
+	}
+
+	handleUnsubscriptionSuccess({payload: {subscription}}) {
+		console.info(`Successfully unsubscribed from ${subscription}.`);
+	}
+
+	handleUnsubscriptionFailure({payload: {subscription}}) {
+		console.error(`Failed to unsubscribe from ${subscription}.`);
+	}
+
+	handleSocketEvent({payload}) {
+		console.log(payload);
+	}
+
+	handleSubscribe() {
 		this.createEventSubscriptionRequest('/event/Data_Center_Name__e',
-		socketEvents.DATA_CENTER_NAME_EVENT);
+		DATA_CENTER_NAME_EVENT);
+	}
+
+	handleUnsubscribe() {
+		this.createEventUnsubscriptionRequest('/event/Data_Center_Name__e');
 	}
 
 	render() {
 		return (
 			<Fragment>
-				<h1>SFDC Platform Event Subscriber</h1>
-				<p>Click on the button below to subscribe to the <code>Data_Center_Name__e</code> event.</p>
-				<button onClick={this.handleButtonClick}>Subscribe</button>
+				<div className="container">
+					<h1>SFDC Platform Event Subscriber</h1>
+					<p>Controls for Data_Center_Name__e.</p>
+					<button onClick={this.handleSubscribe}>Subscribe</button>
+					<button onClick={this.handleUnsubscribe}>Unsubscribe</button>
+					{/* <Chart data={this.state.data}/> */}
+				</div>
 			</Fragment>
 		);
 	}

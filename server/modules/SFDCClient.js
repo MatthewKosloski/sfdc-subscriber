@@ -1,29 +1,23 @@
 require('cometd-nodejs-client').adapt();
-const cometdLib = require('cometd');
-const jsforceLib = require('jsforce');
 
 /**
- * Facilitates the process of subscribing to
- * Salesforce Platform Events by logging into Salesforce
+ * Facilitates the process of subscribing and unsubscribing
+ * to Salesforce Platform Events by logging into Salesforce
  * and shaking hands with the CometD server for long-polling.
  */
 class SFDCClient {
 
-    constructor(cliendId, clientSecret, username, password, apiVersion) {
+    constructor(cometd, jsforce, username, password, apiVersion, isDebugMode = false) {
+        this._log('Creating a new instance of SFDCClient for a socket.');
 
-        this.cometd = new cometdLib.CometD();
-        this.jsforce = new jsforceLib.Connection({
-            oauth2 : { 
-                CLIENT_ID: cliendId,
-                CLIENT_SECRET: clientSecret
-            }
-        });
-    
-        this.username = username;
-        this.password = password;
-        this.apiVersion = apiVersion;
-
-        this.handshakeCount = 0;
+        this._cometd = cometd;
+        this._jsforce = jsforce;
+        this._username = username;
+        this._password = password;
+        this._apiVersion = apiVersion;
+        this._isDebugMode = isDebugMode;
+        this._didShakeHands = false;
+        this._subscriptions = {};
     }
 
     /**
@@ -35,16 +29,73 @@ class SFDCClient {
      * @param {function} callback The callback to call when a message is received.
      * @param {function} subscribeCallback The callback that is called when the
      * subscription is acknowledged.
-     * @throws Will throw an Error if unable to subscribe to channel.
+     * @throws Will throw an Error if attempting to subscribe to a channel more than once.
+     * @throws Will throw an Error if unable to handshake with CometD.
+     * @throws Will throw an Error if unable to log into SFDC.
      */
     async subscribe(channel, callback, subscribeCallback) {
-        const didNotShakeHands = this.handshakeCount === 0;
+        this._log('SFDCClient.subscribe');
+
+        const didNotShakeHands = !this._didShakeHands;
 
         if(didNotShakeHands) {
             await this._handshake();
         }
 
-        await this.cometd.subscribe(channel, callback, subscribeCallback);
+        if(this.hasSubscription(channel)) {
+            throw new Error(`Cannot subscribe to ${channel} because a subscription for that channel already exists.`);
+        }
+
+        this._subscriptions[channel] = this._cometd.subscribe(
+            channel, callback, subscribeCallback);
+    }
+
+    /**
+     * A wrapper for CometD.unsubscribe. Unsubscribes from a channel.
+     * @public Can be used by API consumers.
+     * @param {string} channel The channel to unsubscribe from. 
+     * @param {function} unsubscribeCallback The callback to invoke when 
+     * an unsubscription occurs.
+     * @throws Will thrown an Error if trying to unsubscribe from a channel
+     * that has no subscription.
+     */
+    unsubscribe(channel, unsubscribeCallback) {
+        this._log('SFDCClient.unsubscribe');
+
+        const hasNoSubscription = !this.hasSubscription(channel);
+
+        if(hasNoSubscription) {
+            throw new Error(`Cannot unsubscribe from ${channel} because no subscription to that channel exists.`);
+        } 
+
+        const subscription = this._subscriptions[channel];
+
+        this._cometd.unsubscribe(subscription, (unsubscribeReply) => {
+            if(unsubscribeReply.successful) {
+                delete this._subscriptions[channel];
+            }
+            unsubscribeCallback(unsubscribeReply);
+        });
+    }
+
+    /**
+     * A wrapper for CometD.disconnect.
+     * @public Can be used by API consumers.
+     * @param {function} disconnectCallback Function to be invoked to acknowledge disconnect.
+     */
+    disconnect(disconnectCallback) {
+        this._log('SFDCClient.disconnect');
+        this._cometd.disconnect(disconnectCallback);
+    }
+
+    /**
+     * Indicates if there is a subscription to the channel.
+     * @public Can be used by API consumers.
+     * @param {string} channel The channel to use for the subscription check. 
+     */
+    hasSubscription(channel) {
+        this._log('SFDCClient.hasSubscription');
+        return this._subscriptions[channel] !== undefined;
     }
 
     /**
@@ -53,18 +104,19 @@ class SFDCClient {
      * @throws Will throw an Error if unable to shake hands with CometD server.
      */
     async _handshake() {
+        this._log('SFDCClient._handshake');
         await this._configureCometD();
 
-        await this.cometd.handshake(({successful}) => {
+        await this._cometd.handshake(({successful}) => {
             const didFailToShakeHands = !successful;
             if (didFailToShakeHands) {
                 throw new Error('Failed to shake hands with the Salesforce CometD server.');
             }
 
-            console.log('Successfully shook hands with the Salesforce CometD server.');
+            this._log('Successfully shook hands with the Salesforce CometD server.');
         });
 
-        this.handshakeCount++;
+        this._didShakeHands = true;
     }
 
     /**
@@ -73,9 +125,10 @@ class SFDCClient {
      * @private Should only be used by members of the class.
      */
     async _configureCometD() {
+        this._log('SFDCClient._configureCometD');
         const { accessToken, instanceUrl } = await this._login();
-        this.cometd.configure({
-            url: `${instanceUrl}/cometd/${this.apiVersion}/`,
+        this._cometd.configure({
+            url: `${instanceUrl}/cometd/${this._apiVersion}/`,
             appendMessageTypeToURL: false,
             requestHeaders: {
                 Authorization: `Bearer ${accessToken}`
@@ -93,18 +146,29 @@ class SFDCClient {
      * 
      */
     async _login() {
-        const { username, password } = this;
+        this._log('SFDCClient._login');
+        const { _username, _password } = this;
 
-        await this.jsforce.login(username, password, (err) => {
+        await this._jsforce.login(_username, _password, (err) => {
             if (err) { 
-                console.log('Failed to log into Salesforce.');
+                this._log('Failed to log into Salesforce.');
                 throw new Error(err);
             }
 
-            console.log('Successfully logged into Salesforce.');
+            this._log('Successfully logged into Salesforce.');
         });
 
-        return this.jsforce;
+        return this._jsforce;
+    }
+
+    /**
+     * Logs a message to the console if in debug mode.
+     * @param {any} message The message to log to console. 
+     */
+    _log(message) {
+        if(this._isDebugMode) {
+            console.log(message);
+        }
     }
 
 }
