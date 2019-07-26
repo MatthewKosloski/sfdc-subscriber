@@ -6,7 +6,7 @@
     */
     "extends": "react-app",
     "rules": {
-		"no-magic-numbers": "warn",
+		// "no-magic-numbers": "warn",
 		"require-await": "warn",
 		"vars-on-top": "warn",
 		"camelcase": "warn",
@@ -27,6 +27,6 @@
 		"semi": ["error", "always"],
         "quotes": ["error", "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
 		"jsx-quotes": ["error", "prefer-double"],
-		"array-bracket-spacing": ["error", "never", {"singleValue": true, "objectsInArrays": false, "arraysInArrays": false}]
+		// "array-bracket-spacing": ["error", "never", {"singleValue": true, "objectsInArrays": false, "arraysInArrays": false}]
     }
 }

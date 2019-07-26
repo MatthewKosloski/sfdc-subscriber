@@ -1,0 +1,177 @@
+//---------------------------
+//
+// Private > Abstracts > Functions
+//---------------------------
+
+/// Removes the unit of a length.
+///
+/// @example
+///     _design-system-strip-unit(42px) -> 42
+///
+/// @param {Number} $number - Number to remove unit from
+/// @return {Number} - Unitless number
+@function _design-system-strip-unit($number) {
+    @if type-of($number) == 'number' and not unitless($number) {
+        @return $number / ($number * 0 + 1);
+    }
+
+    @return $number;
+}
+
+/// Returns the $base to the $exponent power. That is,
+/// base^exponent.
+///
+/// @example
+///     _design-system-pow(4, 2) -> 16
+///
+/// @param {Number} $base The base number
+/// @param {Number} $exponent The exponent used to raise the $base.
+/// @return {Number} A number representing the given base taken
+/// to the power of the given exponent.
+@function _design-system-pow($base, $exponent) {
+	$value: 1;
+
+	@if $exponent > 0 {
+		@for $i from 1 through $exponent {
+			$value: $value * $base;
+		}
+	}
+
+	@return $value;
+}
+
+/// Indicates if $val is a breakpoint.
+/// @param {String} $val - The value we want to test for.
+/// @return A boolean indicating if $val is a valid breakpoint.
+@function _design-system-is-breakpoint($val) {
+	$list: map-keys($ds-layout-breakpoints);
+	@return (index($list, $val) != null);
+}
+
+/// Sets the unit of $val to em.
+/// @example
+/// 	_design-system-em(1.5) -> 1.5em
+///
+/// @param {Number} $val - A unitless number we want to make em.
+/// @return An em value.
+@function _design-system-em($val) {
+	@return $val + 0em;
+}
+
+/// Sets the unit of $val to rem.
+/// @example
+/// 	_design-system-rem(1.5) -> 1.5rem
+///
+/// @param {Number} $val - A unitless number we want to make rem.
+/// @return A rem value.
+@function _design-system-rem($val) {
+	@return $val + 0rem;
+}
+
+/// Returns a unitless, relative value on the modular scale. The modular scale 
+/// is a set of values obtained from a base value and a ratio. No base value is
+/// used here, thus the returned values are relative.
+///
+/// See https://www.modularscale.com/
+///
+/// @example
+/// 	_design-system-ms(3, 1.3) -> 2.197 
+///		(see https://www.modularscale.com/?18&px&1.3)
+/// 
+/// @param {Number} $step - The step on the modular scale.
+/// @param {Number} $ratio - The ratio used to generate the modular scale.
+/// @return {Number} - A unitless, relative value at step $step on the modular scale.
+///
+@function _design-system-ms($step, $ratio) {
+	@return _design-system-pow($ratio, $step);
+}
+
+/// Wraps _design-system-ms(), returning a modular scale value in REM units.
+///
+/// @example
+/// 	_design-system-ms-rem(3, 1.3) -> 2.197rem
+///
+/// @param {Number} $step - The step on the modular scale.
+/// @param {Number} $ratio - The ratio used to generate the modular scale.
+/// @return {Number} - A REM value at step $step on the modular scale.
+@function _design-system-ms-rem($step, $ratio) {
+	@return _design-system-rem(_design-system-ms($step, $ratio));
+}
+
+/// Returns a unitless, relative value that is a multiple of $ratio.
+///
+/// @example
+/// 	_design-system-vr(2, 1.1) -> 2.2
+///
+/// @param {Number} $step - How many steps up from $ratio.
+/// @param {Number} $ratio - The ratio used to generate the vertical rhythm.
+/// @return {Number} A unitless, relative multiple of $ratio.
+@function _design-system-vr($step, $ratio) {
+	@return ($ratio * $step);
+}
+
+/// Wraps _design-system-vr(), returning a multiple of $ratio in EM units.
+/// @example
+/// 	_design-system-vr-rem(2, 1.1) -> 2.2em
+///
+/// @param {Number} $step - How many steps up from $ratio.
+/// @param {Number} $ratio - The ratio used to generate the vertical rhythm.
+/// @return {Number} A unitless, relative multiple of $ratio in EM units.
+@function _design-system-vr-em($step, $ratio) {
+	@return _design-system-em(_design-system-vr($step, $ratio));
+}
+
+/// Wraps _design-system-vr(), returning a multiple of $ratio in REM units.
+/// @example
+/// 	_design-system-vr-rem(2, 1.1) -> 2.2rem
+///
+/// @param {Number} $step - How many steps up from $ratio.
+/// @param {Number} $ratio - The ratio used to generate the vertical rhythm.
+/// @return {Number} A unitless, relative multiple of $ratio in REM units.
+@function _design-system-vr-rem($step, $ratio) {
+	@return _design-system-rem(_design-system-vr($step, $ratio));
+}
+
+/// Converts pixels to rem units.
+@function _design-system-px-to-rem($px, $base-font-size) {
+	@return _design-system-rem($px / $base-font-size);
+}
+
+@function _design-system-px-to-em($px, $base-font-size) {
+	@return _design-system-em($px / $base-font-size);
+}
+
+/// Returns a list composed of the elements from each key in $keys. If
+/// the element associated with a key is a list, then all of the lists
+/// elements are included.
+/// 
+/// @example
+/// 	$map: (
+///    		px: ('padding-left', 'padding-right'),
+///    		pt: 'padding-top',
+///			pb: 'padding-bottom',
+///			m: 'margin'
+/// 	);
+///     $keys: (pt, pb, px);
+///		_design-system-join-map-keys($map, $keys)
+/// 	
+/// @param {Map} $map - The map for which each key in $keys belongs.
+/// @param {List} $keys - The keys associated with the desired elements.
+/// @return {List} A new list containing the values from
+/// each key in $keys.
+@function _design-system-join-map-keys($map, $keys) {
+	$list: ();
+
+	@each $key in $keys {
+		$is-invalid-key: map-has-key($map, $key) == false;
+
+		@if($is-invalid-key) {
+			$valid-keys: map-keys($map);
+			@error 'Invalid key #{$key}. Valid keys include: #{$valid-keys}.';
+		} @else {
+			$list: join($list, map-get($map, $key));
+		}
+	}
+
+	@return $list;
+}

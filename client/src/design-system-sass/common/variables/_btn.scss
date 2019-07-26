@@ -1,0 +1,15 @@
+//-------------------------
+//
+// Common > Variables > Btn
+//-------------------------
+
+$ds-btn-colors-map: (
+    default: (background-color: $ds-colors-neutral-black, color: $ds-colors-white),
+    primary: (background-color: $ds-colors-pantone-306, color: $ds-colors-white),
+
+    danger: (background-color: $ds-colors-valencia, color: $ds-colors-white),
+    danger-light: (background-color: $ds-colors-cosmos, color: $ds-colors-valencia),
+
+    success: (background-color: $ds-colors-eucalyptus, color: $ds-colors-white),
+    success-light: (background-color: $ds-colors-snowy-mint, color: $ds-colors-eucalyptus)
+);

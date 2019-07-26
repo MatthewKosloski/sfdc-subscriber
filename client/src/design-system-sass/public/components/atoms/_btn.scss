@@ -1,0 +1,66 @@
+.a-btn {
+    @include ds-spacing-em(py, half);
+    @include ds-spacing-em(px, one);
+    font-size: 1em;
+    border-radius: ds-px-to-em(4);
+    border: ds-px-to-em(1) solid transparent;
+    cursor: pointer;
+    transition-property: box-shadow, background-color, color, border-color;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in-out;
+    color: $ds-colors-white;
+    user-select: none;
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    &:focus {
+        outline: 0;
+    }
+}
+
+.a-btn--heavy {
+    font-weight: 700;
+}
+
+.a-btn--small {
+    font-size: ds-px-to-rem(12);
+}
+
+.a-btn--large {
+    font-size: ds-px-to-rem(20);
+}
+
+@each $button-name, $colors-map in $ds-btn-colors-map {
+    $background-color: map-get($colors-map, background-color);
+    $color: map-get($colors-map, color);
+
+    .a-btn--#{$button-name} {
+        &.a-btn--outline {
+            background-color: transparent;
+            border: ds-px-to-em(1) solid $background-color;
+            color: $background-color;
+        }
+        &.a-btn--outline:hover:not(:disabled),
+        &.a-btn--selected {
+            border-color: darken($background-color, 10%);
+            color: $color;
+        }
+        &:hover:not(:disabled),
+        &.a-btn--selected:not(:disabled) {
+            background-color: darken($background-color, 10%);
+        }
+        &:focus {
+            box-shadow: 0 0 0 ds-px-to-em(3) lighten($background-color, 25%);
+        }
+        background-color: $background-color;
+    }
+}
+
+.a-btn--transparent {
+    background-color: transparent;
+    color: $ds-colors-neutral-black;
+    &:hover {
+        background-color: transparent;
+    }
+}
