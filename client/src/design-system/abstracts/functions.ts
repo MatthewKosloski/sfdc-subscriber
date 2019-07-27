@@ -1,31 +1,19 @@
-/* Private Methods */
+/* Public API */
 
-const _round = (num: number, precision: number = 2): number => {
+/**
+ * Rounds a number to a certain precision.
+ * 
+ * @param num The number to round.
+ * @param precision The number of digits that appear after 
+ * the decimal.
+ * 
+ * @example
+ * 		round(3.141592, 2) -> 3.14
+ * 
+ */
+export function round(num: number, precision: number = 2): number {
 	return Number(num.toFixed(precision));
 };
-
-const _pxToRelativeUnit = (px: number, baseFontSize: number): number => {
-	baseFontSize = (baseFontSize / 100) * 16;
-	return _round(px / baseFontSize, 3);
-};
-
-const _em = (relativeUnit: number): string => {
-	return `${relativeUnit}em`;
-};
-
-const _rem = (relativeUnit: number): string => {
-	return `${relativeUnit}rem`;
-};
-
-const _vr = (multiplier: number, ratio: number): number => {
-	return _round(multiplier * ratio, 3);
-};
-
-const _ms = (step: number, ratio: number): number => {
-	return Math.pow(ratio, step);
-};
-
-/* Public API */
 
 /**
  * Converts a numerical value of pixels to a string representation
@@ -38,7 +26,7 @@ const _ms = (step: number, ratio: number): number => {
  * 		pxToRem(8, 100) -> '0.5em'
  *
  */
-export const pxToEm = (px: number, baseFontSize: number = 100): string => {
+export function pxToEm(px: number, baseFontSize: number = 100): string {
 	return _em(_pxToRelativeUnit(px, baseFontSize));
 };
 
@@ -54,7 +42,7 @@ export const pxToEm = (px: number, baseFontSize: number = 100): string => {
  * 		pxToRem(16, 100) -> '1rem'
  *
  */
-export const pxToRem = (px: number, baseFontSize: number = 100): string => {
+export function pxToRem(px: number, baseFontSize: number = 100): string {
 	return _rem(_pxToRelativeUnit(px, baseFontSize));
 };
 
@@ -71,7 +59,7 @@ export const pxToRem = (px: number, baseFontSize: number = 100): string => {
  * 		vrEm(2, 1.5) -> '3em'
  *
  */
-export const vrEm = (multiplier: number, ratio: number = 1.3): string => {
+export function vrEm(multiplier: number, ratio: number = 1.3): string {
 	return _em(_vr(multiplier, ratio));
 };
 
@@ -83,10 +71,10 @@ export const vrEm = (multiplier: number, ratio: number = 1.3): string => {
  * @param ratio
  *
  * @example
- * 		vrEm(2, 2) -> '4rem'
+ * 		vrRem(2, 2) -> '4rem'
  *
  */
-export const vrRem = (multiplier: number, ratio: number = 1.3): string => {
+export function vrRem(multiplier: number, ratio: number = 1.3): string {
 	return _rem(_vr(multiplier, ratio));
 };
 
@@ -106,6 +94,29 @@ export const vrRem = (multiplier: number, ratio: number = 1.3): string => {
  * 		msRem(2, 1.5) -> '2.25rem'
  *
  */
-export const msRem = (step: number, ratio: number = 1.3): string => {
+export function msRem(step: number, ratio: number = 1.3): string {
 	return _rem(_ms(step, ratio));
+};
+
+/* Private Methods */
+
+function _pxToRelativeUnit(px: number, baseFontSize: number): number {
+	baseFontSize = (baseFontSize / 100) * 16;
+	return round(px / baseFontSize, 4);
+};
+
+function _em(relativeUnit: number): string {
+	return `${relativeUnit}em`;
+};
+
+function _rem(relativeUnit: number): string {
+	return `${relativeUnit}rem`;
+};
+
+function _vr(multiplier: number, ratio: number): number {
+	return round(multiplier * ratio, 4);
+};
+
+function _ms(step: number, ratio: number): number {
+	return round(Math.pow(ratio, step), 4);
 };
