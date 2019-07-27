@@ -28,13 +28,17 @@ export enum Step {
 	Five = 'five'
 }
 
+export type ShorthandsObject = {
+	[key in Shorthand]: string | string[]
+};
+
+export type StepsObject = {
+	[key in Step]: number
+};
+
 type Spacing = {
-	shorthands: {
-		[key in Shorthand]: string | string[]
-	},
-	steps: {
-		[key in Step]: number
-	}
+	shorthands: ShorthandsObject,
+	steps: StepsObject
 }
 
 const spacing: Spacing = {
