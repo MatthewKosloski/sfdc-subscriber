@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { breakpoint } from './design-system/abstracts/mixins';
+import { breakpoint, fluidType } from './design-system/abstracts/mixins';
 
 interface IButtonProps {
 	primary?: Boolean
@@ -19,8 +19,10 @@ const Button = styled.button<IButtonProps>`
 	`};
 
 	${breakpoint('lg')} {
-		color: orange;
+		color: pink;
 	}
+
+	${fluidType(4, 4, 1.2, 1.3, '31.250rem', '62.5rem')}
 
 `;
 
