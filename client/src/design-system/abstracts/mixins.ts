@@ -1,5 +1,5 @@
 import { msRem, pxToRem, vrEm, vrRem, round } from '../abstracts/functions';
-import { Breakpoint, BreakpointStrings } from '../theme/layout';
+import { Breakpoint, BreakpointStrings, ColumnWidths, ColumnSizes } from '../theme/layout';
 import { Step, Spacing, StepStrings, SpacingStrings } from '../theme/spacing';
 import typography from '../theme/typography';
 
@@ -71,6 +71,17 @@ export function spacingEm(shorthands: SpacingStrings[], stepXs: StepStrings,
 	return css;
 }
 
+export function negativeSpacingEm(shorthands: SpacingStrings[], stepXs: StepStrings, 
+	stepLg: StepStrings = stepXs, isImportant: boolean = false,
+	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
+
+	const isNegative: boolean = true;
+	const isEm: boolean = true;
+	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
+		isEm, isImportant, isNegative);
+	return css;
+}
+
 export function spacingRem(shorthands: SpacingStrings[], stepXs: StepStrings, 
 	stepLg: StepStrings = stepXs, isImportant: boolean = false, isNegative: boolean = false,
 	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
@@ -81,16 +92,54 @@ export function spacingRem(shorthands: SpacingStrings[], stepXs: StepStrings,
 	return css;
 }
 
+export function negativeSpacingRem(shorthands: SpacingStrings[], stepXs: StepStrings, 
+	stepLg: StepStrings = stepXs, isImportant: boolean = false,
+	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
+
+	const isNegative: boolean = true;
+	const isEm: boolean = false;
+	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
+		isEm, isImportant, isNegative);
+	return css;
+}
+
 export function initRootType(fontSizeXs: number = fontSizes.xs, fontSizeLg: number = fontSizes.lg, 
 	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
 
+	const css: string = `
+		${_setCSSProperty('font-size', `${fontSizeXs}%`)}
+		${_setCSSProperty('line-height', ratioXs)}
+
+		${breakpoint('LG')} {
+			${_setCSSProperty('font-size', `${fontSizeLg}%`)}
+			${_setCSSProperty('line-height', ratioLg)}
+		}
+	`;
+
+	return css;
+}
+
+export function flexColumn(shorthand: BreakpointStrings, columnWidth: ColumnWidths, 
+	totalColumns: number = 12) {
+	const width: number = (columnWidth / totalColumns) * 100;
+	const widthPercent: string = `${width}%`;
+	const css: string = `
+		${breakpoint(shorthand)} {
+			flex: 1 0 ${widthPercent};
+			max-width: ${widthPercent};
+		}
+	`;
+
+	return css;
+}
+
+export function flexColumns(sizes: ColumnSizes) {
 	let css: string = '';
-	css += _setCSSProperty('font-size', `${fontSizeXs}%`);
-	css += _setCSSProperty('line-height', ratioXs);
-	css += `${breakpoint('LG')} {`;
-	css += _setCSSProperty('font-size', `${fontSizeLg}%`);
-	css += _setCSSProperty('line-height', ratioLg);
-	css += `}`;
+	sizes.forEach((size) => {
+		const shorthand: BreakpointStrings = size[0];
+		const columnWidth: ColumnWidths = size[1];
+		css += flexColumn(shorthand, columnWidth);
+	});
 
 	return css;
 }
@@ -128,9 +177,10 @@ function _fluidCalc(minValue: string, maxValue: string, minVw: string,
 	const valueDiff: number = round(maxValueNum - minValueNum, 4);
 	const vwDiff: number = round(maxVwNum - minVwNum, 4);
 
-	let css: string = `calc(`;
-	css += `${minValue} + ${valueDiff} * (100vw - ${minVw}) / ${vwDiff}`;
-	css += `)`;
+	const css: string = `calc(
+		${minValue} + ${valueDiff} * (100vw - ${minVw}) / ${vwDiff}
+	)`;
+
 	return css;
 };
 
@@ -138,14 +188,19 @@ function _fluid(properties: string[], minValue: string, maxValue: string,
 	minVw: string, maxVw: string): string {
 
 	const fluidValue: string = _fluidCalc(minValue, maxValue, minVw, maxVw);
-	let css: string = '';
-	css += _setCSSProperties(properties, minValue);
-	css += `${breakpoint('SM')} {`;
-	css += _setCSSProperties(properties, fluidValue);
-	css += `}`;
-	css += `${breakpoint('LG')} {`;
-	css += _setCSSProperties(properties, maxValue);
-	css += `}`;
+
+	const css: string = `
+		${_setCSSProperties(properties, minValue)}
+
+		${breakpoint('SM')} {
+			${_setCSSProperties(properties, fluidValue)}
+		}
+
+		${breakpoint('LG')} {
+			${_setCSSProperties(properties, maxValue)}
+		}
+	`;
+
 	return css;
 };
 
@@ -161,10 +216,14 @@ function _responsiveVr(properties: string[], stepXs: number, stepLg: number, rat
 		? vrEm(stepLg, ratioLg) 
 		: vrRem(stepLg, ratioLg);
 
-	let css: string = _setCSSProperties(properties, valueXs, isNegative, isImportant);
-	css += `${breakpoint('LG')} {`;
-	css += _setCSSProperties(properties, valueLg, isNegative, isImportant);
-	css += `}`;
+	const css: string = `
+		${_setCSSProperties(properties, valueXs, isNegative, isImportant)}
+
+		${breakpoint('LG')} {
+			${_setCSSProperties(properties, valueLg, isNegative, isImportant)}
+		}
+	`;
+
 	return css;
 }
 
