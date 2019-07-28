@@ -1,35 +1,29 @@
-export type Color = 'black' |
-	'white' |
-	'neutralBlack' |
-	'pantoneCoolGray1' |
-	'pantoneCoolGray4' |
-	'gallery' |
-	'alabaster' |
-	'pantone306' |
-	'tealBlue' |
-	'valencia' |
-	'cosmos' |
-	'eucalyptus' |
-	'snowyMint';
+export const black = '#000';
+export const white = '#fff';
+export const neutralBlack = '#3d3d3f';
+export const pantoneCoolGray1 = '#b9b7b9';
+export const pantoneCoolGray4 = '#b9b7b9';
+export const gallery = '#eaeaea';
+export const alabaster = '#f9f9fa';
+export const pantone306 = '#1db3e7';
+export const tealBlue = '#005c79';
+export const valencia = '#D73A49';
+export const cosmos = '#ffdce0';
+export const eucalyptus = '#28a745';
+export const snowyMint = '#dcffe4';
 
-type Colors = {
-	[key in Color]: string
+export default {
+	black,
+	white,
+	neutralBlack,
+	pantoneCoolGray1,
+	pantoneCoolGray4,
+	gallery,
+	alabaster,
+	pantone306,
+	tealBlue,
+	valencia,
+	cosmos,
+	eucalyptus,
+	snowyMint
 };
-
-const colors: Colors = {
-	black: '#000',
-	white: '#fff',
-	neutralBlack: '#3d3d3f',
-	pantoneCoolGray1: '#b9b7b9',
-	pantoneCoolGray4: '#b9b7b9',
-	gallery: '#eaeaea',
-	alabaster: '#f9f9fa',
-	pantone306: '#1db3e7',
-	tealBlue: '#005c79',
-	valencia: '#D73A49',
-	cosmos: '#ffdce0',
-	eucalyptus: '#28a745',
-	snowyMint: '#dcffe4'
-};
-
-export default colors;
