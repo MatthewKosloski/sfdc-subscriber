@@ -1,76 +1,28 @@
-export enum Shorthand {
-	M = 'm',
-	MX = 'mx',
-	MY = 'my',
-	MT = 'mt',
-	MR = 'mr',
-	MB = 'mb',
-	ML = 'ml',
+export enum Spacing {
+	M = 'margin',
+	MT = 'margin-top',
+	MR = 'margin-right',
+	MB = 'margin-bottom',
+	ML = 'margin-left',
 
-	P = 'p',
-	PX = 'px',
-	PY = 'py',
-	PT = 'pt',
-	PR = 'pr',
-	PB = 'pb',
-	PL = 'pl',
+	P = 'padding',
+	PT = 'padding-top',
+	PR = 'padding-right',
+	PB = 'padding-bottom',
+	PL = 'padding-left'
 }
 
 export enum Step {
-	Zero = 'zero',
-	Quarter = 'quarter',
-	Half = 'half',
-	ThreeFourths = 'threeFourths',
-	One = 'one',
-	Two = 'two',
-	Three = 'three',
-	Four = 'four',
-	Five = 'five'
+	Zero = 0,
+	Quarter = 0.25,
+	Half = 0.5,
+	ThreeFourths = 0.75,
+	One = 1,
+	Two = 2,
+	Three = 3,
+	Four = 4,
+	Five = 5
 }
 
-export type ShorthandsObject = {
-	[key in Shorthand]: string | string[]
-};
-
-export type StepsObject = {
-	[key in Step]: number
-};
-
-type Spacing = {
-	shorthands: ShorthandsObject,
-	steps: StepsObject
-}
-
-const spacing: Spacing = {
-	shorthands: {
-		m: 'margin',
-		mx: ['margin-left', 'margin-right'],
-		my: ['margin-top', 'margin-bottom'],
-		mt: 'margin-top',
-		mr: 'margin-right',
-		mb: 'margin-bottom',
-		ml: 'margin-left',
-
-		p: 'padding',
-		px: ['padding-left', 'padding-right'],
-		py: ['padding-top', 'padding-bottom'],
-		pt: 'padding-top',
-		pr: 'padding-right',
-		pb: 'padding-bottom',
-		pl: 'padding-left'
-	},
-
-	steps: {
-		zero: 0,
-		quarter: 0.25,
-		half: 0.5,
-		threeFourths: 0.75,
-		one: 1,
-		two: 2,
-		three: 3,
-		four: 4,
-		five: 5
-	}
-};
-
-export default spacing;
+export type SpacingStrings = keyof typeof Spacing;
+export type StepStrings = keyof typeof Step;

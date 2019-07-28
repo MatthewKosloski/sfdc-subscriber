@@ -1,46 +1,98 @@
-import { msRem, vrEm, vrRem, round } from '../abstracts/functions';
-import layout, { Breakpoint, Breakpoints } from '../theme/layout';
-import spacing, { Step, StepsObject, ShorthandsObject } from '../theme/spacing';
+import { msRem, pxToRem, vrEm, vrRem, round } from '../abstracts/functions';
+import { Breakpoint, BreakpointStrings } from '../theme/layout';
+import { Step, Spacing, StepStrings, SpacingStrings } from '../theme/spacing';
 import typography from '../theme/typography';
 
 const { ratios, fontSizes } = typography;
 
 /* Public API */
 
-export function breakpoint(breakpoint: Breakpoint, 
-	breakpoints: Breakpoints = layout.breakpoints): string {
-
-	const css: string = `@media (min-width: ${breakpoints[breakpoint]})`;
+/**
+ * Outputs CSS at a width greater than or equal to the specified
+ * breakpoint.
+ * 
+ * @param shorthand The shortname of the breakpoint.
+ * @param breakpoints An object of key-value pairs, where the key is
+ * the breakpoint shorthand and the value is the breakpoint width.
+ * 
+ * @example
+ * styled.div`
+ * 	${breakpoint('LG')} {
+ * 		color: red
+ * 	}
+ * `;
+ */
+export function breakpoint(shorthand: BreakpointStrings): string {
+	const breakpointRem: string = pxToRem(Breakpoint[shorthand]);
+	const css: string = `@media (min-width: ${breakpointRem})`;
 	return css;
 };
 
-export function fluidType(minStep: number, maxStep: number, ratioXs: number, 
-	ratioLg: number, minVw: string, maxVw: string): string {
+/**
+ * Adds fluid typography to an element.  To learn more about
+ * fluid typography, see:
+ * https://www.smashingmagazine.com/2016/05/fluid-typography/
+ * 
+ * @param minStep The step on the modular scale for the minimum 
+ * font-size.   
+ * @param maxStep The step on the modular scale for the maximum
+ * font-size. 
+ * @param ratioXs The modular scale ratio for the minimum font-size. 
+ * @param ratioLg The modular scale ratio for the maximum font-size.
+ * @param minVw The width at which the font-size starts to scale.
+ * @param maxVw The width at which the font-size stops scaling.
+ * 
+ * The following example adds fluid typography to a level-1 heading
+ * element.  On small 
+ * 
+ * @example
+ * 	styled.h1`
+ *    ${fluidType(2, 4)}
+ *  `
+ * 
+ */
+export function fluidType(minStep: number, maxStep: number, ratioXs: number = ratios.xs, 
+	ratioLg: number = ratios.lg, minVw: string = pxToRem(Breakpoint.SM), 
+	maxVw: string = pxToRem(Breakpoint.LG)): string {
 
 	const minFontSize: string = msRem(minStep, ratioXs);
 	const maxFontSize: string = msRem(maxStep, ratioLg);
-	let css = _fluid(['font-size'], minFontSize, maxFontSize, minVw, maxVw);
+	const css: string = _fluid(['font-size'], minFontSize, maxFontSize, minVw, maxVw);
 	return css;
 };
 
-export function spacingEm(shorthands: Breakpoint[], stepXs: Step, stepLg: Step = stepXs, 
-	isImportant: boolean = false, isNegative: boolean = false, ratioXs: number = ratios.xs,
-	ratioLg: number = ratios.lg, shorthandsObj: ShorthandsObject = spacing.shorthands, 
-	stepsObj: StepsObject = spacing.steps): string {
+export function spacingEm(shorthands: SpacingStrings[], stepXs: StepStrings, 
+	stepLg: StepStrings = stepXs, isImportant: boolean = false, isNegative: boolean = false,
+	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
 
-	const isEm = true;
-	return _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, shorthandsObj, 
-		stepsObj, isEm, isImportant, isNegative);
+	const isEm: boolean = true;
+	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
+		isEm, isImportant, isNegative);
+	return css;
 }
 
-export function spacingRem(shorthands: Breakpoint[], stepXs: Step, stepLg: Step = stepXs, 
-	isImportant: boolean = false, isNegative: boolean = false, ratioXs: number = ratios.xs,
-	ratioLg: number = ratios.lg, shorthandsObj: ShorthandsObject = spacing.shorthands, 
-	stepsObj: StepsObject = spacing.steps): string {
-		
-	const isEm = false;
-	return _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, shorthandsObj, 
-		stepsObj, isEm, isImportant, isNegative);
+export function spacingRem(shorthands: SpacingStrings[], stepXs: StepStrings, 
+	stepLg: StepStrings = stepXs, isImportant: boolean = false, isNegative: boolean = false,
+	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
+
+	const isEm: boolean = false;
+	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
+		isEm, isImportant, isNegative);
+	return css;
+}
+
+export function initRootType(fontSizeXs: number = fontSizes.xs, fontSizeLg: number = fontSizes.lg, 
+	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
+
+	let css: string = '';
+	css += _setCSSProperty('font-size', `${fontSizeXs}%`);
+	css += _setCSSProperty('line-height', ratioXs);
+	css += `${breakpoint('LG')} {`;
+	css += _setCSSProperty('font-size', `${fontSizeLg}%`);
+	css += _setCSSProperty('line-height', ratioLg);
+	css += `}`;
+
+	return css;
 }
 
 /* Private Methods */
@@ -85,13 +137,13 @@ function _fluidCalc(minValue: string, maxValue: string, minVw: string,
 function _fluid(properties: string[], minValue: string, maxValue: string, 
 	minVw: string, maxVw: string): string {
 
-	const fluidValue = _fluidCalc(minValue, maxValue, minVw, maxVw);
-	let css = '';
+	const fluidValue: string = _fluidCalc(minValue, maxValue, minVw, maxVw);
+	let css: string = '';
 	css += _setCSSProperties(properties, minValue);
-	css += `${breakpoint('sm')} {`;
+	css += `${breakpoint('SM')} {`;
 	css += _setCSSProperties(properties, fluidValue);
 	css += `}`;
-	css += `${breakpoint('lg')} {`;
+	css += `${breakpoint('LG')} {`;
 	css += _setCSSProperties(properties, maxValue);
 	css += `}`;
 	return css;
@@ -109,8 +161,8 @@ function _responsiveVr(properties: string[], stepXs: number, stepLg: number, rat
 		? vrEm(stepLg, ratioLg) 
 		: vrRem(stepLg, ratioLg);
 
-	let css = _setCSSProperties(properties, valueXs, isNegative, isImportant);
-	css += `${breakpoint('lg')} {`;
+	let css: string = _setCSSProperties(properties, valueXs, isNegative, isImportant);
+	css += `${breakpoint('LG')} {`;
 	css += _setCSSProperties(properties, valueLg, isNegative, isImportant);
 	css += `}`;
 	return css;
@@ -134,26 +186,14 @@ function _responsiveVrRem(properties: string[], stepXs: number, stepLg: number, 
 	return css;
 }
 
-// function _joinObjectKeys<TObj, TKey>(obj: TObj, keys: TKey[]): any[] {
-function _joinObjectKeys(obj: any, keys: any[]): any[] {
-	return keys
-		.map((key) => {
-			const objVal: any = obj[key];
-			return objVal instanceof Array ? objVal : [objVal];
-		})
-		.reduce((a, b) => a.concat(b));
-}
-
-
-function _spacing(shorthands: Breakpoint[], stepXs: Step, stepLg: Step = stepXs,
-	ratioXs: number, ratioLg: number, shorthandsObj: ShorthandsObject, 
-	stepsObj: StepsObject, isEm: boolean = false, isImportant: boolean = false,
+function _spacing(shorthands: SpacingStrings[], stepXs: StepStrings, stepLg: StepStrings = stepXs,
+	ratioXs: number, ratioLg: number, isEm: boolean = false, isImportant: boolean = false,
 	isNegative: boolean = false): string {
 
-	const props: any[] = _joinObjectKeys(shorthandsObj, shorthands);
+	const props: Spacing[] = shorthands.map((shorthand) => Spacing[shorthand]);
 
-	const stepXsNum: number = stepsObj[stepXs];
-	const stepLgNum: number = stepsObj[stepLg];
+	const stepXsNum: number = Step[stepXs];
+	const stepLgNum: number = Step[stepLg];
 
 	let css: string = isEm
 		? _responsiveVrEm(props, stepXsNum, stepLgNum, ratioXs, ratioLg, isNegative, isImportant)

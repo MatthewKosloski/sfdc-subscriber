@@ -1,9 +1,11 @@
 import styled, { css } from 'styled-components';
-import { breakpoint, fluidType } from './design-system/abstracts/mixins';
+import { breakpoint, fluidType, spacingRem } from './design-system/abstracts/mixins';
 
 interface IButtonProps {
 	primary?: Boolean
 };
+
+const color = 'red';
 
 const Button = styled.button<IButtonProps>`
 	background: transparent;
@@ -18,11 +20,13 @@ const Button = styled.button<IButtonProps>`
 		color: black;
 	`};
 
-	${breakpoint('lg')} {
-		color: pink;
+	${breakpoint('LG')} {
+		color: ${(props) => props.primary ? color : 'green'};
+		font-weight: 700;
 	}
 
-	${fluidType(4, 4, 1.2, 1.3, '31.250rem', '62.5rem')}
+	${fluidType(4, 4)}
+	${spacingRem(['PT', 'PB'], 'One')}
 
 `;
 
