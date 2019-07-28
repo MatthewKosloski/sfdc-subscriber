@@ -1,31 +1,23 @@
-type FontFamilies = 'primary';
+/**
+ * Ratios are used for line-height
+ * of root element and vertical rhythm mixins.
+ */
+export const ratioXs: number = 1.2;
+export const ratioLg: number = 1.3;
 
-type Typography = {
-	ratios: {
-		[key in 'xs' | 'lg']: number
-	},
-	fontSizes: {
-		[key in 'xs' | 'lg']: number
-	},
-	fontFamilies: {
-		[key in FontFamilies]: string
-	}
+/**
+ * Font size values must be percentages
+ * of 16px.
+ */
+export const fontSizeXs: number = 100;
+export const fontSizeLg: number = 112.5;
+
+export const primaryFontFamily: string = `'Source Sans Pro', sans-serif`;
+
+export default {
+    ratioXs,
+    ratioLg,
+    fontSizeXs,
+    fontSizeLg,
+    primaryFontFamily
 };
-
-const typography: Typography = {
-	ratios: {
-		xs: 1.2,
-		lg: 1.3
-	},
-
-	fontSizes: {
-		xs: 100,
-		lg: 112.5
-	},
-
-	fontFamilies: {
-		primary: "'Source Sans Pro', sans-serif"
-	}
-};
-
-export default typography;

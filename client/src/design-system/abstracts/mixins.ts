@@ -3,8 +3,6 @@ import { Breakpoint, BreakpointStrings, ColumnWidths, ColumnSizes } from '../the
 import { Step, Spacing, StepStrings, SpacingStrings } from '../theme/spacing';
 import typography from '../theme/typography';
 
-const { ratios, fontSizes } = typography;
-
 /* Public API */
 
 /**
@@ -51,8 +49,8 @@ export function breakpoint(shorthand: BreakpointStrings): string {
  *  `
  * 
  */
-export function fluidType(minStep: number, maxStep: number, ratioXs: number = ratios.xs, 
-	ratioLg: number = ratios.lg, minVw: string = pxToRem(Breakpoint.SM), 
+export function fluidType(minStep: number, maxStep: number, ratioXs: number = typography.ratioXs, 
+	ratioLg: number = typography.ratioLg, minVw: string = pxToRem(Breakpoint.SM), 
 	maxVw: string = pxToRem(Breakpoint.LG)): string {
 
 	const minFontSize: string = msRem(minStep, ratioXs);
@@ -63,7 +61,7 @@ export function fluidType(minStep: number, maxStep: number, ratioXs: number = ra
 
 export function spacingEm(shorthands: SpacingStrings[], stepXs: StepStrings, 
 	stepLg: StepStrings = stepXs, isImportant: boolean = false, isNegative: boolean = false,
-	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
+	ratioXs: number = typography.ratioXs, ratioLg: number = typography.ratioLg): string {
 
 	const isEm: boolean = true;
 	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
@@ -73,7 +71,7 @@ export function spacingEm(shorthands: SpacingStrings[], stepXs: StepStrings,
 
 export function negativeSpacingEm(shorthands: SpacingStrings[], stepXs: StepStrings, 
 	stepLg: StepStrings = stepXs, isImportant: boolean = false,
-	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
+	ratioXs: number = typography.ratioXs, ratioLg: number = typography.ratioLg): string {
 
 	const isNegative: boolean = true;
 	const isEm: boolean = true;
@@ -84,7 +82,7 @@ export function negativeSpacingEm(shorthands: SpacingStrings[], stepXs: StepStri
 
 export function spacingRem(shorthands: SpacingStrings[], stepXs: StepStrings, 
 	stepLg: StepStrings = stepXs, isImportant: boolean = false, isNegative: boolean = false,
-	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
+	ratioXs: number = typography.ratioXs, ratioLg: number = typography.ratioLg): string {
 
 	const isEm: boolean = false;
 	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
@@ -94,7 +92,7 @@ export function spacingRem(shorthands: SpacingStrings[], stepXs: StepStrings,
 
 export function negativeSpacingRem(shorthands: SpacingStrings[], stepXs: StepStrings, 
 	stepLg: StepStrings = stepXs, isImportant: boolean = false,
-	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
+	ratioXs: number = typography.ratioXs, ratioLg: number = typography.ratioLg): string {
 
 	const isNegative: boolean = true;
 	const isEm: boolean = false;
@@ -103,8 +101,9 @@ export function negativeSpacingRem(shorthands: SpacingStrings[], stepXs: StepStr
 	return css;
 }
 
-export function initRootType(fontSizeXs: number = fontSizes.xs, fontSizeLg: number = fontSizes.lg, 
-	ratioXs: number = ratios.xs, ratioLg: number = ratios.lg): string {
+export function initRootType(fontSizeXs: number = typography.fontSizeXs, 
+	fontSizeLg: number = typography.fontSizeLg, ratioXs: number = typography.ratioXs, 
+	ratioLg: number = typography.ratioLg): string {
 
 	const css: string = `
 		${_setCSSProperty('font-size', `${fontSizeXs}%`)}
