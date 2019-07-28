@@ -1,17 +1,20 @@
 import React from 'react';
 
-import Button from './Button';
-
-import './App.css';
+import Container from './design-system/layout/container';
+import { Row, Column } from './design-system/layout/grid';
 
 const App: React.FC = () => {
 	return(
-		<div className="app">
-			<div className="app__inner">
-				<Button>Normal Button</Button>
-				<Button primary>Primary Button</Button>
-			</div>
-		</div>
+		<Container>
+			<Row>
+				<Column sizes={[['XS', 12], ['SM', 6]]}>
+					<p>Hello world!</p>
+				</Column>
+				<Column sizes={[['XS', 12], ['SM', 6]]}>
+					<p>Hello world!</p>
+				</Column>
+			</Row>
+		</Container>
 	);
 };
 
