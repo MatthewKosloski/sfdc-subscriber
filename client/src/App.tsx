@@ -3,7 +3,7 @@ import React from 'react';
 import Container from './design-system/layout/container';
 import { Row, Column } from './design-system/layout/grid';
 
-import Badge from './design-system/components/atoms/badge';
+import Badge from './design-system/components/atoms/Badge';
 
 const App: React.FC = () => {
 	return(
