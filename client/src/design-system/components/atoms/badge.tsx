@@ -1,30 +1,14 @@
 import styled from 'styled-components';
-import { spacingEm, buttonVariant } from '../../abstracts/mixins';
-import { pxToEm, pxToRem } from '../../abstracts/functions';
-import { IButtonProps, defaultProps } from '../../theme/buttons'; 
+import { pxToEm } from '../../abstracts/functions';
+import { defaultProps } from '../../theme/buttons';
 import withDefaultProps from '../../hoc/withDefaultProps';
 
-const StyledBadge = styled.div<IButtonProps>`
-    ${spacingEm(['PT', 'PB'], 'Half')}
-    ${spacingEm(['PL', 'PR'], 'One')}
-    border: ${pxToEm(1)} solid transparent;
-    border-radius: ${pxToEm(32)};     
-    display: inline-block;
+import StyledButton from './Button';
 
-    ${(props) => props.heavy && `
-        font-weight: 700;
-    `}
-
-    ${(props) => props.small && `
-        font-size: ${pxToRem(12)};
-    `}
-
-    ${(props) => props.large && `
-        font-size: ${pxToRem(20)};
-    `}
-
-    ${(props) => buttonVariant(props)};
-
+const StyledBadge = styled(StyledButton)`
+	border-radius: ${pxToEm(32)};
+	pointer-events: none;
+	cursor: auto;
 `;
 
 const Badge = withDefaultProps(StyledBadge, defaultProps);
