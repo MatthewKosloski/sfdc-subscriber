@@ -1,6 +1,7 @@
-import { msRem, pxToRem, vrEm, vrRem, round } from '../abstracts/functions';
+import { msRem, pxToEm, pxToRem, vrEm, vrRem, round } from '../abstracts/functions';
 import { Breakpoint, BreakpointStrings, ColumnWidths, ColumnSizes } from '../theme/layout';
 import { Step, Spacing, StepStrings, SpacingStrings } from '../theme/spacing';
+import buttonVariants, { IButtonProps } from '../theme/buttons';
 import typography from '../theme/typography';
 
 /* Public API */
@@ -139,6 +140,30 @@ export function flexColumns(sizes: ColumnSizes) {
 		const columnWidth: ColumnWidths = size[1];
 		css += flexColumn(shorthand, columnWidth);
 	});
+
+	return css;
+}
+
+export function buttonVariant(props: IButtonProps, borderWidth: number = 1): string {
+	
+	let css: string = '';
+
+	if(props.variant) {
+		const { backgroundColor, color } = buttonVariants[props.variant];
+
+		if(props.outline) {
+			css += `
+				background-color: transparent;
+				border: ${pxToEm(borderWidth)} solid ${backgroundColor};
+				color: ${backgroundColor};
+			`;
+		} else {
+			css += `
+				background-color: ${backgroundColor};
+				color: ${color};
+			`;
+		}
+	}
 
 	return css;
 }
