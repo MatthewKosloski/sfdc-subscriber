@@ -7,10 +7,11 @@ import theme from './theme';
 
 import GlobalStyle from './components/GlobalStyle';
 
-import Badge from './design-system/components/atoms/Badge';
-import Button from './design-system/components/atoms/Button';
-import Label from './design-system/components/atoms/Label';
-import TextInput from './design-system/components/atoms/TextInput';
+import atoms from './design-system/components/atoms';
+import organisms from './design-system/components/organisms';
+
+const { Button, Label, TextInput, Badge } = atoms;
+const { Card } = organisms;
 
 
 const App: React.FC = () => {
@@ -52,6 +53,16 @@ const App: React.FC = () => {
 							<h2>Forms</h2>
 							<Label htmlFor="foo">Enter Name</Label>
 							<TextInput id="foo"></TextInput>
+						</Column>
+						<Column sizes={[['XS', 12], ['SM', 6]]}>
+							<h2>Cards</h2>
+							<Card
+								title="Card Title"
+								subtitle="Subtitle"
+								sideHeaderComponent={<p style={{margin: 0}}>Side Header Component</p>}
+								footerComponent={<p style={{margin: 0}}>I am in the footer</p>}>
+								<p style={{margin: 0}}>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique necessitatibus illum eaque dolorem quo aliquam?</p>
+							</Card>
 						</Column>
 					</Row>
 				</Container>
