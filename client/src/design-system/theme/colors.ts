@@ -11,6 +11,15 @@ export const valencia = '#D73A49';
 export const cosmos = '#ffdce0';
 export const eucalyptus = '#28a745';
 export const snowyMint = '#dcffe4';
+export const silver = '#c4c4c4';
+export const shark = '#242425';
+export const easternBlue = '#1491bd';
+export const tallPoppy = '#b92534';
+export const forestGreen = '#1e7e34';
+export const jumbo = '#7c7c80';
+export const jordyBlue = '#90daf3';
+export const seaPink = '#eda4ab';
+export const pastelGreen = '#71dd8a';
 
 export default {
 	black,
@@ -25,5 +34,14 @@ export default {
 	valencia,
 	cosmos,
 	eucalyptus,
-	snowyMint
+	snowyMint,
+	silver,
+	shark,
+	easternBlue,
+	tallPoppy,
+	forestGreen,
+	jumbo,
+	jordyBlue,
+	seaPink,
+	pastelGreen
 };
