@@ -2,6 +2,7 @@ import { msRem, pxToEm, pxToRem, vrEm, vrRem, round } from '../abstracts/functio
 import { Breakpoint, BreakpointStrings, ColumnWidths, ColumnSizes } from '../theme/layout';
 import { Step, Spacing, StepStrings, SpacingStrings } from '../theme/spacing';
 import buttonVariants, { IButtonProps } from '../theme/buttons';
+import { neutralBlack } from '../theme/colors';
 import typography from '../theme/typography';
 
 /* Public API */
@@ -9,11 +10,11 @@ import typography from '../theme/typography';
 /**
  * Outputs CSS at a width greater than or equal to the specified
  * breakpoint.
- * 
+ *
  * @param shorthand The shortname of the breakpoint.
  * @param breakpoints An object of key-value pairs, where the key is
  * the breakpoint shorthand and the value is the breakpoint width.
- * 
+ *
  * @example
  * styled.div`
  * 	${breakpoint('LG')} {
@@ -31,27 +32,27 @@ export function breakpoint(shorthand: BreakpointStrings): string {
  * Adds fluid typography to an element.  To learn more about
  * fluid typography, see:
  * https://www.smashingmagazine.com/2016/05/fluid-typography/
- * 
- * @param minStep The step on the modular scale for the minimum 
- * font-size.   
+ *
+ * @param minStep The step on the modular scale for the minimum
+ * font-size.
  * @param maxStep The step on the modular scale for the maximum
- * font-size. 
- * @param ratioXs The modular scale ratio for the minimum font-size. 
+ * font-size.
+ * @param ratioXs The modular scale ratio for the minimum font-size.
  * @param ratioLg The modular scale ratio for the maximum font-size.
  * @param minVw The width at which the font-size starts to scale.
  * @param maxVw The width at which the font-size stops scaling.
- * 
+ *
  * The following example adds fluid typography to a level-1 heading
- * element.  On small 
- * 
+ * element.  On small
+ *
  * @example
  * 	styled.h1`
  *    ${fluidType(2, 4)}
  *  `
- * 
+ *
  */
-export function fluidType(minStep: number, maxStep: number, ratioXs: number = typography.ratioXs, 
-	ratioLg: number = typography.ratioLg, minVw: string = pxToRem(Breakpoint.SM), 
+export function fluidType(minStep: number, maxStep: number, ratioXs: number = typography.ratioXs,
+	ratioLg: number = typography.ratioLg, minVw: string = pxToRem(Breakpoint.SM),
 	maxVw: string = pxToRem(Breakpoint.LG)): string {
 
 	const minFontSize: string = msRem(minStep, ratioXs);
@@ -60,50 +61,50 @@ export function fluidType(minStep: number, maxStep: number, ratioXs: number = ty
 	return css;
 };
 
-export function spacingEm(shorthands: SpacingStrings[], stepXs: StepStrings, 
+export function spacingEm(shorthands: SpacingStrings[], stepXs: StepStrings,
 	stepLg: StepStrings = stepXs, isImportant: boolean = false, isNegative: boolean = false,
 	ratioXs: number = typography.ratioXs, ratioLg: number = typography.ratioLg): string {
 
 	const isEm: boolean = true;
-	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
+	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg,
 		isEm, isImportant, isNegative);
 	return css;
 }
 
-export function negativeSpacingEm(shorthands: SpacingStrings[], stepXs: StepStrings, 
+export function negativeSpacingEm(shorthands: SpacingStrings[], stepXs: StepStrings,
 	stepLg: StepStrings = stepXs, isImportant: boolean = false,
 	ratioXs: number = typography.ratioXs, ratioLg: number = typography.ratioLg): string {
 
 	const isNegative: boolean = true;
 	const isEm: boolean = true;
-	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
+	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg,
 		isEm, isImportant, isNegative);
 	return css;
 }
 
-export function spacingRem(shorthands: SpacingStrings[], stepXs: StepStrings, 
+export function spacingRem(shorthands: SpacingStrings[], stepXs: StepStrings,
 	stepLg: StepStrings = stepXs, isImportant: boolean = false, isNegative: boolean = false,
 	ratioXs: number = typography.ratioXs, ratioLg: number = typography.ratioLg): string {
 
 	const isEm: boolean = false;
-	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
+	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg,
 		isEm, isImportant, isNegative);
 	return css;
 }
 
-export function negativeSpacingRem(shorthands: SpacingStrings[], stepXs: StepStrings, 
+export function negativeSpacingRem(shorthands: SpacingStrings[], stepXs: StepStrings,
 	stepLg: StepStrings = stepXs, isImportant: boolean = false,
 	ratioXs: number = typography.ratioXs, ratioLg: number = typography.ratioLg): string {
 
 	const isNegative: boolean = true;
 	const isEm: boolean = false;
-	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg, 
+	const css: string = _spacing(shorthands, stepXs, stepLg, ratioXs, ratioLg,
 		isEm, isImportant, isNegative);
 	return css;
 }
 
-export function initRootType(fontSizeXs: number = typography.fontSizeXs, 
-	fontSizeLg: number = typography.fontSizeLg, ratioXs: number = typography.ratioXs, 
+export function initRootType(fontSizeXs: number = typography.fontSizeXs,
+	fontSizeLg: number = typography.fontSizeLg, ratioXs: number = typography.ratioXs,
 	ratioLg: number = typography.ratioLg): string {
 
 	const css: string = `
@@ -119,7 +120,7 @@ export function initRootType(fontSizeXs: number = typography.fontSizeXs,
 	return css;
 }
 
-export function flexColumn(shorthand: BreakpointStrings, columnWidth: ColumnWidths, 
+export function flexColumn(shorthand: BreakpointStrings, columnWidth: ColumnWidths,
 	totalColumns: number = 12) {
 	const width: number = (columnWidth / totalColumns) * 100;
 	const widthPercent: string = `${width}%`;
@@ -145,24 +146,52 @@ export function flexColumns(sizes: ColumnSizes) {
 }
 
 export function buttonVariant(props: IButtonProps, borderWidth: number = 1): string {
-	
+
 	let css: string = '';
 
 	if(props.variant) {
-		const { backgroundColor, color } = buttonVariants[props.variant];
+		const {
+			backgroundColor,
+			backgroundColorHover,
+			borderColorFocus,
+			color
+		} = buttonVariants[props.variant];
 
 		if(props.outline) {
 			css += `
 				background-color: transparent;
 				border: ${pxToEm(borderWidth)} solid ${backgroundColor};
 				color: ${backgroundColor};
+				&:hover:not(:disabled) {
+					background-color: ${backgroundColor};
+					color: ${color};
+				}
+			`;
+		} else if(props.selected) {
+			css += `
+				background-color: ${backgroundColor};
+				color: ${color};
+			`;
+		} else if(props.transparent) {
+			css += `
+				background-color: transparent;
+				color: ${neutralBlack};
 			`;
 		} else {
 			css += `
 				background-color: ${backgroundColor};
 				color: ${color};
+				&:hover:not(:disabled) {
+					background-color: ${backgroundColorHover};
+				}
 			`;
 		}
+
+		css += `
+			&:focus:not(:disabled) {
+				box-shadow: 0 0 0 ${pxToEm(3)} ${borderColorFocus};
+			}
+		`;
 	}
 
 	return css;
@@ -180,7 +209,7 @@ isImportant: boolean = false): string {
 	return css;
 };
 
-function _setCSSProperties(properties: string[], value: any, 
+function _setCSSProperties(properties: string[], value: any,
 	isNegative: boolean = false, isImportant: boolean = false): string {
 
 	let css: string = '';
@@ -190,7 +219,7 @@ function _setCSSProperties(properties: string[], value: any,
 	return css;
 };
 
-function _fluidCalc(minValue: string, maxValue: string, minVw: string, 
+function _fluidCalc(minValue: string, maxValue: string, minVw: string,
 	maxVw: string): string {
 
 	const minValueNum: number = parseFloat(minValue);
@@ -208,7 +237,7 @@ function _fluidCalc(minValue: string, maxValue: string, minVw: string,
 	return css;
 };
 
-function _fluid(properties: string[], minValue: string, maxValue: string, 
+function _fluid(properties: string[], minValue: string, maxValue: string,
 	minVw: string, maxVw: string): string {
 
 	const fluidValue: string = _fluidCalc(minValue, maxValue, minVw, maxVw);
@@ -228,16 +257,16 @@ function _fluid(properties: string[], minValue: string, maxValue: string,
 	return css;
 };
 
-function _responsiveVr(properties: string[], stepXs: number, stepLg: number, ratioXs: number, 
-	ratioLg: number, isEm: boolean = false, isNegative: boolean = false, 
+function _responsiveVr(properties: string[], stepXs: number, stepLg: number, ratioXs: number,
+	ratioLg: number, isEm: boolean = false, isNegative: boolean = false,
 	isImportant: boolean = false): string {
 
-	const valueXs: string = isEm 
-		? vrEm(stepXs, ratioXs) 
+	const valueXs: string = isEm
+		? vrEm(stepXs, ratioXs)
 		: vrRem(stepXs, ratioXs);
-	
-	const valueLg: string = isEm 
-		? vrEm(stepLg, ratioLg) 
+
+	const valueLg: string = isEm
+		? vrEm(stepLg, ratioLg)
 		: vrRem(stepLg, ratioLg);
 
 	const css: string = `
@@ -251,20 +280,20 @@ function _responsiveVr(properties: string[], stepXs: number, stepLg: number, rat
 	return css;
 }
 
-function _responsiveVrEm(properties: string[], stepXs: number, stepLg: number, ratioXs: number, 
+function _responsiveVrEm(properties: string[], stepXs: number, stepLg: number, ratioXs: number,
 	ratioLg: number, isNegative: boolean = false, isImportant: boolean = false): string {
-		
+
 	const isEm: boolean = true;
-	const css: string = _responsiveVr(properties, stepXs, stepLg, ratioXs, 
+	const css: string = _responsiveVr(properties, stepXs, stepLg, ratioXs,
 		ratioLg, isEm, isNegative, isImportant);
 	return css;
 }
 
-function _responsiveVrRem(properties: string[], stepXs: number, stepLg: number, ratioXs: number, 
+function _responsiveVrRem(properties: string[], stepXs: number, stepLg: number, ratioXs: number,
 	ratioLg: number, isNegative: boolean = false, isImportant: boolean = false): string {
-		
+
 	const isEm: boolean = false;
-	const css: string = _responsiveVr(properties, stepXs, stepLg, ratioXs, 
+	const css: string = _responsiveVr(properties, stepXs, stepLg, ratioXs,
 		ratioLg, isEm, isNegative, isImportant);
 	return css;
 }
