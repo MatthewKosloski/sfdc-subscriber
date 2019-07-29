@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { ColumnSizes } from '../theme/layout';
 import { spacingRem, negativeSpacingRem, flexColumns } from '../abstracts/mixins';
+import withDefaultProps from '../hoc/withDefaultProps';
 
 interface IRowProps {};
 
@@ -15,7 +16,14 @@ interface IColumnProps {
     sizes: ColumnSizes,
 };
 
-export const Column = styled.div<IColumnProps>`
+const columnDefaultProps: IColumnProps = {
+    sizes: [['XS', 12]]
+};
+
+export const StyledColumn = styled.div<IColumnProps>`
     ${spacingRem(['PL', 'PR'], 'One')};
     ${({sizes}) => flexColumns(sizes)};
 `;
+
+export const Column = withDefaultProps(StyledColumn, 
+    columnDefaultProps);
