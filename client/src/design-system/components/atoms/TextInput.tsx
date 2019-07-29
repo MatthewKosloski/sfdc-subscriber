@@ -12,7 +12,7 @@ const TextInput = styled.input.attrs({
 	display: block;
 	font-size: 1em;
 	border-radius: ${pxToEm(4)};
-	border: ${pxToEm(1)} solid ${({theme: colors}) => colors.gallery};
+	border: ${pxToEm(1)} solid ${({theme: {colors}}) => colors.gallery};
 	color: ${({theme: colors}) => colors.neutralBlack};
 	background-color: transparent;
 	transition-property: box-shadow;
