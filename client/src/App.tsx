@@ -11,7 +11,7 @@ import atoms from './design-system/components/atoms';
 import molecules from './design-system/components/molecules';
 import organisms from './design-system/components/organisms';
 
-const { Button, Label, TextInput, Badge } = atoms;
+const { Label, Badge } = atoms;
 const { Dropdown } = molecules;
 const { Card } = organisms;
 
@@ -36,7 +36,7 @@ const App: React.FC = () => {
 								</Column>
 							</Row>
 						</Column>
-						<Column sizes={[['XS', 12], ['SM', 6]]}>
+						{/* <Column sizes={[['XS', 12], ['SM', 6]]}>
 							<h2>Buttons</h2>
 							<Row>
 								<Column>
@@ -48,13 +48,13 @@ const App: React.FC = () => {
 									<Button variant="successLight" small>Success (Light)</Button>
 								</Column>
 							</Row>
-						</Column>
+						</Column> */}
 					</Row>
 					<Row>
 						<Column sizes={[['XS', 12], ['SM', 6]]}>
 							<h2>Forms</h2>
 							<Label htmlFor="foo">Enter Name</Label>
-							<TextInput id="foo"></TextInput>
+							{/* <TextInput id="foo	"></TextInput> */}
 						</Column>
 						<Column sizes={[['XS', 12], ['SM', 6]]}>
 							<h2>Cards</h2>
@@ -70,7 +70,7 @@ const App: React.FC = () => {
 					<Row>
 						<Column sizes={[['XS', 12], ['SM', 6]]}>
 							<h2>Dropdown</h2>
-							<Dropdown />
+							<Dropdown options={['One', 'Two', 'Three']} />
 						</Column>
 					</Row>
 				</Container>
