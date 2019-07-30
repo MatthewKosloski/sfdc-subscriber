@@ -1,57 +1,134 @@
 import React, { Component, Fragment } from 'react';
+import uuidv1 from 'uuid/v1';
 
 interface IProps {
-    disabled?: boolean
+	disabled?: boolean,
+	options: string[]
 };
 
 interface IState {
     isOpen: boolean,
-    focusedIndex: number
+	focusedIndex: number
 };
 
 class Dropdown extends Component<IProps, IState> {
 
-    static defaultProps: IProps = {
-        disabled: false,
-    }
+	private _refs: HTMLLIElement[] = [];
 
-    constructor(props: IProps) {
-        super(props);
+	constructor(props: IProps) {
+		super(props);
 
-        this.handleTriggerClick = this.handleTriggerClick.bind(this);
-        this.handleTriggerKeyDown = this.handleTriggerKeyDown.bind(this);
+		this.handleTriggerClick = this.handleTriggerClick.bind(this);
+		this.handleTriggerKeyDown = this.handleTriggerKeyDown.bind(this);
+		this.handleMenuKeyUp = this.handleMenuKeyUp.bind(this);
+		this.addRef = this.addRef.bind(this);
 
         this.state = {
             isOpen: false,
-            focusedIndex: -1
-        };
-    }
+			focusedIndex: -1
+		};
+	}
 
-    handleTriggerClick(e: React.MouseEvent<HTMLButtonElement>) {
-        console.log('click');
-        this.toggleDropdown();
-    }
+	componentDidUpdate(prevProps: IProps, prevState: IState) {
+		const hasNewFocusedIndex: boolean = prevState.focusedIndex
+		!== this.state.focusedIndex;
 
-    handleTriggerKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
-        const isTriggeredByEnter: boolean = e.key === 'Enter';
-        const isTriggeredBySpacebar: boolean = e.key === ' ';
+		if(hasNewFocusedIndex) {
 
-        if(isTriggeredByEnter || isTriggeredBySpacebar) {
-            console.log('enter or spacebar');
-            this.toggleDropdown();
-        }
-    }
+			const oldRef: HTMLLIElement = this._refs[prevState.focusedIndex];
+			const currentRef: HTMLLIElement = this._refs[this.state.focusedIndex];
 
-    toggleDropdown() {
-        console.log('toggleDropdown');
-        this.setState((currentState: IState) => ({
-            isOpen: !currentState.isOpen
-        }));
-    }
+			if(oldRef) {
+				oldRef.tabIndex = -1;
+			}
+
+			if(currentRef) {
+				currentRef.focus();
+			}
+		}
+	}
+
+	handleTriggerClick(e: React.MouseEvent<HTMLButtonElement>) {
+		this.openDropdown();
+	}
+
+	handleTriggerKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
+		switch(e.key) {
+			case ' ':
+			case 'Enter':
+			case 'Tab': {
+				const isDropdownClosed: boolean = !this.state.isOpen;
+				if(isDropdownClosed) {
+					this.openDropdown();
+				} else {
+					this.closeDropdown();
+				}
+				break;
+			}
+			case 'Escape': {
+				this.closeDropdown();
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+	}
+
+	handleMenuKeyUp(e: React.KeyboardEvent<HTMLUListElement>) {
+		switch(e.key) {
+			case 'ArrowUp': {
+				console.log('ArrowUp on Menu');
+				this.updateFocusedIndex(this.state.focusedIndex - 1);
+				break;
+			}
+			case 'ArrowDown': {
+				console.log('ArrowDown on Menu');
+				this.updateFocusedIndex(this.state.focusedIndex + 1);
+				break;
+			}
+			case 'Escape': {
+				this.closeDropdown();
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+	}
+
+	openDropdown() {
+		this.setState({isOpen: true});
+		this.updateFocusedIndex(0);
+	}
+
+	closeDropdown() {
+		this.setState({isOpen: false});
+		this.updateFocusedIndex(-1);
+	}
+
+	addRef(ref: HTMLLIElement | null) {
+		if(ref) {
+			this._refs = [...this._refs, ref];
+		}
+	}
+
+	updateFocusedIndex(newFocusedIndex: number) {
+		const minIndex: number = 0,
+			maxIndex: number = this._refs.length - 1;
+
+		if(newFocusedIndex < minIndex) {
+			newFocusedIndex = maxIndex;
+		} else if(newFocusedIndex > maxIndex) {
+			newFocusedIndex = minIndex;
+		}
+
+		this.setState({focusedIndex: newFocusedIndex});
+	}
 
     render() {
 
-        const { isOpen } = this.state;
+		const { isOpen } = this.state;
 
         return(
             <Fragment>
@@ -62,10 +139,20 @@ class Dropdown extends Component<IProps, IState> {
                     aria-haspopup="true">
                         Filter by
                 </button>
-                <ul style={{display: isOpen ? 'block' : 'none'}}>
-                    <li>One</li>
-                    <li>Two</li>
-                    <li>Three</li>
+				<ul
+					aria-hidden={!isOpen}
+					onKeyUp={this.handleMenuKeyUp}
+					role="menu"
+					style={{display: isOpen ? 'block' : 'none'}}>
+					{this.props.options.map((option) => (
+						<li
+							key={`${Date.now()}-${uuidv1()}}`}
+							ref={this.addRef}
+							tabIndex={-1}
+							role="menuitem">
+							{option}
+						</li>
+					))}
                 </ul>
             </Fragment>
         );
