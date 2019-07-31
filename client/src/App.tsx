@@ -70,7 +70,9 @@ const App: React.FC = () => {
 					<Row>
 						<Column sizes={[['XS', 12], ['SM', 6]]}>
 							<h2>Dropdown</h2>
-							<Dropdown options={['One', 'Two', 'Three']} />
+							<Dropdown
+								buttonText="Filter by"
+								options={['One', 'Two', 'Three']} />
 						</Column>
 					</Row>
 				</Container>
