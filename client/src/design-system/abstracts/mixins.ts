@@ -205,8 +205,6 @@ export function dropdownButtonVariant(props: IButtonProps): string {
 	if(props.variant) {
 		const {
 			backgroundColor,
-			backgroundColorHover,
-			borderColorFocus,
 			color
 		} = buttonVariants[props.variant];
 
