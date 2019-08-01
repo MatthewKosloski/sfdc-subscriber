@@ -1,6 +1,7 @@
 import { msRem, pxToEm, pxToRem, vrEm, vrRem, round } from '../abstracts/functions';
 import { Breakpoint, BreakpointStrings, ColumnWidths, ColumnSizes } from '../theme/layout';
-import { Step, Spacing, StepStrings, SpacingStrings } from '../theme/spacing';
+import { Step, Spacing, StepStrings, stepStringsArr, SpacingStrings,
+	spacingStringsArr } from '../theme/spacing';
 import buttonVariants, { IButtonProps } from '../theme/buttons';
 import { neutralBlack } from '../theme/colors';
 import typography from '../theme/typography';
@@ -195,6 +196,36 @@ export function buttonVariant(props: IButtonProps, borderWidth: number = 1): str
 			}
 		`;
 	}
+
+	return css;
+}
+
+export function createSpacingUtilClasses(): string {
+	let css: string = '';
+
+	spacingStringsArr.forEach((spacingString) => {
+
+		const spacingStringLowerCase: string = spacingString.toLowerCase();
+
+		const prop: Spacing = Spacing[spacingString as SpacingStrings];
+		css += `.u-${spacingStringLowerCase}-auto {
+			${prop}: auto;
+		}`;
+
+		stepStringsArr.forEach((stepString) => {
+
+			const stepStringLowerCase: string = stepString.toLowerCase();
+			const shorthands: SpacingStrings[] = [spacingString as SpacingStrings];
+			const stepXs: StepStrings = stepString as StepStrings;
+			const stepXl: StepStrings = stepXs;
+			const isImportant: boolean = true;
+
+			css += `.u-${spacingStringLowerCase}-${stepStringLowerCase} {
+				${spacingEm(shorthands, stepXs, stepXl, isImportant)}
+			}`;
+
+		});
+	});
 
 	return css;
 }

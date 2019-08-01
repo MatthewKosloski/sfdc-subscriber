@@ -24,5 +24,10 @@ export enum Step {
 	Five = 5
 }
 
+
 export type SpacingStrings = keyof typeof Spacing;
+export const spacingStringsArr: string[] = Object.keys(Spacing);
+
 export type StepStrings = keyof typeof Step;
+export const stepStringsArr: string[] = Object.values(Step)
+	.filter((value) => typeof value === 'string') as string[];
