@@ -1,6 +1,4 @@
-import theme from '../theme/';
-
-const { primaryFontFamily } = theme.typography;
+import { primaryFontFamily } from '../theme';
 
 export default `
 	.u-font-light {

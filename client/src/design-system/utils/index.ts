@@ -1,7 +1,7 @@
-import { default as align } from './align';
-import { default as display } from './display';
-import { default as font } from './font';
-import { default as spacing } from './spacing';
+import align from './align';
+import display from './display';
+import font from './font';
+import spacing from './spacing';
 
 export default {
 	align,

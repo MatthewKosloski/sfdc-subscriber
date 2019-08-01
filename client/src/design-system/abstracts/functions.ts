@@ -2,14 +2,14 @@
 
 /**
  * Rounds a number to a certain precision.
- * 
+ *
  * @param num The number to round.
- * @param precision The number of digits that appear after 
+ * @param precision The number of digits that appear after
  * the decimal.
- * 
+ *
  * @example
  * 		round(3.141592, 2) -> 3.14
- * 
+ *
  */
 export function round(num: number, precision: number = 2): number {
 	return Number(num.toFixed(precision));

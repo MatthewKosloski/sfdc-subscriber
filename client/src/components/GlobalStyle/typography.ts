@@ -1,7 +1,5 @@
-import { initRootType, fluidType, spacingRem } from '../../design-system/abstracts/mixins';
-import theme from '../../design-system/theme';
-
-const { colors: { neutralBlack }, typography: { primaryFontFamily } } = theme;
+import { initRootType, fluidType, spacingRem } from '../../design-system/abstracts';
+import { neutralBlack, primaryFontFamily } from '../../design-system/theme';
 
 export default `
 	html {

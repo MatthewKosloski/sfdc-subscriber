@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-import { spacingEm } from '../../abstracts/mixins';
-import { pxToEm } from '../../abstracts/functions';
+import { spacingEm, pxToEm } from '../../abstracts';
 
 const TextInput = styled.input.attrs({
 	type: 'text'

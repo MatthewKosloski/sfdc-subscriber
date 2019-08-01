@@ -1,14 +1,9 @@
 import React, { Fragment, Component } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { Row, Column } from './design-system/layout/grid';
-
-import GlobalStyle from './components/GlobalStyle';
-import Organisms from './components/organisms';
-
+import { Row, Column } from './design-system/layout';
+import { GlobalStyle, Header, Main, TimelineCard } from './components';
 import theme from './theme';
-
-const { Header, Main, TimelineCard }  = Organisms;
 
 class App extends Component {
 

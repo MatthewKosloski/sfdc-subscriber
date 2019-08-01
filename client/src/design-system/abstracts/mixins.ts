@@ -1,4 +1,4 @@
-import { msRem, pxToEm, pxToRem, vrEm, vrRem, round } from '../abstracts/functions';
+import { msRem, pxToEm, pxToRem, vrEm, vrRem, round } from './functions';
 import { Breakpoint, BreakpointStrings, ColumnWidths, ColumnSizes } from '../theme/layout';
 import { Step, Spacing, StepStrings, stepStringsArr, SpacingStrings,
 	spacingStringsArr } from '../theme/spacing';

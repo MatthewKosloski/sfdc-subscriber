@@ -13,7 +13,7 @@ export interface IButtonProps {
     large?: boolean
 };
 
-export const defaultProps: IButtonProps = {
+export const defaultButtonProps: IButtonProps = {
     variant: 'normal'
 };
 

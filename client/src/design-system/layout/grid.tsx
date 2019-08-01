@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+
 import { ColumnSizes } from '../theme/layout';
-import { spacingRem, negativeSpacingRem, flexColumns } from '../abstracts/mixins';
-import withDefaultProps from '../hoc/withDefaultProps';
+import { spacingRem, negativeSpacingRem, flexColumns } from '../abstracts';
+import { withDefaultProps } from '../hoc';
 
 interface IRowProps {};
 

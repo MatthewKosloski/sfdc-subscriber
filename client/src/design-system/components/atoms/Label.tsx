@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { spacingEm } from '../../abstracts/mixins';
+import { spacingEm } from '../../abstracts';
 
 const Label = styled.label`
 	${spacingEm(['MB'], 'Half')};

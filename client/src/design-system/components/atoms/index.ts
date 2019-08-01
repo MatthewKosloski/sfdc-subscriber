@@ -1,7 +1,14 @@
-import { default as Badge } from './badge';
-import { default as Button } from './Button';
-import { default as Label } from './Label';
-import { default as TextInput } from './TextInput';
+import Badge from './badge';
+import Button from './Button';
+import Label from './Label';
+import TextInput from './TextInput';
+
+export {
+	Badge,
+    Button,
+	Label,
+	TextInput
+};
 
 export default {
     Badge,

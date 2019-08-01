@@ -1,6 +1,12 @@
-import { default as Header } from './Header';
-import { default as Main } from './Main';
-import { default as TimelineCard } from './TimelineCard';
+import Header from './Header';
+import Main from './Main';
+import TimelineCard from './TimelineCard';
+
+export {
+	Header,
+	Main,
+	TimelineCard
+};
 
 export default {
 	Header,
