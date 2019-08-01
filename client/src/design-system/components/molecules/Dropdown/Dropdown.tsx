@@ -1,4 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import { ReactComponent as Chevron } from './chevron.svg';
+
+import Container from './Container';
+import Trigger from './Trigger';
+import Menu from './Menu';
 
 enum Keys {
 	Enter = 'Enter',
@@ -11,8 +16,7 @@ enum Keys {
 
 interface IProps {
 	buttonText: string,
-	disabled?: boolean,
-	options: string[]
+	disabled?: boolean
 };
 
 interface IState {
@@ -178,39 +182,40 @@ class Dropdown extends Component<IProps, IState> {
 		this.updateFocusedIndex(this.state.focusedIndex - 1);
 	}
 
+	public renderChildren(): React.ReactNode {
+		return React.Children.map(this.props.children, (child) => {
+			return React.cloneElement(child, {
+				tabIndex: -1
+			});
+		});
+	}
+
     public render() {
 
-		const { buttonText, options } = this.props;
+		const { buttonText } = this.props;
 		const { isOpen } = this.state;
 
         return(
-            <Fragment>
-                <button
+            <Container>
+                <Trigger
 					ref={this._triggerRef}
 					onMouseDown={this._handleTriggerClick}
 					onKeyDown={this._handleTriggerKeyDown}
                     aria-expanded={isOpen}
-                    aria-haspopup="true">
-                        {buttonText}
-                </button>
-				<ul
+					aria-haspopup="true"
+					variant="primary"
+					outline>
+						{buttonText}
+						<Chevron />
+                </Trigger>
+				<Menu
 					onKeyDown={this._handleMenuKeyDown}
 					aria-hidden={!isOpen}
-					role="menu"
-					style={{display: isOpen ? 'block' : 'none'}}>
-					{options.map((option, i) => {
-						return (
-							<li
-								key={i}
-								ref={this._addRef}
-								tabIndex={-1}
-								role="menuitem">
-								{option}
-							</li>
-						);
-					})}
-                </ul>
-            </Fragment>
+					isOpen={isOpen}
+					role="menu">
+					{this.renderChildren()}
+                </Menu>
+            </Container>
         );
 	}
 

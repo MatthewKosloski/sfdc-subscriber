@@ -42,6 +42,6 @@ export const StyledButton = styled.button<IButtonProps>`
 
 `;
 
-const Button = withDefaultProps(StyledButton, defaultProps);
+// const Button = withDefaultProps(StyledButton, defaultProps);
 
-export default Button;
+export default StyledButton;

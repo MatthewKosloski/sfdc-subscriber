@@ -162,7 +162,8 @@ export function buttonVariant(props: IButtonProps, borderWidth: number = 1): str
 				background-color: transparent;
 				border: ${pxToEm(borderWidth)} solid ${backgroundColor};
 				color: ${backgroundColor};
-				&:hover:not(:disabled) {
+				&:hover:not(:disabled),
+				&:focus:not(:disabled) {
 					background-color: ${backgroundColor};
 					color: ${color};
 				}
@@ -181,7 +182,8 @@ export function buttonVariant(props: IButtonProps, borderWidth: number = 1): str
 			css += `
 				background-color: ${backgroundColor};
 				color: ${color};
-				&:hover:not(:disabled) {
+				&:hover:not(:disabled),
+				&:focus:not(:disabled) {
 					background-color: ${backgroundColorHover};
 				}
 			`;
@@ -192,6 +194,47 @@ export function buttonVariant(props: IButtonProps, borderWidth: number = 1): str
 				box-shadow: 0 0 0 ${pxToEm(3)} ${borderColorFocus};
 			}
 		`;
+	}
+
+	return css;
+}
+
+export function dropdownButtonVariant(props: IButtonProps): string {
+	let css: string = '';
+
+	if(props.variant) {
+		const {
+			backgroundColor,
+			backgroundColorHover,
+			borderColorFocus,
+			color
+		} = buttonVariants[props.variant];
+
+		if(props.outline) {
+			css += `
+				svg {
+					fill: ${backgroundColor};
+				}
+				&:hover:not(:disabled),
+				&:focus:not(:disabled) {
+					svg {
+						fill: ${color};
+					}
+				}
+			`;
+		} else {
+			css += `
+				svg {
+					fill: ${color};
+				}
+				&:hover:not(:disabled),
+				&:focus:not(:disabled) {
+					svg {
+						fill: ${color};
+					}
+				}
+			`;
+		}
 	}
 
 	return css;

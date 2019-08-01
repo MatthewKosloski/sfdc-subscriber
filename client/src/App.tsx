@@ -15,7 +15,6 @@ const { Label, Badge } = atoms;
 const { Dropdown } = molecules;
 const { Card } = organisms;
 
-
 const App: React.FC = () => {
 	return(
 		<Fragment>
@@ -70,9 +69,11 @@ const App: React.FC = () => {
 					<Row>
 						<Column sizes={[['XS', 12], ['SM', 6]]}>
 							<h2>Dropdown</h2>
-							<Dropdown
-								buttonText="Filter by"
-								options={['One', 'Two', 'Three']} />
+							<Dropdown.Dropdown buttonText="Filter by">
+								<Dropdown.DropdownItem href="#">One</Dropdown.DropdownItem>
+								<Dropdown.DropdownItem href="#">Two</Dropdown.DropdownItem>
+								<Dropdown.DropdownItem href="#">Three</Dropdown.DropdownItem>
+							</Dropdown.Dropdown>
 						</Column>
 					</Row>
 				</Container>
