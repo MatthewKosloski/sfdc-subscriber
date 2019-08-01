@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 const Title = styled.h2.attrs({
-	className: 'h3'
+	className: 'h3 u-mb-zero'
 })`
-	margin-bottom: 0;
 	color: ${({theme: {colors}}) => colors.neutralBlack};
 	font-weight: 700;
 `;
