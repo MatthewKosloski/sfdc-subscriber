@@ -13,11 +13,13 @@ export const Row = styled.div<IRowProps>`
 `;
 
 interface IColumnProps {
-    sizes: ColumnSizes,
+	sizes: ColumnSizes,
+	className?: string
 };
 
-const columnDefaultProps: IColumnProps = {
-    sizes: [['XS', 12]]
+const columnDefaultProps = {
+	sizes: [['XS', 12]],
+	className: ''
 };
 
 export const StyledColumn = styled.div<IColumnProps>`
@@ -25,5 +27,5 @@ export const StyledColumn = styled.div<IColumnProps>`
     ${({sizes}) => flexColumns(sizes)};
 `;
 
-export const Column = withDefaultProps(StyledColumn, 
+export const Column = withDefaultProps(StyledColumn,
     columnDefaultProps);
