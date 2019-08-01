@@ -1,0 +1,12 @@
+//---------------------------
+//
+// Public > Layout > Container
+//---------------------------
+
+.l-container {
+    @include ds-spacing-rem((pl, pr), one);
+    width: $ds-layout-container-width;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}

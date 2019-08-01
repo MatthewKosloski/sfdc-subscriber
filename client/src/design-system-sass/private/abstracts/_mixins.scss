@@ -1,0 +1,177 @@
+//---------------------------
+//
+// Private > Abstracts > Mixins
+//---------------------------
+
+/// Outputs CSS code, wrapped in a media query, at a particular
+/// viewport size.
+/// @param {String} $breakpoint - The breakpoint at which the CSS
+/// should take effect.
+/// @output CSS code wrapped in a media query.
+/// @see $ds-layout-breakpoints
+@mixin _design-system-breakpoint($breakpoint) {
+    @if(_design-system-is-breakpoint($breakpoint)) {
+        // We are using a non-local variable here ($ds-), but we will
+        // make an exception because it is absolutely necessary.
+        @media (min-width: map-get($ds-layout-breakpoints, $breakpoint)) {
+            @content;
+        }
+    }
+}
+
+@mixin _design-system-fluid($properties, $min-value, $max-value, $min-vw, $max-vw) {
+    @include _design-system-set-properties($properties, $min-value);
+  
+    @include _design-system-breakpoint(sm) {
+        @each $property in $properties {
+            #{$property}: calc(
+                #{$min-value} 
+                + 
+                #{_design-system-strip-unit($max-value - $min-value)} 
+                * (100vw - #{$min-vw}) / 
+                #{_design-system-strip-unit($max-vw - $min-vw)});
+        }
+    }
+    
+    @include _design-system-breakpoint(lg) {
+        @include _design-system-set-properties($properties, $max-value);
+    }
+}
+
+@mixin _design-system-fluid-type($min-step, $max-step, $ratio-xs, $ratio-lg, $min-vw, $max-vw) {
+    $property: font-size;
+    $min-font-value: _design-system-ms-rem($min-step, $ratio-xs);
+    $max-font-value: _design-system-ms-rem($max-step, $ratio-lg);
+    @include _design-system-fluid($property, $min-font-value, $max-font-value, $min-vw, $max-vw);
+}
+
+@mixin _design-system-set-properties($properties, $value, $is-negative: false, $is-important: false) {
+    @each $property in $properties {
+        @if($is-negative) {
+            #{$property}: -#{$value} #{if($is-important, !important, null)};
+        }
+        @else {
+            #{$property}: $value #{if($is-important, !important, null)};
+        }
+    }
+}
+
+/// Responsive Vertical Rhythm
+@mixin _design-system-r-vr($properties, $step-xs, $step-lg, $ratio-xs, $ratio-lg, $is-em, $is-negative, $is-important) {
+
+    $value-xs: null;
+    $value-lg: null;
+
+    @if($is-em) {
+        $value-xs: _design-system-vr-em($step-xs, $ratio-xs);
+        $value-lg: _design-system-vr-em($step-lg, $ratio-lg);
+    } @else {
+        $value-xs: _design-system-vr-rem($step-xs, $ratio-xs);
+        $value-lg: _design-system-vr-rem($step-lg, $ratio-lg);
+    }
+
+    @include _design-system-set-properties($properties, $value-xs, $is-negative, $is-important);
+
+    @include _design-system-breakpoint(lg) {
+        @include _design-system-set-properties($properties, $value-lg, $is-negative, $is-important);
+    }
+}
+
+/// Responsive Vertical Rhythm (EM)
+@mixin _design-system-r-vr-em($properties, $step-xs, $step-lg, $ratio-xs, $ratio-lg, $is-negative: false, $is-important: false) {
+    @include _design-system-r-vr($properties, $step-xs, $step-lg, $ratio-xs, $ratio-lg, true, $is-negative, $is-important);
+}
+
+/// Responsive Vertical Rhythm (REM)
+@mixin _design-system-r-vr-rem($properties, $step-xs, $step-lg, $ratio-xs, $ratio-lg, $is-negative: false, $is-important: false) {
+    @include _design-system-r-vr($properties, $step-xs, $step-lg, $ratio-xs, $ratio-lg, false, $is-negative, $is-important);
+}
+
+@mixin _design-system-spacing(
+    $shorthands, 
+    $step-names,
+    $ratio-xs,
+    $ratio-lg, 
+    $shorthands-map, 
+    $step-map,
+    $use-em: false, 
+    $is-important: false,
+    $is-negative: false
+) {
+    $props: null;
+    $step-xs: null;
+    $step-lg: null;
+
+    $props: _design-system-join-map-keys($shorthands-map, $shorthands);
+
+    $has-valid-xs-step: map-has-key($step-map, nth($step-names, 1));
+    $has-one-step: length($step-names) == 1;
+    $has-two-steps: length($step-names) == 2;
+
+    @if($has-valid-xs-step) {
+        $step-xs: map-get($step-map, nth($step-names, 1));
+    } @else {
+        @error 'Invalid xs-step #{nth($step-names, 1)}.';
+    }
+
+    @if($has-one-step) {
+        $step-lg: $step-xs;
+    } @else if($has-two-steps) {
+        $has-valid-lg-step: map-has-key($step-map, nth($step-names, 2));
+        @if($has-valid-lg-step) {
+            $step-lg: map-get($step-map, nth($step-names, 2));
+        } @else {
+            @error 'Invalid xs-step #{nth($step-names, 2)}.';
+        }
+    } @else {
+        @error 'Must have at least one step and no more than two.';
+    }
+
+    @if($use-em) {
+        @include _design-system-r-vr-em($props, $step-xs, $step-lg, $ratio-xs, $ratio-lg, $is-negative, $is-important);
+    } @else {
+        @include _design-system-r-vr-rem($props, $step-xs, $step-lg, $ratio-xs, $ratio-lg, $is-negative, $is-important);
+    }
+}
+
+@mixin _design-system-create-spacing-classes($shorthands-map, $step-map, $ratio-xs, $ratio-lg) {
+    @each $shorthand, $props in $shorthands-map {
+
+        // vertical rhythm classes
+        @each $step-name, $step-value in $step-map {
+            .u-#{$shorthand}-#{$step-name} {
+                @include _design-system-spacing(
+                    $shorthand, 
+                    $step-name,
+                    $ratio-xs,
+                    $ratio-lg,
+                    $shorthands-map, 
+                    $step-map,
+                    $use-em: false,
+                    $is-important: true,
+                    $is-negative: false);
+            }
+        }
+
+        .u-#{$shorthand}-auto {
+            @each $prop in $props {
+                #{$prop}: auto;
+            }
+        }
+
+    }
+}
+
+@mixin _design-system-init-root-type($font-sizes, $ratios) {
+    $font-size-xs: nth($font-sizes, 1);
+    $font-size-lg: nth($font-sizes, 2);
+    $ratio-xs: nth($ratios, 1);
+    $ratio-lg: nth($ratios, 2);
+
+    font-size: percentage($font-size-xs / 100);
+	line-height: $ratio-xs;
+	@include _design-system-breakpoint(lg) {
+		font-size: percentage($font-size-lg / 100);
+		line-height: $ratio-lg;
+	}
+}

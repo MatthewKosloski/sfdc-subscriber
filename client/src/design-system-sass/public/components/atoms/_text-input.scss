@@ -1,0 +1,18 @@
+.a-text-input {
+    @include ds-spacing-em(py, half);
+    @include ds-spacing-em(px, one);
+    width: 100%;
+    display: block;
+    font-size: 1em;
+    border-radius: ds-px-to-em(4);
+    border: ds-px-to-em(1) solid $ds-colors-gallery;
+    color: $ds-colors-neutral-black;
+    background-color: transparent;
+    transition-property: box-shadow;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in-out;
+    &:focus {
+        box-shadow: 0 0 0 ds-px-to-em(3) darken($ds-colors-gallery, 15%);
+        outline: 0;
+    }
+}

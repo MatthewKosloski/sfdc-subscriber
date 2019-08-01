@@ -1,0 +1,51 @@
+//---------------------------
+//
+// Public > Base > Typography
+//---------------------------
+
+html {
+	@include ds-init-root-type;
+	color: $ds-colors-neutral-black;
+}
+
+h1,
+.h1,
+%h1 {
+	@include ds-fluid-type(4, 4);
+}
+
+h2,
+.h2,
+%h2 {
+	@include ds-fluid-type(3, 3);
+}
+
+h3,
+.h3,
+%h3 {
+	@include ds-fluid-type(2, 2);
+}
+
+h4,
+.h4,
+%h4 {
+	@include ds-fluid-type(1, 1);
+}
+
+h1, h2, h3, h4,
+.h1, .h2, .h3, .h4,
+%h1, %h2, %h3, %h4 {
+	font-weight: 700;
+}
+
+h1, h2, h3, h4,
+.h1, .h2, .h3, .h4,
+%h1, %h2, %h3, %h4,
+p, li {
+	@include ds-spacing-rem(mb, one);
+}
+
+ul,
+ol {
+	@include ds-spacing-rem((pl, mb), two);
+}

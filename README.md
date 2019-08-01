@@ -61,6 +61,10 @@ npm run test:coverage-silent
 
 ## Resources
 
+### React
+
+[Composition vs. Inheritance](https://reactjs.org/docs/composition-vs-inheritance.html)
+
 ### CometD
 
 [JavaScript Documentation](https://docs.cometd.org/current4/reference/#_javascript)

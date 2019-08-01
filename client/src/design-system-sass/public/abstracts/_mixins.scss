@@ -1,0 +1,90 @@
+//---------------------------
+//
+// Public > Abstracts > Mixins
+//---------------------------
+
+/// Outputs CSS code, wrapped in a media query, at a particular
+/// viewport size.
+/// @param {String} $breakpoint - The breakpoint at which the CSS
+/// should take effect.
+/// @output CSS code wrapped in a media query.
+/// @see $breakpoints
+@mixin ds-breakpoint($breakpoint) {
+    @include _design-system-breakpoint($breakpoint) {
+        @content;
+    }
+}
+
+@mixin ds-fluid-type(
+    $min-step, 
+    $max-step,
+    $ratio-xs: $ds-typography-ratio-xs,
+    $ratio-lg: $ds-typography-ratio-lg, 
+    $min-vw: map-get($ds-layout-breakpoints, sm), 
+    $max-vw: map-get($ds-layout-breakpoints, lg)) {
+    @include _design-system-fluid-type($min-step, $max-step, $ratio-xs, $ratio-lg, $min-vw, $max-vw);
+}
+
+@mixin ds-spacing-em(
+    $shorthands, 
+    $step-names, 
+    $is-important: false,
+    $is-negative: false,
+    $ratio-xs: $ds-typography-ratio-xs,
+    $ratio-lg: $ds-typography-ratio-lg, 
+    $shorthands-map: $ds-spacing-shorthands-map, 
+    $step-map: $ds-spacing-step-map
+) {
+    $use-em: true;
+    @include _design-system-spacing(
+        $shorthands, 
+        $step-names,
+        $ratio-xs,
+        $ratio-lg,
+        $shorthands-map, 
+        $step-map,
+        $use-em,
+        $is-important,
+        $is-negative);
+}
+
+@mixin ds-spacing-rem(
+    $shorthands, 
+    $step-names, 
+    $is-important: false,
+    $is-negative: false,
+    $ratio-xs: $ds-typography-ratio-xs,
+    $ratio-lg: $ds-typography-ratio-lg, 
+    $shorthands-map: $ds-spacing-shorthands-map, 
+    $step-map: $ds-spacing-step-map
+) {
+    $use-em: false;
+    @include _design-system-spacing(
+        $shorthands, 
+        $step-names,
+        $ratio-xs,
+        $ratio-lg,
+        $shorthands-map, 
+        $step-map,
+        $use-em,
+        $is-important,
+        $is-negative);
+}
+
+@mixin ds-create-spacing-classes {
+    @include _design-system-create-spacing-classes(
+        $shorthands-map: $ds-spacing-shorthands-map, 
+        $step-map: $ds-spacing-step-map,
+        $ratio-xs: $ds-typography-ratio-xs,
+        $ratio-lg: $ds-typography-ratio-lg);
+}
+
+@mixin ds-init-root-type($font-sizes: (
+    $ds-typography-font-size-xs,
+    $ds-typography-font-size-lg
+), $ratios: (
+    $ds-typography-ratio-xs,
+    $ds-typography-ratio-lg
+)) {
+    @include _design-system-init-root-type($font-sizes, $ratios);
+}

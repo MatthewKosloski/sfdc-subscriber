@@ -1,0 +1,34 @@
+//-----------------------------
+//
+// Common > Variables > Spacing
+//-----------------------------
+
+$ds-spacing-shorthands-map: (
+    m: 'margin',
+    mx: ('margin-left', 'margin-right'),
+    my: ('margin-top', 'margin-bottom'),
+    mt: 'margin-top',
+    mr: 'margin-right',
+    mb: 'margin-bottom',
+    ml: 'margin-left',
+
+    p: 'padding',
+    px: ('padding-left', 'padding-right'),
+    py: ('padding-top', 'padding-bottom'),
+    pt: 'padding-top',
+    pr: 'padding-right',
+    pb: 'padding-bottom',
+    pl: 'padding-left'
+);
+
+$ds-spacing-step-map: (
+    zero: 0,
+    quarter: 0.25,
+    half: 0.5,
+    three-fourths: 0.75,
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5
+);

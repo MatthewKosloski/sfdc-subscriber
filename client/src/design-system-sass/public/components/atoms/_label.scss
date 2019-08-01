@@ -1,0 +1,4 @@
+.a-label {
+    @include ds-spacing-em(mb, half);
+    display: block;
+}
