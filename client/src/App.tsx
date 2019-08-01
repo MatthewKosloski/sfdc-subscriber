@@ -8,11 +8,9 @@ import theme from './theme';
 import GlobalStyle from './components/GlobalStyle';
 
 import atoms from './design-system/components/atoms';
-import molecules from './design-system/components/molecules';
 import organisms from './design-system/components/organisms';
 
 const { Label, Badge } = atoms;
-const { Dropdown } = molecules;
 const { Card } = organisms;
 
 const App: React.FC = () => {
@@ -64,15 +62,6 @@ const App: React.FC = () => {
 								footerComponent={<p style={{margin: 0}}>I am in the footer</p>}>
 								<p style={{margin: 0}}>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique necessitatibus illum eaque dolorem quo aliquam?</p>
 							</Card>
-						</Column>
-					</Row>
-					<Row>
-						<Column sizes={[['XS', 12], ['SM', 6]]}>
-							<h2>Dropdown</h2>
-							<Dropdown
-								buttonText="Filter by"
-								options={['One', 'Two', 'Three']}
-								onChange={(index) => console.log(`option ${index} has been selected.`)} />
 						</Column>
 					</Row>
 				</Container>
