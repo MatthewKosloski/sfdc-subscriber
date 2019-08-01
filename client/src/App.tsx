@@ -69,11 +69,10 @@ const App: React.FC = () => {
 					<Row>
 						<Column sizes={[['XS', 12], ['SM', 6]]}>
 							<h2>Dropdown</h2>
-							<Dropdown.Dropdown buttonText="Filter by">
-								<Dropdown.DropdownItem href="#">One</Dropdown.DropdownItem>
-								<Dropdown.DropdownItem href="#">Two</Dropdown.DropdownItem>
-								<Dropdown.DropdownItem href="#">Three</Dropdown.DropdownItem>
-							</Dropdown.Dropdown>
+							<Dropdown
+								buttonText="Filter by"
+								options={['One', 'Two', 'Three']}
+								onChange={(index) => console.log(`option ${index} has been selected.`)} />
 						</Column>
 					</Row>
 				</Container>
