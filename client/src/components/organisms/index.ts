@@ -4,6 +4,7 @@ import TimelineCard from './TimelineCard';
 import SubscriptionsCard from './SubscriptionsCard';
 import TrendsCard from './TrendsCard';
 import Sidebar from './Sidebar';
+import CardListItems from './CardListItems';
 
 export {
 	Header,
@@ -11,7 +12,8 @@ export {
 	TimelineCard,
 	SubscriptionsCard,
 	TrendsCard,
-	Sidebar
+	Sidebar,
+	CardListItems
 };
 
 export default {
@@ -20,5 +22,6 @@ export default {
 	TimelineCard,
 	SubscriptionsCard,
 	TrendsCard,
-	Sidebar
+	Sidebar,
+	CardListItems
 };
