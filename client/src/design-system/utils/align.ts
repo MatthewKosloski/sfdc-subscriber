@@ -16,4 +16,11 @@ export default `
 		flex-direction: row;
 		justify-content: center;
 	}
+
+	.u-align-center {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
 `;
