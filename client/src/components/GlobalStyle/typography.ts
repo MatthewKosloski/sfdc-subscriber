@@ -10,17 +10,17 @@ export default `
 
 	h1,
 	.h1 {
-		${fluidType(4, 4)};
+		${fluidType(3, 3)};
 	}
 
 	h2,
 	.h2 {
-		${fluidType(3, 3)};
+		${fluidType(2, 2)};
 	}
 
 	h3,
 	.h3 {
-		${fluidType(2, 2)};
+		${fluidType(1, 1)};
 	}
 
 	h4,
