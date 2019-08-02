@@ -1,18 +1,19 @@
 import React from 'react';
 
-import { Card } from '../../../design-system/components/organisms';
+import { Card } from '../../../design-system/components';
 
-interface ITimelineCard {
+import TimeRange from './TimeRange';
+import Timeline from './Timeline';
 
-}
+interface ITimelineCard {}
 
 const TimelineCard: React.FC<ITimelineCard> = () => (
 	<Card
 		titleText="Timeline"
 		subtitleText="past 60 seconds of activity"
-		sideHeaderComponent={<p className="u-m-zero">07/24/2019 14:34:56 &mdash; 07/24/2019 14:35:11</p>}
-		constrictBodyHeight>
-		<p>A multi-series, time series D3.js chart will go here.</p>
+		sideHeaderComponent={<TimeRange />}
+		headerHasSpaceBetween>
+		<Timeline />
 	</Card>
 );
 
