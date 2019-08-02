@@ -14,7 +14,7 @@ export const StyledButton = styled.button<IButtonProps>`
     transition-property: box-shadow, background-color, color, border-color;
     transition-duration: 0.15s;
     transition-timing-function: ease-in-out;
-    color: ${({theme: colors}) => colors.white};
+    color: ${({theme}) => theme.white};
 	user-select: none;
 
 	&:disabled {
