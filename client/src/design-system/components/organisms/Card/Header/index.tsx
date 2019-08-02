@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Container from './Container';
-import Titles from './Titles';
-
 import { ICardProps } from '../';
+
+import Container from './Container';
+import Titles  from './Titles';
 
 const Header: React.FC<ICardProps> = (props) => {
 	return(
