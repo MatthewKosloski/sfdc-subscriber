@@ -5,18 +5,21 @@ import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
 
-interface IProps {
+export interface ICardProps {
 	title: string,
 	subtitle?: string,
 	sideHeaderComponent?: React.ReactElement,
-	footerComponent?: React.ReactElement
+	footerComponent?: React.ReactElement,
+	noPaddedBody?: boolean,
+	fullBodyHeight?: boolean,
+	constrictBodyHeight?: boolean
 };
 
-const Card: React.FC<IProps> = (props) => {
+const Card: React.FC<ICardProps> = (props) => {
 	return(
 		<Container>
 			<Header {...props} />
-			<Body>
+			<Body {...props}>
 				{props.children}
 			</Body>
 			{props.footerComponent &&
