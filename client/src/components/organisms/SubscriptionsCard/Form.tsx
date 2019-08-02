@@ -3,9 +3,9 @@ import uuidv1 from 'uuid/v1';
 
 import { TextInput, Label, Button } from '../../../design-system/components';
 
-interface ISubscriptionFormProps {}
+interface IFormProps {}
 
-const SubscriptionForm: React.FC<ISubscriptionFormProps> = () => {
+const Form: React.FC<IFormProps> = () => {
 	const textInputId: string = uuidv1();
 	return (
 		<Fragment>
@@ -18,4 +18,4 @@ const SubscriptionForm: React.FC<ISubscriptionFormProps> = () => {
 	);
 };
 
-export default SubscriptionForm;
+export default Form;
