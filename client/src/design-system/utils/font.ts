@@ -16,4 +16,17 @@ export default `
 	.u-font-primary {
 		font-family: ${primaryFontFamily} !important;
 	}
+
+	.u-font-left {
+		text-align: left !important;
+	}
+
+	.u-font-center {
+		text-align: center !important;
+	}
+
+	.u-font-right {
+		text-align: right !important;
+	}
+
 `;
