@@ -4,6 +4,7 @@ export type ButtonVariantStrings = 'normal' | 'primary' | 'danger' |
 'dangerLight' | 'success' | 'successLight';
 
 export interface IButtonProps {
+	className?: string,
 	variant?: ButtonVariantStrings,
 	transparent?: boolean,
 	selected?: boolean,
