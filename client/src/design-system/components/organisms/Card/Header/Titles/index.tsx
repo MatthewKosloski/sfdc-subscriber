@@ -9,9 +9,9 @@ import Subtitle from './Subtitle';
 const Titles: React.FC<IHeaderProps> = (props) => {
 	return(
 		<Container {...props}>
-			<Title>{props.title}</Title>
-			{props.subtitle &&
-				<Subtitle>{props.subtitle}</Subtitle>
+			<Title>{props.titleText}</Title>
+			{props.subtitleText &&
+				<Subtitle>{props.subtitleText}</Subtitle>
 			}
 		</Container>
 	);

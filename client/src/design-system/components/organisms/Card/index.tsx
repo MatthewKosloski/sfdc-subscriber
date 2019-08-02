@@ -6,8 +6,8 @@ import Body from './Body';
 import Footer from './Footer';
 
 export interface ICardProps {
-	title: string,
-	subtitle?: string,
+	titleText: string,
+	subtitleText?: string,
 	sideHeaderComponent?: React.ReactElement,
 	footerComponent?: React.ReactElement,
 	noPaddedBody?: boolean,

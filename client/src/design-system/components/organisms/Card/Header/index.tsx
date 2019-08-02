@@ -4,8 +4,8 @@ import Container from './Container';
 import Titles from './Titles';
 
 export interface IHeaderProps {
-	title: string,
-	subtitle?: string,
+	titleText: string,
+	subtitleText?: string,
 	sideHeaderComponent?: React.ReactElement
 };
 
