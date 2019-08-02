@@ -7,19 +7,24 @@ import Footer from './Footer';
 
 export interface ICardProps {
 	titleText: string,
+	className?: string,
 	subtitleText?: string,
 	sideHeaderComponent?: React.ReactElement,
 	footerComponent?: React.ReactElement,
 	noPaddedBody?: boolean,
 	fullBodyHeight?: boolean,
-	constrictBodyHeight?: boolean
+	constrictBodyHeight?: boolean,
+	headerHasSpaceBetween?: boolean
 };
 
 const Card: React.FC<ICardProps> = (props) => {
+
+	const { className, ...rest } = props;
+
 	return(
-		<Container>
-			<Header {...props} />
-			<Body {...props}>
+		<Container className={className}>
+			<Header {...rest} />
+			<Body {...rest}>
 				{props.children}
 			</Body>
 			{props.footerComponent &&

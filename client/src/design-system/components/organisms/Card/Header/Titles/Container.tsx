@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { IHeaderProps } from '../';
+import { ICardProps } from '../../';
 
-const Container = styled.div<IHeaderProps>`
-	${(props) => (props.sideHeaderComponent != null) && `
+const Container = styled.div<ICardProps>`
+	${(props) => (props.sideHeaderComponent != null && props.headerHasSpaceBetween) && `
 		margin-right: auto;
 	`}
 `;

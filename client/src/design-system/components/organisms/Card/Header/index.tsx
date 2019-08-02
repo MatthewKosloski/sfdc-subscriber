@@ -3,13 +3,9 @@ import React from 'react';
 import Container from './Container';
 import Titles from './Titles';
 
-export interface IHeaderProps {
-	titleText: string,
-	subtitleText?: string,
-	sideHeaderComponent?: React.ReactElement
-};
+import { ICardProps } from '../';
 
-const Header: React.FC<IHeaderProps> = (props) => {
+const Header: React.FC<ICardProps> = (props) => {
 	return(
 		<Container>
 			<Titles {...props} />
