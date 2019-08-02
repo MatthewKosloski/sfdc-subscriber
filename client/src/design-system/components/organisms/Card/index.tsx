@@ -6,7 +6,6 @@ import Body from './Body';
 import Footer from './Footer';
 
 export interface ICardProps {
-	titleText: string,
 	className?: string,
 	subtitleText?: string,
 	sideHeaderComponent?: React.ReactElement,
@@ -14,7 +13,8 @@ export interface ICardProps {
 	noPaddedBody?: boolean,
 	fullBodyHeight?: boolean,
 	constrictBodyHeight?: boolean,
-	headerHasSpaceBetween?: boolean
+	headerHasSpaceBetween?: boolean,
+	titleText: string
 };
 
 const Card: React.FC<ICardProps> = (props) => {
