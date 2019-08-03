@@ -16,6 +16,7 @@ const TrendBadge: React.FC<ITrendBadgeProps> = ({svg, count , ...rest}) => (
 
 TrendBadge.defaultProps = {
 	count: '0',
+	variant: 'successLight',
 	svg: <ArrowUp />
 };
 
