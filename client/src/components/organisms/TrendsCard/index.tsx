@@ -2,11 +2,8 @@ import React from 'react';
 
 import { Card } from '../../../design-system/components';
 
-import TrendBadgeNegative from './TrendBadgeNegative';
-import TrendBadgePositive from './TrendBadgePositive';
-
-import { CardListItems } from '../';
-import CardListItem from './CardListItem';
+import { CardListItems as TrendsCardListItems } from '../';
+import TrendsCardListItem from './TrendsCardListItem';
 
 import Container from './Container';
 
@@ -18,24 +15,19 @@ const TrendsCard: React.FC<ITrendsCardProps> = () => (
 			titleText="Trends"
 			fullBodyHeight
 			noPaddedBody>
-			<CardListItems>
-				<CardListItem
-					titleText="Product_License_Expiration__e"
-					subtitleText="for 1 minute"
-					borderLeftColor="rgba(43, 46, 106, 1)" />
-				<CardListItem
+			<TrendsCardListItems>
+				<TrendsCardListItem
 					titleText="DataCenter_Exception__e"
-					subtitleText="for 2 minutes"
-					borderLeftColor="rgba(255, 193, 24, 1)" />
-				<CardListItem
+					subtitleText="since 0 minutes ago"
+					borderLeftColor="rgba(255, 193, 24, 1)"
+					trendCount="23" />
+				<TrendsCardListItem
 					titleText="DataCenter_Status_Change__e"
-					subtitleText="for 9 minutes"
-					borderLeftColor="rgba(0, 237, 188, 1)" />
-				<CardListItem
-					titleText="Client_Health_Change__e"
-					subtitleText="for 12 minutes"
-					borderLeftColor="rgba(149, 62, 189, 1)" />
-			</CardListItems>
+					subtitleText="since 9 minutes ago"
+					borderLeftColor="rgba(0, 237, 188, 1)"
+					trendCount="6"
+					uptrend={false} />
+			</TrendsCardListItems>
 		</Card>
 	</Container>
 );
