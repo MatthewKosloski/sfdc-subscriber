@@ -1,4 +1,4 @@
-import { msRem, pxToEm, pxToRem, vrEm, vrRem, round } from './functions';
+import { msRem, pxToEm, pxToRem, vrEmFunc, vrRemFunc, round } from './functions';
 import { Breakpoint, BreakpointStrings, ColumnWidths, ColumnSizes } from '../theme/layout';
 import { Step, Spacing, StepStrings, stepStringsArr, SpacingStrings,
 	spacingStringsArr } from '../theme/spacing';
@@ -269,6 +269,22 @@ export function dropdownButtonVariant(props: IButtonProps): string {
 	return css;
 }
 
+export function vrEm(properties: string[], stepXs: number, stepLg: number = stepXs,
+	isNegative: boolean = false, isImportant: boolean = false, ratioXs: number = typography.ratioXs, 
+	ratioLg: number = typography.ratioLg): string {
+	let css: string = '';
+	css += _responsiveVrEm(properties, stepXs, stepLg, ratioXs, ratioLg, isNegative, isImportant);
+	return css;
+}
+
+export function vrRem(properties: string[], stepXs: number, stepLg: number = stepXs,
+	isNegative: boolean = false, isImportant: boolean = false, ratioXs: number = typography.ratioXs, 
+	ratioLg: number = typography.ratioLg): string {
+	let css: string = '';
+	css += _responsiveVrRem(properties, stepXs, stepLg, ratioXs, ratioLg, isNegative, isImportant);
+	return css;
+}
+
 /* Private Methods */
 
 function _setCSSProperty(property: string, value: any, isNegative: boolean = false,
@@ -334,12 +350,12 @@ function _responsiveVr(properties: string[], stepXs: number, stepLg: number, rat
 	isImportant: boolean = false): string {
 
 	const valueXs: string = isEm
-		? vrEm(stepXs, ratioXs)
-		: vrRem(stepXs, ratioXs);
+		? vrEmFunc(stepXs, ratioXs)
+		: vrRemFunc(stepXs, ratioXs);
 
 	const valueLg: string = isEm
-		? vrEm(stepLg, ratioLg)
-		: vrRem(stepLg, ratioLg);
+		? vrEmFunc(stepLg, ratioLg)
+		: vrRemFunc(stepLg, ratioLg);
 
 	const css: string = `
 		${_setCSSProperties(properties, valueXs, isNegative, isImportant)}

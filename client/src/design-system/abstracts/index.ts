@@ -1,12 +1,71 @@
-import { round, pxToEm, pxToRem, vrEm, vrRem, msRem } from './functions';
-import { breakpoint, fluidType, spacingEm, negativeSpacingEm, spacingRem,
-	negativeSpacingRem, initRootType, flexColumn, flexColumns, buttonVariant,
-	createSpacingUtilClasses, dropdownButtonVariant } from './mixins';
+import {
+	round,
+	pxToEm,
+	pxToRem,
+	vrEmFunc,
+	vrRemFunc,
+	msRem 
+} from './functions';
 
-export { round, pxToEm, pxToRem, vrEm, vrRem, msRem, breakpoint, fluidType,
-	spacingEm, negativeSpacingEm, spacingRem, negativeSpacingRem, initRootType,
-	flexColumn, flexColumns, buttonVariant, createSpacingUtilClasses, dropdownButtonVariant };
+import {
+	breakpoint,
+	fluidType,
+	spacingEm,
+	negativeSpacingEm,
+	spacingRem,
+	negativeSpacingRem,
+	initRootType,
+	flexColumn,
+	flexColumns,
+	buttonVariant,
+	createSpacingUtilClasses,
+	dropdownButtonVariant,
+	vrEm,
+	vrRem
+} from './mixins';
 
-export default { round, pxToEm, pxToRem, vrEm, vrRem, msRem, breakpoint, fluidType, spacingEm,
-	negativeSpacingEm, spacingRem, negativeSpacingRem, initRootType, flexColumn, flexColumns,
-	buttonVariant, createSpacingUtilClasses, dropdownButtonVariant };
+export {
+	round,
+	pxToEm,
+	pxToRem,
+	vrEmFunc,
+	vrRemFunc,
+	msRem,
+	breakpoint,
+	fluidType,
+	spacingEm,
+	negativeSpacingEm,
+	spacingRem,
+	negativeSpacingRem,
+	initRootType,
+	flexColumn,
+	flexColumns,
+	buttonVariant,
+	createSpacingUtilClasses,
+	dropdownButtonVariant,
+	vrEm,
+	vrRem
+};
+
+export default {
+	round,
+	pxToEm,
+	pxToRem,
+	vrEmFunc,
+	vrRemFunc,
+	msRem,
+	breakpoint,
+	fluidType,
+	spacingEm,
+	negativeSpacingEm,
+	spacingRem,
+	negativeSpacingRem,
+	initRootType,
+	flexColumn,
+	flexColumns,
+	buttonVariant,
+	createSpacingUtilClasses,
+	dropdownButtonVariant,
+	vrEm,
+	vrRem 
+};
