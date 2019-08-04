@@ -5,6 +5,7 @@ import SubscriptionsCard from './SubscriptionsCard';
 import TrendsCard from './TrendsCard';
 import Sidebar from './Sidebar';
 import CardListItems from './CardListItems';
+import EventLogSidebar from './EventLogSidebar';
 
 export {
 	Header,
@@ -13,7 +14,8 @@ export {
 	SubscriptionsCard,
 	TrendsCard,
 	Sidebar,
-	CardListItems
+	CardListItems,
+	EventLogSidebar
 };
 
 export default {
@@ -23,5 +25,6 @@ export default {
 	SubscriptionsCard,
 	TrendsCard,
 	Sidebar,
-	CardListItems
+	CardListItems,
+	EventLogSidebar
 };

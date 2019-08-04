@@ -1,5 +1,33 @@
-import { Header, Main, TimelineCard, SubscriptionsCard, TrendsCard, Sidebar } from './organisms';
 import GlobalStyle from './GlobalStyle';
 
-export { Header, Main, TimelineCard, GlobalStyle, SubscriptionsCard, TrendsCard, Sidebar };
-export default { Header, Main, TimelineCard, GlobalStyle, SubscriptionsCard, TrendsCard, Sidebar };
+import {
+    Header,
+    Main,
+    TimelineCard,
+    SubscriptionsCard,
+    TrendsCard,
+    Sidebar,
+    EventLogSidebar 
+} from './organisms';
+
+export {
+    Header,
+    Main,
+    TimelineCard,
+    GlobalStyle,
+    SubscriptionsCard,
+    TrendsCard,
+    Sidebar,
+    EventLogSidebar 
+};
+
+export default {
+    Header,
+    Main,
+    TimelineCard,
+    GlobalStyle,
+    SubscriptionsCard,
+    TrendsCard,
+    Sidebar ,
+    EventLogSidebar
+};
