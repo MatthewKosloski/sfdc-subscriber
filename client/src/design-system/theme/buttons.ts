@@ -11,7 +11,8 @@ export interface IButtonProps {
     outline?: boolean,
     heavy?: boolean,
     small?: boolean,
-    large?: boolean
+	large?: boolean,
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
 };
 
 export const defaultButtonProps: IButtonProps = {
