@@ -1,12 +1,21 @@
 import React from 'react';
 
 import Container from './Container';
+import Header from './Header';
+import Body from './Body';
 
-interface ISidebarProps {}
+interface ISidebarProps {
+	headerComponent?: React.ReactElement
+}
 
-const Sidebar: React.FC<ISidebarProps> = (props) => (
+const Sidebar: React.FC<ISidebarProps> = ({headerComponent, children}) => (
 	<Container>
-		{props.children}
+		<Header>
+			{headerComponent}
+		</Header>
+		<Body>
+			{children}
+		</Body>
 	</Container>
 );
 
