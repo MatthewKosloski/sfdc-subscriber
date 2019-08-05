@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Card } from '../../../design-system/components';
 
-import { CardListItems } from '../';
+import { CardListItems as SubscriptionsList } from '../';
 
 import Container from './Container';
 import Counter from './Counter';
 import Form from './Form';
-import CardListItem from './CardListItem';
+import Subscription from './Subscription';
 
 interface ISubscriptionsCard {}
 
@@ -15,28 +15,35 @@ const SubscriptionsCard: React.FC<ISubscriptionsCard> = () => (
 	<Container>
 		<Card
 			titleText="Subscriptions"
-			sideHeaderComponent={<Counter />}
-			footerComponent={<Form />}
+			sideHeaderComponent={<Counter count={54}/>}
+			footerComponent={<Form onSubmit={(e) => {
+				console.log('handle form submit');
+				e.preventDefault();
+			}}/>}
 			constrictBodyHeight
 			noPaddedBody>
-			<CardListItems>
-				<CardListItem
-					titleText="Product_License_Expiration__e"
-					subtitleText="for 1 minute"
-					borderLeftColor="rgba(43, 46, 106, 1)" />
-				<CardListItem
-					titleText="DataCenter_Exception__e"
-					subtitleText="for 2 minutes"
-					borderLeftColor="rgba(255, 193, 24, 1)" />
-				<CardListItem
-					titleText="DataCenter_Status_Change__e"
-					subtitleText="for 9 minutes"
-					borderLeftColor="rgba(0, 237, 188, 1)" />
-				<CardListItem
-					titleText="Client_Health_Change__e"
-					subtitleText="for 12 minutes"
-					borderLeftColor="rgba(149, 62, 189, 1)" />
-			</CardListItems>
+			<SubscriptionsList>
+				<Subscription
+					eventApiName="Product_License_Expiration__e"
+					minuteDuration={1}
+					color="rgba(43, 46, 106, 1)"
+					onUnsubscribeClick={() => console.log('Product_License_Expiration__e')} />
+				<Subscription
+					eventApiName="DataCenter_Exception__e"
+					minuteDuration={2}
+					color="rgba(255, 193, 24, 1)"
+					onUnsubscribeClick={() => console.log('DataCenter_Exception__e')} />
+				<Subscription
+					eventApiName="DataCenter_Status_Change__e"
+					minuteDuration={9}
+					color="rgba(0, 237, 188, 1)"
+					onUnsubscribeClick={() => console.log('DataCenter_Status_Change__e')} />
+				<Subscription
+					eventApiName="Client_Health_Change__e"
+					minuteDuration={12}
+					color="rgba(149, 62, 189, 1)"
+					onUnsubscribeClick={() => console.log('Client_Health_Change__e')} />
+			</SubscriptionsList>
 		</Card>
 	</Container>
 );
