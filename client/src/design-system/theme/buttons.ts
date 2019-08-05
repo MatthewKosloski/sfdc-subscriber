@@ -12,11 +12,13 @@ export interface IButtonProps {
     heavy?: boolean,
     small?: boolean,
 	large?: boolean,
-	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void,
+	type?: string
 };
 
 export const defaultButtonProps: IButtonProps = {
-    variant: 'normal'
+	variant: 'normal',
+	type: 'button'
 };
 
 export const normal = {
