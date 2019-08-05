@@ -6,16 +6,16 @@ import { ICardListItemProps } from '../../molecules/CardListItem';
 import TrendBadgeNegative from './TrendBadgeNegative';
 import TrendBadgePositive from './TrendBadgePositive';
 
-interface ITrendsCardListItemProps extends ICardListItemProps {
+interface ITrendsListItem extends ICardListItemProps {
 	trendCount?: string,
 	uptrend?: boolean
 }
 
-const TrendsCardListItem: React.FC<ITrendsCardListItemProps> = ({uptrend, 
+const TrendsListItem: React.FC<ITrendsListItem> = ({uptrend,
 	trendCount, ...rest}) => (
 	<Fragment>
 		<CardListItem {...rest}>
-			{uptrend 
+			{uptrend
 				? <TrendBadgePositive count={trendCount}/>
 				: <TrendBadgeNegative count={trendCount}/>
 			}
@@ -23,9 +23,9 @@ const TrendsCardListItem: React.FC<ITrendsCardListItemProps> = ({uptrend,
 	</Fragment>
 );
 
-TrendsCardListItem.defaultProps = {
+TrendsListItem.defaultProps = {
 	trendCount: '0',
 	uptrend: true
 };
 
-export default TrendsCardListItem;
+export default TrendsListItem;
