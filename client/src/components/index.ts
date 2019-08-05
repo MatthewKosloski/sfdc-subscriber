@@ -11,7 +11,8 @@ import {
     TrendsCard,
     Sidebar,
 	EventLogSidebar,
-	CardListItems
+	CardListItems,
+	DataContainer
 } from './organisms';
 
 export {
@@ -23,7 +24,8 @@ export {
     Sidebar,
 	EventLogSidebar,
 	CardListItem,
-	CardListItems
+	CardListItems,
+	DataContainer
 };
 
 export default {
@@ -35,5 +37,6 @@ export default {
     Sidebar ,
 	EventLogSidebar,
 	CardListItem,
-	CardListItems
+	CardListItems,
+	DataContainer
 };

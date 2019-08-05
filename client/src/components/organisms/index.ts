@@ -5,6 +5,7 @@ import TrendsCard from './TrendsCard';
 import Sidebar from './Sidebar';
 import CardListItems from './CardListItems';
 import EventLogSidebar from './EventLogSidebar';
+import DataContainer from './DataContainer';
 
 export {
 	Header,
@@ -13,7 +14,8 @@ export {
 	TrendsCard,
 	Sidebar,
 	CardListItems,
-	EventLogSidebar
+	EventLogSidebar,
+	DataContainer
 };
 
 export default {
@@ -23,5 +25,6 @@ export default {
 	TrendsCard,
 	Sidebar,
 	CardListItems,
-	EventLogSidebar
+	EventLogSidebar,
+	DataContainer
 };
