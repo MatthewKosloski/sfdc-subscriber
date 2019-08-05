@@ -3,8 +3,8 @@ import React from 'react';
 import { Card } from '../../../design-system/components';
 
 import { CardListItems as TrendsCardListItems } from '../';
-import TrendsCardListItem from './TrendsCardListItem';
 
+import TrendsCardListItem from './TrendsCardListItem';
 import Container from './Container';
 
 interface ITrendsCardProps {}
