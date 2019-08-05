@@ -3,7 +3,7 @@ import React from 'react';
 import { Badge } from '../../../design-system/components';
 
 interface ICounterProps {
-	count?: string
+	count?: number
 }
 
 const CounterProps: React.FC<ICounterProps> = ({count}) => (
@@ -17,7 +17,7 @@ const CounterProps: React.FC<ICounterProps> = ({count}) => (
 );
 
 CounterProps.defaultProps = {
-	count: '0'
+	count: 0
 };
 
 export default CounterProps;
