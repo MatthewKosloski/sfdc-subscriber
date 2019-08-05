@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Card } from '../../../design-system/components';
 
-import { CardListItems as TrendsCardListItems } from '../';
+import { CardListItems as TrendsList } from '../';
 
 import TrendsCardListItem from './TrendsCardListItem';
 import Container from './Container';
@@ -15,7 +15,7 @@ const TrendsCard: React.FC<ITrendsCardProps> = () => (
 			titleText="Trends"
 			fullBodyHeight
 			noPaddedBody>
-			<TrendsCardListItems>
+			<TrendsList>
 				<TrendsCardListItem
 					titleText="DataCenter_Exception__e"
 					subtitleText="since 0 minutes ago"
@@ -27,7 +27,7 @@ const TrendsCard: React.FC<ITrendsCardProps> = () => (
 					borderLeftColor="rgba(0, 237, 188, 1)"
 					trendCount="6"
 					uptrend={false} />
-			</TrendsCardListItems>
+			</TrendsList>
 		</Card>
 	</Container>
 );
