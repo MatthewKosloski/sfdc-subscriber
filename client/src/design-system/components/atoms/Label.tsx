@@ -1,10 +1,26 @@
 import styled from 'styled-components';
 
-import { spacingEm } from '../../abstracts/mixins';
+import { spacingEm } from '../../abstracts';
 
-const Label = styled.label`
-	${spacingEm(['MB'], 'Half')};
-    display: block;
+interface ILabelProps {
+    inline?: boolean,
+    block?: boolean
+}
+
+const Label = styled.label<ILabelProps>`
+    ${(props) => props.block && `
+        ${spacingEm(['MB'], 'Half')};
+        display: block;
+    `}
+    ${(props) => props.inline && `
+        ${spacingEm(['MR'], 'Half')};
+        display: inline-block;
+    `}
 `;
+
+Label.defaultProps = {
+    inline: false,
+    block: true
+};
 
 export default Label;

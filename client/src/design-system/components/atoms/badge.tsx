@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { pxToEm } from '../../abstracts/functions';
-import { defaultProps } from '../../theme/buttons';
-import withDefaultProps from '../../hoc/withDefaultProps';
+
+import { pxToEm } from '../../abstracts';
+import { defaultButtonProps } from '../../theme';
+import { withDefaultProps } from '../../hoc/';
 
 import { StyledButton } from './Button';
 
@@ -14,6 +15,6 @@ const StyledBadge = styled(StyledButton).attrs({
 	cursor: auto;
 `;
 
-const Badge = withDefaultProps(StyledBadge, {...defaultProps});
+const Badge = withDefaultProps(StyledBadge, {...defaultButtonProps});
 
 export default Badge;

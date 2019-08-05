@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { containerWidth } from '../theme/layout';
-import { spacingRem } from '../abstracts/mixins';
+
+import { containerWidth } from '../theme';
+import { spacingRem } from '../abstracts';
 
 interface IContainerProps {};
 

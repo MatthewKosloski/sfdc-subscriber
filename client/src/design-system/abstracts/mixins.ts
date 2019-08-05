@@ -1,6 +1,7 @@
-import { msRem, pxToEm, pxToRem, vrEm, vrRem, round } from '../abstracts/functions';
+import { msRem, pxToEm, pxToRem, vrEmFunc, vrRemFunc, round } from './functions';
 import { Breakpoint, BreakpointStrings, ColumnWidths, ColumnSizes } from '../theme/layout';
-import { Step, Spacing, StepStrings, SpacingStrings } from '../theme/spacing';
+import { Step, Spacing, StepStrings, stepStringsArr, SpacingStrings,
+	spacingStringsArr } from '../theme/spacing';
 import buttonVariants, { IButtonProps } from '../theme/buttons';
 import { neutralBlack } from '../theme/colors';
 import typography from '../theme/typography';
@@ -199,6 +200,36 @@ export function buttonVariant(props: IButtonProps, borderWidth: number = 1): str
 	return css;
 }
 
+export function createSpacingUtilClasses(): string {
+	let css: string = '';
+
+	spacingStringsArr.forEach((spacingString) => {
+
+		const spacingStringLowerCase: string = spacingString.toLowerCase();
+
+		const prop: Spacing = Spacing[spacingString as SpacingStrings];
+		css += `.u-${spacingStringLowerCase}-auto {
+			${prop}: auto;
+		}`;
+
+		stepStringsArr.forEach((stepString) => {
+
+			const stepStringLowerCase: string = stepString.toLowerCase();
+			const shorthands: SpacingStrings[] = [spacingString as SpacingStrings];
+			const stepXs: StepStrings = stepString as StepStrings;
+			const stepXl: StepStrings = stepXs;
+			const isImportant: boolean = true;
+
+			css += `.u-${spacingStringLowerCase}-${stepStringLowerCase} {
+				${spacingEm(shorthands, stepXs, stepXl, isImportant)}
+			}`;
+
+		});
+	});
+
+	return css;
+}
+
 export function dropdownButtonVariant(props: IButtonProps): string {
 	let css: string = '';
 
@@ -235,6 +266,22 @@ export function dropdownButtonVariant(props: IButtonProps): string {
 		}
 	}
 
+	return css;
+}
+
+export function vrEm(properties: string[], stepXs: number, stepLg: number = stepXs,
+	isNegative: boolean = false, isImportant: boolean = false, ratioXs: number = typography.ratioXs, 
+	ratioLg: number = typography.ratioLg): string {
+	let css: string = '';
+	css += _responsiveVrEm(properties, stepXs, stepLg, ratioXs, ratioLg, isNegative, isImportant);
+	return css;
+}
+
+export function vrRem(properties: string[], stepXs: number, stepLg: number = stepXs,
+	isNegative: boolean = false, isImportant: boolean = false, ratioXs: number = typography.ratioXs, 
+	ratioLg: number = typography.ratioLg): string {
+	let css: string = '';
+	css += _responsiveVrRem(properties, stepXs, stepLg, ratioXs, ratioLg, isNegative, isImportant);
 	return css;
 }
 
@@ -303,12 +350,12 @@ function _responsiveVr(properties: string[], stepXs: number, stepLg: number, rat
 	isImportant: boolean = false): string {
 
 	const valueXs: string = isEm
-		? vrEm(stepXs, ratioXs)
-		: vrRem(stepXs, ratioXs);
+		? vrEmFunc(stepXs, ratioXs)
+		: vrRemFunc(stepXs, ratioXs);
 
 	const valueLg: string = isEm
-		? vrEm(stepLg, ratioLg)
-		: vrRem(stepLg, ratioLg);
+		? vrEmFunc(stepLg, ratioLg)
+		: vrRemFunc(stepLg, ratioLg);
 
 	const css: string = `
 		${_setCSSProperties(properties, valueXs, isNegative, isImportant)}

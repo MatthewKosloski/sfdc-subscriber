@@ -2,14 +2,14 @@
 
 /**
  * Rounds a number to a certain precision.
- * 
+ *
  * @param num The number to round.
- * @param precision The number of digits that appear after 
+ * @param precision The number of digits that appear after
  * the decimal.
- * 
+ *
  * @example
  * 		round(3.141592, 2) -> 3.14
- * 
+ *
  */
 export function round(num: number, precision: number = 2): number {
 	return Number(num.toFixed(precision));
@@ -59,7 +59,7 @@ export function pxToRem(px: number, baseFontSize: number = 100): string {
  * 		vrEm(2, 1.5) -> '3em'
  *
  */
-export function vrEm(multiplier: number, ratio: number = 1.3): string {
+export function vrEmFunc(multiplier: number, ratio: number = 1.3): string {
 	return _em(_vr(multiplier, ratio));
 };
 
@@ -74,7 +74,7 @@ export function vrEm(multiplier: number, ratio: number = 1.3): string {
  * 		vrRem(2, 2) -> '4rem'
  *
  */
-export function vrRem(multiplier: number, ratio: number = 1.3): string {
+export function vrRemFunc(multiplier: number, ratio: number = 1.3): string {
 	return _rem(_vr(multiplier, ratio));
 };
 

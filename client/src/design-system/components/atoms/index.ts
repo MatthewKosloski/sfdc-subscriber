@@ -1,11 +1,21 @@
-import { default as Badge } from './badge';
-import { default as Button } from './Button';
-import { default as Label } from './Label';
-import { default as TextInput } from './TextInput';
+import Badge from './badge';
+import Button from './Button';
+import Label from './Label';
+import TextInput from './TextInput';
+import Select from './Select';
+
+export {
+	Badge,
+    Button,
+	Label,
+	TextInput,
+	Select
+};
 
 export default {
     Badge,
     Button,
 	Label,
-	TextInput
+	TextInput,
+	Select
 };

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { spacingEm, buttonVariant } from '../../abstracts/mixins';
-import { pxToEm, pxToRem } from '../../abstracts/functions';
-import { IButtonProps, defaultProps } from '../../theme/buttons';
-import withDefaultProps from '../../hoc/withDefaultProps';
+
+import { spacingEm, buttonVariant, pxToEm, pxToRem } from '../../abstracts';
+import { IButtonProps, defaultButtonProps } from '../../theme/buttons';
+import { withDefaultProps } from '../../hoc';
 
 export const StyledButton = styled.button<IButtonProps>`
     ${spacingEm(['PT', 'PB'], 'Half')}
@@ -14,7 +14,7 @@ export const StyledButton = styled.button<IButtonProps>`
     transition-property: box-shadow, background-color, color, border-color;
     transition-duration: 0.15s;
     transition-timing-function: ease-in-out;
-    color: ${({theme: colors}) => colors.white};
+    color: ${({theme}) => theme.white};
 	user-select: none;
 
 	&:disabled {
@@ -42,6 +42,6 @@ export const StyledButton = styled.button<IButtonProps>`
 
 `;
 
-const Button = withDefaultProps(StyledButton, defaultProps);
+const Button = withDefaultProps(StyledButton, defaultButtonProps);
 
 export default Button;

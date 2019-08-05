@@ -4,17 +4,21 @@ export type ButtonVariantStrings = 'normal' | 'primary' | 'danger' |
 'dangerLight' | 'success' | 'successLight';
 
 export interface IButtonProps {
+	className?: string,
 	variant?: ButtonVariantStrings,
 	transparent?: boolean,
 	selected?: boolean,
     outline?: boolean,
     heavy?: boolean,
     small?: boolean,
-    large?: boolean
+	large?: boolean,
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void,
+	type?: string
 };
 
-export const defaultProps: IButtonProps = {
-    variant: 'normal'
+export const defaultButtonProps: IButtonProps = {
+	variant: 'normal',
+	type: 'button'
 };
 
 export const normal = {
