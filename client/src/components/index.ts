@@ -1,13 +1,17 @@
 import GlobalStyle from './GlobalStyle';
 
 import {
+	CardListItem
+} from './molecules';
+
+import {
     Header,
     Main,
     TimelineCard,
-    SubscriptionsCard,
     TrendsCard,
     Sidebar,
-    EventLogSidebar 
+	EventLogSidebar,
+	CardListItems
 } from './organisms';
 
 export {
@@ -15,10 +19,11 @@ export {
     Main,
     TimelineCard,
     GlobalStyle,
-    SubscriptionsCard,
     TrendsCard,
     Sidebar,
-    EventLogSidebar 
+	EventLogSidebar,
+	CardListItem,
+	CardListItems
 };
 
 export default {
@@ -26,8 +31,9 @@ export default {
     Main,
     TimelineCard,
     GlobalStyle,
-    SubscriptionsCard,
     TrendsCard,
     Sidebar ,
-    EventLogSidebar
+	EventLogSidebar,
+	CardListItem,
+	CardListItems
 };

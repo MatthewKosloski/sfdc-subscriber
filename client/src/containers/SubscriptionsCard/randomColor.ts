@@ -1,0 +1,45 @@
+const colors: string[] = [
+	'acquamarine',
+	'bisque',
+	'blueviolet',
+	'cadetblue',
+	'navy',
+	'coral',
+	'cornflowerblue',
+	'crimson',
+	'darkblue',
+	'darkorchid',
+	'darkred',
+	'darkslateblue',
+	'darkslategrey',
+	'deepskyblue',
+	'dimgrey',
+	'forestgreen',
+	'gold',
+	'hotpink',
+	'indianred',
+	'indigo',
+	'khaki',
+	'lightblue',
+	'lightcoral',
+	'lightgreen',
+	'lightsalmon',
+	'lightseagreen',
+	'lightskyblue',
+	'limegreen',
+	'mediumseagreen',
+	'orangered',
+	'orchid',
+	'palevioletred',
+	'peru',
+	'royalblue',
+	'sandybrown',
+	'seagreen',
+	'slateblue',
+	'rebeccapurple'
+];
+
+export default function(): string {
+	const randomIndex: number = Math.floor(Math.random() * colors.length);
+	return colors[randomIndex];
+}

@@ -3,7 +3,8 @@ import { ThemeProvider } from 'styled-components';
 
 import { Row, Column } from './design-system/layout';
 import { GlobalStyle, Header, Main, TimelineCard,
-	SubscriptionsCard, TrendsCard, EventLogSidebar } from './components';
+	TrendsCard, EventLogSidebar } from './components';
+import { SubscriptionsCard } from './containers';
 import theme from './theme';
 
 class App extends Component {
