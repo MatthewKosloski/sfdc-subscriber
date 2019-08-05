@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 
 import { Card } from '../../design-system/components';
-import { CardListItems as SubscriptionsList } from '../../components';
+import { CardListItems as SubscriptionsList, DataContainer } from '../../components';
 import { AppState } from '../../store';
 import { Subscription } from '../../store/subscriptions/types';
 import { addSubscription, removeSubscription } from '../../store/subscriptions/actions';
@@ -82,11 +82,15 @@ class SubscriptionsCard extends Component<Props, State> {
 					footerComponent={footerComponent}
 					constrictBodyHeight
 					noPaddedBody>
-					<SubscriptionsList>
-						{subscriptions.map((subscription) => {
-							return this.renderSubscriptionItem(subscription);
-						})}
-					</SubscriptionsList>
+					<DataContainer
+						hasData={subscriptions.length > 0}
+						noDataText="Not subscribed to any Platform Events.">
+						<SubscriptionsList>
+							{subscriptions.map((subscription) => {
+								return this.renderSubscriptionItem(subscription);
+							})}
+						</SubscriptionsList>
+					</DataContainer>
 				</Card>
 			</Container>
 		);
