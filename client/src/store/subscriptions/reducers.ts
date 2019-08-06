@@ -26,10 +26,8 @@ export function subscriptionsReducer(
 	switch(action.type) {
 		case ADD_SUBSCRIPTION: {
 			if(hasSubscription(state, action.payload.eventApiName)) {
-				console.log(`Already have subscription to ${action.payload.eventApiName}.`);
 				return state;
 			} else {
-				console.log(state);
 				return [action.payload, ...state];
 			}
 		}
