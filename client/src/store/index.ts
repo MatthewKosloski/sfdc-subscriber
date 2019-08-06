@@ -1,8 +1,9 @@
-import { createStore, combineReducers } from 'redux';
-import { devToolsEnhancer } from 'redux-devtools-extension';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { subscriptionsReducer } from './subscriptions/reducers';
 import { eventsReducer } from './events/reducers';
+import { logger, socket } from './middleware';
 
 const rootReducer = combineReducers({
 	subscriptions: subscriptionsReducer,
@@ -12,9 +13,8 @@ const rootReducer = combineReducers({
 export type AppState = ReturnType<typeof rootReducer>;
 
 export default function configureStore() {
-	const store = createStore(
-		rootReducer,
-		devToolsEnhancer({})
-	);
+	const store = createStore(rootReducer, composeWithDevTools(
+		applyMiddleware(logger(), socket())
+	));
 	return store;
 }
