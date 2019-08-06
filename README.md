@@ -68,6 +68,7 @@ npm run test:coverage-silent
 ### Redux
 [Proper Typing of react-redux Connected Components](https://medium.com/knerd/typescript-tips-series-proper-typing-of-react-redux-connected-components-eda058b6727d)
 [Socket.io Middlware](http://nmajor.com/posts/using-socket-io-with-redux-websocket-redux-middleware)
+[Beginner's Guide to Redux Middleware](https://www.codementor.io/vkarpov/beginner-s-guide-to-redux-middleware-du107uyud)
 
 ### CometD
 
