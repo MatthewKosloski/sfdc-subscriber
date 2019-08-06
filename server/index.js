@@ -11,13 +11,13 @@ const SFDCClient = require('./modules/SFDCClient');
 
 const socketController = require('./socketController');
 
-const { 
-	SFDC_SUBSCRIBER_CLIENT_ID: CLIENT_ID, 
-	SFDC_SUBSCRIBER_CLIENT_SECRET: CLIENT_SECRET, 
-	SFDC_SUBSCRIBER_USERNAME: USERNAME, 
-	SFDC_SUBSCRIBER_PASSWORD: PASSWORD, 
+const {
+	SFDC_SUBSCRIBER_CLIENT_ID: CLIENT_ID,
+	SFDC_SUBSCRIBER_CLIENT_SECRET: CLIENT_SECRET,
+	SFDC_SUBSCRIBER_USERNAME: USERNAME,
+	SFDC_SUBSCRIBER_PASSWORD: PASSWORD,
 	SFDC_SUBSCRIBER_API_VERSION: API_VERSION } = process.env;
-	
+
 const port = process.env.PORT || 3001;
 
 server.listen(port, () => {
@@ -25,14 +25,17 @@ server.listen(port, () => {
 });
 
 io.on('connection', (socket) => {
-	const cometd = new cometdLib.CometD();
-	const jsforce = new jsforceLib.Connection({
-		oauth2 : { 
-			CLIENT_ID: CLIENT_ID,
-			CLIENT_SECRET: CLIENT_SECRET
-		}
-	});
+	// const cometd = new cometdLib.CometD();
+	// const jsforce = new jsforceLib.Connection({
+	// 	oauth2 : {
+	// 		CLIENT_ID: CLIENT_ID,
+	// 		CLIENT_SECRET: CLIENT_SECRET
+	// 	}
+	// });
 
-	const client = new SFDCClient(cometd, jsforce, USERNAME, PASSWORD, API_VERSION, true);
-	socketController(client, socket);
+	// const client = new SFDCClient(cometd, jsforce, USERNAME, PASSWORD, API_VERSION, true);
+	// socketController(client, socket);
+	socket.on('PLATFORM_EVENT_SUBSCRIPTION_REQUEST', (data) => {
+		console.log('got a subscription request', data);
+	});
 });
