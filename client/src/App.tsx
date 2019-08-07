@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { Row, Column } from './design-system/layout';
 import { GlobalStyle, Header, Main, TimelineCard,
 	TrendsCard, EventLogSidebar } from './components';
-import { SubscriptionsCard } from './containers';
+import { SubscriptionsCard, ToastContainer } from './containers';
 import theme from './theme';
 
 class App extends Component {
@@ -15,6 +15,7 @@ class App extends Component {
 				<GlobalStyle />
 				<ThemeProvider theme={theme}>
 					<Fragment>
+						<ToastContainer />
 						<Header title="SFDC Subscriber" />
 						<div className="u-display-flex">
 							<Main>
@@ -25,8 +26,7 @@ class App extends Component {
 								</Row>
 								<Row style={{minHeight: '40vh'}}>
 									<Column
-										sizes={[['XS', 12], ['LG', 6]]}
-										className="u-pr-zero">
+										sizes={[['XS', 12], ['LG', 6]]}>
 										<SubscriptionsCard />
 									</Column>
 									<Column sizes={[['XS', 12], ['LG', 6]]}>
