@@ -35,14 +35,22 @@ io.on('connection', (socket) => {
 
 	// const client = new SFDCClient(cometd, jsforce, USERNAME, PASSWORD, API_VERSION, true);
 	// socketController(client, socket);
-	socket.on('PLATFORM_EVENT_SUBSCRIPTION_REQUEST', (data) => {
-		console.log('got a subscription request', data);
-		console.log('will send back success');
-		socket.emit('PLATFORM_EVENT_SUBSCRIPTION_SUCCESS', {
-			payload: {
-				successful: true,
-				subscription: data.payload.cometdChannel
+	socket.on('SUBSCRIPTION_REQUEST', (data) => {
+		console.log(`Received a SUBSCRIPTION_REQUEST.`);
+
+		console.log(`Attempting to subscribe to Cometd channel ${data.cometdChannel}.`);
+		const isSuccessful = false;
+
+		if(isSuccessful) {
+			console.log(`Success! will send back action `, data.successAction);
+			if(data.successAction) {
+				socket.emit('ACTION', data.successAction);
 			}
-		});
+		} else {
+			console.log(`Failed! Will send back action `, data.failureAction);
+			if(data.failureAction) {
+				socket.emit('ACTION', data.failureAction);
+			}
+		}
 	});
 });
