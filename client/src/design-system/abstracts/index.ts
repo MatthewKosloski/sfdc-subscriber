@@ -4,7 +4,7 @@ import {
 	pxToRem,
 	vrEmFunc,
 	vrRemFunc,
-	msRem 
+	msRem
 } from './functions';
 
 import {
@@ -21,7 +21,8 @@ import {
 	createSpacingUtilClasses,
 	dropdownButtonVariant,
 	vrEm,
-	vrRem
+	vrRem,
+	toastVariant
 } from './mixins';
 
 export {
@@ -44,7 +45,8 @@ export {
 	createSpacingUtilClasses,
 	dropdownButtonVariant,
 	vrEm,
-	vrRem
+	vrRem,
+	toastVariant
 };
 
 export default {
@@ -67,5 +69,6 @@ export default {
 	createSpacingUtilClasses,
 	dropdownButtonVariant,
 	vrEm,
-	vrRem 
+	vrRem,
+	toastVariant
 };
