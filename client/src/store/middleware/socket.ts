@@ -1,29 +1,17 @@
 import { MiddlewareAPI, Dispatch } from 'redux';
-import io from 'socket.io-client';
 
-import { addSubscription } from '../subscriptions/actions';
-
-function socket() {
-	const socket = io('http://localhost:3001');
-
+function socket(socket: SocketIOClient.Socket) {
 	return (store: MiddlewareAPI) => {
 
-		socket.on('PLATFORM_EVENT_SUBSCRIPTION_SUCCESS', (data: any) => {
-			store.dispatch(addSubscription({
-				color: 'salmon',
-				eventApiName: data.payload.subscription.replace('/event/', ''),
-				minuteDuration: 0
-			}));
-		});
+		socket.on('ACTION', store.dispatch);
 
 		return (next: Dispatch) => (action: any) => {
-
-			if(!action.event || !action.args) {
-				return next(action);
+			if(action.meta && action.meta.socket && action.meta.socket.event && action.meta.socket.payload) {
+				const { event, payload } = action.meta.socket;
+				socket.emit(event, payload);
 			}
-	
-			socket.emit(action.event, action.args);
-	
+
+			return next(action);
 		};
 	};
 }
