@@ -6,9 +6,9 @@ import { Card } from '../../design-system/components';
 import { CardListItems as SubscriptionsList, DataContainer } from '../../components';
 import { AppState } from '../../store';
 import { Subscription } from '../../store/subscriptions/types';
-import { subscribe } from '../../store/subscriptions/actions';
+import { subscriptionRequest } from '../../store/subscriptions/actions';
 
-import randomColor from './randomColor';
+// import randomColor from './randomColor';
 import Container from './Container';
 import Counter from './Counter';
 import Form from './Form';
@@ -21,7 +21,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	subscribe: typeof subscribe
+	subscriptionRequest: typeof subscriptionRequest
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -47,7 +47,7 @@ class SubscriptionsCard extends Component<Props, State> {
 		// 	minuteDuration: 0,
 		// 	color: randomColor()
 		// });
-		this.props.subscribe(eventApiName);
+		this.props.subscriptionRequest(eventApiName);
 	}
 
 	public renderSubscriptionItem(subscription: Subscription): JSX.Element {
@@ -102,7 +102,7 @@ const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
 });
 
 const dispatchProps: DispatchProps = {
-	subscribe
+	subscriptionRequest
 };
 
 export default connect<StateProps, DispatchProps, OwnProps, AppState>(
