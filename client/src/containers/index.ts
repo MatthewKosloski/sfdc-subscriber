@@ -1,9 +1,12 @@
 import SubscriptionsCard from './SubscriptionsCard';
+import ToastContainer from './ToastContainer';
 
 export {
-	SubscriptionsCard
+	SubscriptionsCard,
+	ToastContainer
 };
 
 export default {
-	SubscriptionsCard
+	SubscriptionsCard,
+	ToastContainer
 };
