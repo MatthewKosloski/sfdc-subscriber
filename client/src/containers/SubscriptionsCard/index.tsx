@@ -6,7 +6,7 @@ import { Card } from '../../design-system/components';
 import { CardListItems as SubscriptionsList, DataContainer } from '../../components';
 import { AppState } from '../../store';
 import { Subscription } from '../../store/subscriptions/types';
-import { addSubscription, removeSubscription } from '../../store/subscriptions/actions';
+import { subscribe } from '../../store/subscriptions/actions';
 
 import randomColor from './randomColor';
 import Container from './Container';
@@ -21,8 +21,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	addSubscription: typeof addSubscription,
-	removeSubscription: typeof removeSubscription
+	subscribe: typeof subscribe
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -40,15 +39,15 @@ class SubscriptionsCard extends Component<Props, State> {
 
 	public handleUnsubscribeClick(eventApiName: string): void {
 		console.log(`Unsubscribe from event ${eventApiName}.`);
-		this.props.removeSubscription(eventApiName);
 	}
 
 	public handleFormSubmit(eventApiName: string): void {
-		this.props.addSubscription({
-			eventApiName: eventApiName,
-			minuteDuration: 0,
-			color: randomColor()
-		});
+		// this.props.addSubscription({
+		// 	eventApiName: eventApiName,
+		// 	minuteDuration: 0,
+		// 	color: randomColor()
+		// });
+		this.props.subscribe(eventApiName);
 	}
 
 	public renderSubscriptionItem(subscription: Subscription): JSX.Element {
@@ -103,8 +102,7 @@ const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
 });
 
 const dispatchProps: DispatchProps = {
-	addSubscription,
-	removeSubscription
+	subscribe
 };
 
 export default connect<StateProps, DispatchProps, OwnProps, AppState>(

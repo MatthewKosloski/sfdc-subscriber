@@ -37,5 +37,12 @@ io.on('connection', (socket) => {
 	// socketController(client, socket);
 	socket.on('PLATFORM_EVENT_SUBSCRIPTION_REQUEST', (data) => {
 		console.log('got a subscription request', data);
+		console.log('will send back success');
+		socket.emit('PLATFORM_EVENT_SUBSCRIPTION_SUCCESS', {
+			payload: {
+				successful: true,
+				subscription: data.payload.cometdChannel
+			}
+		});
 	});
 });
