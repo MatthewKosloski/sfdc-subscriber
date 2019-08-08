@@ -9,7 +9,8 @@ const Body = styled.div`
     scrollbar-width: none;
     -ms-overflow-style: none;
     overflow: auto;
-    overflow-x: hidden;
+	overflow-x: hidden;
+	height: 100%;
 `;
 
 export default Body;
