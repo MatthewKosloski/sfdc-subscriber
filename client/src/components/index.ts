@@ -10,10 +10,13 @@ import {
     TimelineCard,
     TrendsCard,
     Sidebar,
-	EventLogSidebar,
 	CardListItems,
 	DataContainer
 } from './organisms';
+
+import {
+	Dashboard
+} from './pages';
 
 export {
     Header,
@@ -22,10 +25,10 @@ export {
     GlobalStyle,
     TrendsCard,
     Sidebar,
-	EventLogSidebar,
 	CardListItem,
 	CardListItems,
-	DataContainer
+	DataContainer,
+	Dashboard
 };
 
 export default {
@@ -35,8 +38,8 @@ export default {
     GlobalStyle,
     TrendsCard,
     Sidebar ,
-	EventLogSidebar,
 	CardListItem,
 	CardListItems,
-	DataContainer
+	DataContainer,
+	Dashboard
 };
