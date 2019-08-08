@@ -25,32 +25,14 @@ server.listen(port, () => {
 });
 
 io.on('connection', (socket) => {
-	// const cometd = new cometdLib.CometD();
-	// const jsforce = new jsforceLib.Connection({
-	// 	oauth2 : {
-	// 		CLIENT_ID: CLIENT_ID,
-	// 		CLIENT_SECRET: CLIENT_SECRET
-	// 	}
-	// });
-
-	// const client = new SFDCClient(cometd, jsforce, USERNAME, PASSWORD, API_VERSION, true);
-	// socketController(client, socket);
-	socket.on('SUBSCRIPTION_REQUEST', (data) => {
-		console.log(`Received a SUBSCRIPTION_REQUEST.`);
-
-		console.log(`Attempting to subscribe to Cometd channel ${data.cometdChannel}.`);
-		const isSuccessful = false;
-
-		if(isSuccessful) {
-			console.log(`Success! will send back action `, data.successAction);
-			if(data.successAction) {
-				socket.emit('ACTION', data.successAction);
-			}
-		} else {
-			console.log(`Failed! Will send back action `, data.failureAction);
-			if(data.failureAction) {
-				socket.emit('ACTION', data.failureAction);
-			}
+	const cometd = new cometdLib.CometD();
+	const jsforce = new jsforceLib.Connection({
+		oauth2 : {
+			CLIENT_ID: CLIENT_ID,
+			CLIENT_SECRET: CLIENT_SECRET
 		}
 	});
+
+	const client = new SFDCClient(cometd, jsforce, USERNAME, PASSWORD, API_VERSION, true);
+	socketController(client, socket);
 });
