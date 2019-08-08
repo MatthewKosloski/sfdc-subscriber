@@ -57,7 +57,8 @@ class EventLogSidebar extends Component<Props, State> {
 		const headerComponent: JSX.Element =
 			<Header
 				count={events.length}
-				onButtonClick={removeAllEvents} />;
+				onButtonClick={removeAllEvents}
+				isButtonDisabled={events.length === 0} />;
 
 		return(
 			<Sidebar headerComponent={headerComponent}>

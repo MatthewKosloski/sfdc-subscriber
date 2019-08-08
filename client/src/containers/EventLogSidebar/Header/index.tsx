@@ -8,22 +8,26 @@ import ClearButton from './ClearButton';
 
 interface Props {
 	count: number,
-	onButtonClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+	onButtonClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+	isButtonDisabled?: boolean
 }
 
-const Header: React.FC<Props> = ({count, onButtonClick}) => (
+const Header: React.FC<Props> = ({count, onButtonClick, isButtonDisabled}) => (
     <Fragment>
         <Titles titleText="Event Log" />
         <Counter count={count} />
         {/* <Form /> */}
-        <ClearButton onClick={onButtonClick}>
+		<ClearButton
+			disabled={isButtonDisabled}
+			onClick={onButtonClick}>
 			Clear All
 		</ClearButton>
     </Fragment>
 );
 
 Header.defaultProps = {
-	onButtonClick: () => {}
+	onButtonClick: () => {},
+	isButtonDisabled: false
 };
 
 export default Header;
