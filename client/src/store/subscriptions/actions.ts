@@ -8,6 +8,8 @@ import {
 	SubscriptionRequestAction
 } from './types';
 
+import SocketEvents from '../../socketEvents';
+
 import { addToastError } from '../toast/actions';
 
 export const addSubscription = (newSubscription: Subscription): AddSubscriptionAction => ({
@@ -34,7 +36,7 @@ export const subscriptionRequest = (eventApiName: string): SubscriptionRequestAc
 		type: SUBSCRIPTION_REQUEST,
 		meta: {
 			socket: {
-				event: SUBSCRIPTION_REQUEST,
+				event: SocketEvents.PLATFORM_EVENT_SUBSCRIPTION_REQUEST,
 				payload: {
 					successAction: addSubscription(subscription),
 					failureAction: addToastError(`Failed to subscribe to event ${eventApiName}. Make sure you entered in the correct API name.`),
