@@ -8,6 +8,8 @@ import {
 	SubscriptionRequestAction
 } from './types';
 
+import { addToastError } from '../toast/actions';
+
 export const addSubscription = (newSubscription: Subscription): AddSubscriptionAction => ({
 	type: ADD_SUBSCRIPTION,
 	payload: newSubscription
@@ -35,7 +37,7 @@ export const subscriptionRequest = (eventApiName: string): SubscriptionRequestAc
 				event: SUBSCRIPTION_REQUEST,
 				payload: {
 					successAction: addSubscription(subscription),
-					failureAction: null,
+					failureAction: addToastError(`Failed to subscribe to event ${eventApiName}. Make sure you entered in the correct API name.`),
 					cometdChannel: `/event/${eventApiName}`
 				}
 			}
