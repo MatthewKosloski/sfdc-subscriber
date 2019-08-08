@@ -5,13 +5,7 @@ import {
 	REMOVE_TOAST
 } from './types';
 
-const initialState: ToastState = [{
-	variant: 'danger',
-	message: 'Failed to subscribe to event Data_Center_Statuss__e.'
-}, {
-	variant: 'danger',
-	message: 'Failed to subscribe to event Data_Center_Statuss__e.'
-}];
+const initialState: ToastState = [];
 
 /**
  * Indicates if there exists a toast object in state with a
