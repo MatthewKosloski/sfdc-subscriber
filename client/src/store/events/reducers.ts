@@ -6,8 +6,6 @@ import {
 	REMOVE_ALL_EVENTS
 } from './types';
 
-import uuidv1 from 'uuid/v1';
-
 const initialState: EventState = [];
 
 /**
