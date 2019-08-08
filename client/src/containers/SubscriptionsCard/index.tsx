@@ -42,11 +42,6 @@ class SubscriptionsCard extends Component<Props, State> {
 	}
 
 	public handleFormSubmit(eventApiName: string): void {
-		// this.props.addSubscription({
-		// 	eventApiName: eventApiName,
-		// 	minuteDuration: 0,
-		// 	color: randomColor()
-		// });
 		this.props.subscriptionRequest(eventApiName);
 	}
 
