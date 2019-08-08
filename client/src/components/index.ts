@@ -15,6 +15,10 @@ import {
 } from './organisms';
 
 import {
+	DefaultTemplate
+} from './templates';
+
+import {
 	Dashboard
 } from './pages';
 
@@ -28,7 +32,8 @@ export {
 	CardListItem,
 	CardListItems,
 	DataContainer,
-	Dashboard
+	Dashboard,
+	DefaultTemplate
 };
 
 export default {
@@ -41,5 +46,6 @@ export default {
 	CardListItem,
 	CardListItems,
 	DataContainer,
-	Dashboard
+	Dashboard,
+	DefaultTemplate
 };
