@@ -7,7 +7,7 @@ require('cometd-nodejs-client').adapt();
  */
 class SFDCClient {
 
-    constructor(cometd, jsforce, username, password, apiVersion, isDebugMode = false) {
+	constructor(cometd, jsforce, username, password, apiVersion, isDebugMode = false) {
         this._log('Creating a new instance of SFDCClient for a socket.');
 
         this._cometd = cometd;
@@ -17,8 +17,29 @@ class SFDCClient {
         this._apiVersion = apiVersion;
         this._isDebugMode = isDebugMode;
         this._didShakeHands = false;
-        this._subscriptions = {};
-    }
+		this._subscriptions = {};
+
+		this._onSuccessfulLogin = () => {};
+		this._onFailedLogin = () => {};
+		this._onSuccessfulHandshake = () => {};
+		this._onFailedHandshake = () => {};
+	}
+
+	set onSuccessfulLogin(val = () => {}) {
+		this._onSuccessfulLogin = val;
+	}
+
+	set onFailedLogin(val = () => {}) {
+		this._onFailedLogin = val;
+	}
+
+	set onSuccessfulHandshake(val = () => {}) {
+		this._onSuccessfulHandshake = val;
+	}
+
+	set onFailedHandshake(val = () => {}) {
+		this._onFailedHandshake = val;
+	}
 
     /**
      * A wrapper for CometD.subscribe. Performs a handshake if
@@ -53,8 +74,8 @@ class SFDCClient {
     /**
      * A wrapper for CometD.unsubscribe. Unsubscribes from a channel.
      * @public Can be used by API consumers.
-     * @param {string} channel The channel to unsubscribe from. 
-     * @param {function} unsubscribeCallback The callback to invoke when 
+     * @param {string} channel The channel to unsubscribe from.
+     * @param {function} unsubscribeCallback The callback to invoke when
      * an unsubscription occurs.
      * @throws Will thrown an Error if trying to unsubscribe from a channel
      * that has no subscription.
@@ -66,7 +87,7 @@ class SFDCClient {
 
         if(hasNoSubscription) {
             throw new Error(`Cannot unsubscribe from ${channel} because no subscription to that channel exists.`);
-        } 
+        }
 
         const subscription = this._subscriptions[channel];
 
@@ -91,7 +112,7 @@ class SFDCClient {
     /**
      * Indicates if there is a subscription to the channel.
      * @public Can be used by API consumers.
-     * @param {string} channel The channel to use for the subscription check. 
+     * @param {string} channel The channel to use for the subscription check.
      */
     hasSubscription(channel) {
         this._log('SFDCClient.hasSubscription');
@@ -108,12 +129,15 @@ class SFDCClient {
         await this._configureCometD();
 
         await this._cometd.handshake(({successful}) => {
-            const didFailToShakeHands = !successful;
+			const didFailToShakeHands = !successful;
+
             if (didFailToShakeHands) {
+				this._onFailedHandshake();
                 throw new Error('Failed to shake hands with the Salesforce CometD server.');
             }
 
-            this._log('Successfully shook hands with the Salesforce CometD server.');
+			this._log('Successfully shook hands with the Salesforce CometD server.');
+			this._onSuccessfulHandshake();
         });
 
         this._didShakeHands = true;
@@ -143,19 +167,21 @@ class SFDCClient {
      * @private Should only be used by members of the class.
      * @throws Will throw an Error if unable to login to Salesforce.
      * @returns jsforce.Connection
-     * 
+     *
      */
     async _login() {
         this._log('SFDCClient._login');
         const { _username, _password } = this;
 
         await this._jsforce.login(_username, _password, (err) => {
-            if (err) { 
-                this._log('Failed to log into Salesforce.');
+            if (err) {
+				this._log('Failed to log into Salesforce.');
+				this._onFailedLogin();
                 throw new Error(err);
             }
 
-            this._log('Successfully logged into Salesforce.');
+			this._log('Successfully logged into Salesforce.');
+			this._onSuccessfulLogin();
         });
 
         return this._jsforce;
@@ -163,7 +189,7 @@ class SFDCClient {
 
     /**
      * Logs a message to the console if in debug mode.
-     * @param {any} message The message to log to console. 
+     * @param {any} message The message to log to console.
      */
     _log(message) {
         if(this._isDebugMode) {
