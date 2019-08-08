@@ -1,4 +1,10 @@
-import { Event, ADD_EVENT, REMOVE_EVENT, EventActionTypes } from './types';
+import {
+	Event,
+	ADD_EVENT,
+	REMOVE_EVENT,
+	REMOVE_ALL_EVENTS,
+	EventActionTypes
+} from './types';
 
 export const addEvent = (newEvent: Event): EventActionTypes => ({
 	type: ADD_EVENT,
@@ -10,4 +16,8 @@ export const removeEvent = (uuid: string): EventActionTypes => ({
 	meta: {
 		uuid
 	}
+});
+
+export const removeAllEvents = (): EventActionTypes => ({
+	type: REMOVE_ALL_EVENTS
 });
