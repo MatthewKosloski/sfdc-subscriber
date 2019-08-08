@@ -9,7 +9,7 @@ const Container = styled.div<Props>`
 	${spacingEm(['MB'], 'One')};
 	border-radius: ${pxToEm(4)};
 	z-index: 1;
-	opacity: 0.9;
+	opacity: 0.95;
 	user-select: none;
 	max-width: 450px;
 	display: flex;
