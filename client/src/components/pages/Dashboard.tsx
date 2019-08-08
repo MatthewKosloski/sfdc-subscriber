@@ -1,9 +1,7 @@
 import React, { Fragment, FunctionComponent } from 'react';
 
-import { Header, TimelineCard, TrendsCard } from '../../components';
+import { DefaultTemplate, Header, TimelineCard, TrendsCard } from '../../components';
 import { SubscriptionsCard, ToastContainer, EventLogSidebar } from '../../containers';
-
-import { DefaultTemplate } from '../templates';
 
 const Dashboard: FunctionComponent = () => (
 	<Fragment>
