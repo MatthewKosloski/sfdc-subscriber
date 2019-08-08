@@ -25,11 +25,6 @@ interface State {}
 
 class ToastContainer extends Component<Props, State> {
 
-	constructor(props: Props) {
-		super(props);
-		console.log();
-	}
-
 	public renderToast(toast: Toast, index: number): JSX.Element {
 		const key: string = uuidv1();
 		return (
