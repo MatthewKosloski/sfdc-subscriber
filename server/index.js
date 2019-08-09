@@ -76,9 +76,9 @@ io.on('connection', (socket) => {
 		socket.emit(COMETD_HANDSHAKE_FAILURE);
 	};
 
-	socketController.onEvent = (data) => {
-		console.log(`Sent a Salesforce Platform Event to socket ${socket.id}.`);
-		socket.emit(PLATFORM_EVENT, data);
+	socketController.onEvent = (eventData) => {
+		console.log(`Sent a ${eventData.channel} event to socket ${socket.id}.`);
+		socket.emit(PLATFORM_EVENT, eventData);
 	};
 
 	socketController.onSuccessfulSubscription = (data) => {
