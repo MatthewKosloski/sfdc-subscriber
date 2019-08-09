@@ -21,9 +21,7 @@ const {
 	SALESFORCE_LOGIN_FAILURE
 } = require('../common/socketEvents');
 
-const {
-	DISCONNECT
-} = require('./socketEvents');
+const { DISCONNECT } = require('./socketEvents');
 
 const { SFDCClient, SocketController } = require('./modules');
 
