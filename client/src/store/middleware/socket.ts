@@ -1,11 +1,13 @@
 import { MiddlewareAPI, Dispatch } from 'redux';
 
-import SocketEvents from '../../socketEvents';
+import SocketEvents from '../../../../common/socketEvents';
+
+const { REDUX_ACTION } = SocketEvents;
 
 function socket(socket: SocketIOClient.Socket) {
 	return (store: MiddlewareAPI) => {
 
-		socket.on(SocketEvents.REDUX_ACTION, store.dispatch);
+		socket.on(REDUX_ACTION, store.dispatch);
 
 		return (next: Dispatch) => (action: any) => {
 			if(action.meta && action.meta.socket && action.meta.socket.event && action.meta.socket.payload) {
