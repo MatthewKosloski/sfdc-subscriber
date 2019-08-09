@@ -4,9 +4,9 @@ import { ButtonVariantStrings } from '../../../theme/buttons';
 import Container from './Container';
 import IconContainer from './IconContainer';
 import Content from './Content';
-import { ReactComponent as InfoIcon } from './info.svg';
-import { ReactComponent as StopIcon } from './stop.svg';
-import { ReactComponent as CheckIcon } from './check.svg';
+import InfoIcon from './InfoIcon';
+import StopIcon from './StopIcon';
+import CheckIcon from './CheckIcon';
 
 export interface Props {
 	message: string,
