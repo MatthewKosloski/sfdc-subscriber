@@ -149,8 +149,14 @@ class SFDCClient {
      * @private Should only be used by members of the class.
      */
     async _configureCometD() {
-        this._log('SFDCClient._configureCometD');
-        const { accessToken, instanceUrl } = await this._login();
+		this._log('SFDCClient._configureCometD');
+
+		const { accessToken, instanceUrl } = await this
+			._login()
+			.catch((e) => {
+				console.log(e.message);
+			});
+
         this._cometd.configure({
             url: `${instanceUrl}/cometd/${this._apiVersion}/`,
             appendMessageTypeToURL: false,
@@ -176,8 +182,8 @@ class SFDCClient {
         await this._jsforce.login(_username, _password, (err) => {
             if (err) {
 				this._log('Failed to log into Salesforce.');
-				this._onFailedLogin();
-                throw new Error(err);
+				this._onFailedLogin(err);
+                return;
             }
 
 			this._log('Successfully logged into Salesforce.');
