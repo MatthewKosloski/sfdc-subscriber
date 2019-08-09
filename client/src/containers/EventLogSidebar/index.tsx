@@ -45,8 +45,8 @@ class EventLogSidebar extends Component<Props, State> {
 		return (
 			<EventsListItem
 				{...event}
-				color={this.getEventColor(event.EventApiName)}
-				key={event.Uuid} />
+				color={this.getEventColor(event.eventApiName)}
+				key={event.uuid} />
 		);
 	}
 

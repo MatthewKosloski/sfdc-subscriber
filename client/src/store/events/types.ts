@@ -1,9 +1,9 @@
 export interface Event {
-	Uuid: string,
-	EventApiName: string,
-	CreatedById: string,
-	CreatedDate: string,
-	CustomFields: {
+	uuid: string,
+	eventApiName: string,
+	createdById: string,
+	createdDate: string,
+	customFields: {
 		[key: string]: string
 	}
 }

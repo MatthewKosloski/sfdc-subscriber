@@ -16,7 +16,7 @@ const initialState: EventState = [];
  * @param uuid The uuid to use for the check.
  */
 function hasEvent(state: EventState, uuid: string): boolean {
-	return state.some((event) => event.Uuid === uuid);
+	return state.some((event) => event.uuid === uuid);
 };
 
 export function eventsReducer(
@@ -26,7 +26,7 @@ export function eventsReducer(
 
 	switch(action.type) {
 		case ADD_EVENT: {
-			if(hasEvent(state, action.payload.Uuid)) {
+			if(hasEvent(state, action.payload.uuid)) {
 				return state;
 			} else {
 				return [action.payload, ...state];
@@ -35,7 +35,7 @@ export function eventsReducer(
 		case REMOVE_EVENT: {
 			if(hasEvent(state, action.meta.uuid)) {
 				return state.filter((event) =>
-					event.Uuid !== action.meta.uuid);
+					event.uuid !== action.meta.uuid);
 			} else {
 				return state;
 			}

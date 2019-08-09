@@ -14,11 +14,11 @@ interface Props extends Event {
 const EventsListItem: React.FC<Props> = (props) => {
 	return(
 		<Container>
-			<Timestamp color={props.color}>{props.CreatedDate}</Timestamp>
+			<Timestamp color={props.color}>{props.createdDate}</Timestamp>
 			<Titles
 				titleAs="h3"
-				titleText={props.EventApiName}
-				subtitleText={props.CustomFields.Log_Message__c} />
+				titleText={props.eventApiName}
+				subtitleText={props.customFields.Log_Message__c} />
 		</Container>
 	);
 };
