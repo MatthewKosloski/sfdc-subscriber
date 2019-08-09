@@ -1,12 +1,12 @@
-import logger from './logger';
-import socket from './socket';
+import loggerMiddleware from './loggerMiddleware';
+import socketMiddlware from './socketMiddleware';
 
 export {
-	logger,
-	socket
+	loggerMiddleware,
+	socketMiddlware
 };
 
 export default {
-	logger,
-	socket
+	loggerMiddleware,
+	socketMiddlware
 };
