@@ -3,11 +3,11 @@ import Badge from './Badge';
 
 import { IButtonProps } from '../../../../design-system/theme/buttons';
 
-import { ReactComponent as ArrowUp } from './trendArrowUp.svg';
+import ArrowUp from './ArrowUpIcon';
 
 export interface ITrendBadgeProps extends IButtonProps {
 	count?: string,
-	svg?: React.ReactElement
+	svg?: JSX.Element
 }
 
 const TrendBadge: React.FC<ITrendBadgeProps> = ({svg, count , ...rest}) => (

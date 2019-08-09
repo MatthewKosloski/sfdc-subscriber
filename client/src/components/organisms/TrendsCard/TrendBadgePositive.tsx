@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReactComponent as ArrowUp } from './TrendBadge/trendArrowUp.svg';
+import ArrowUp from './TrendBadge/ArrowUpIcon';
 import TrendBadge, { ITrendBadgeProps } from './TrendBadge';
 
 interface TrendBadgePositiveProps extends ITrendBadgeProps {}
