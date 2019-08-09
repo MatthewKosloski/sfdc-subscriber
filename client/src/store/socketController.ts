@@ -3,6 +3,11 @@ import { Dispatch } from 'redux';
 import SocketEvents from '../../../common/socketEvents';
 
 import { addToastSuccess, addToastError, addToastInfo } from './toast/actions';
+import { addEvent } from './events/actions';
+
+import createEvent from '../utils/createEvent';
+import createSubscription from '../utils/createSubscription';
+import { addSubscription } from './subscriptions/actions';
 
 const {
 	PLATFORM_EVENT,
@@ -20,6 +25,10 @@ interface platformEventSubscriptionPayload {
 	cometdChannel: string
 }
 
+interface platformEventUnsubscriptionPayload {
+	cometdChannel: string
+}
+
 /**
  * Dispatches Redux actions in response to socket events
  * emitted from the server.
@@ -31,7 +40,7 @@ export default (socket: SocketIOClient.Socket, dispatch: Dispatch) => {
 	});
 
 	socket.on(SALESFORCE_LOGIN_FAILURE, () => {
-		dispatch(addToastError('Failed to log into Salesforce.'));
+		dispatch(addToastError('Failed to log into Salesforce. Check the accuracy of the login credentials in the server\'s .env file.'));
 	});
 
 	socket.on(COMETD_HANDSHAKE_SUCCESS, () => {
@@ -45,28 +54,31 @@ export default (socket: SocketIOClient.Socket, dispatch: Dispatch) => {
 	socket.on(PLATFORM_EVENT_SUBSCRIPTION_SUCCESS,
 		({cometdChannel}: platformEventSubscriptionPayload) => {
 			dispatch(addToastSuccess(`Successfully subscribed to ${cometdChannel}!`));
+			dispatch(addSubscription(createSubscription(cometdChannel)));
 		}
 	);
 
 	socket.on(PLATFORM_EVENT_SUBSCRIPTION_FAILURE,
 		({cometdChannel}: platformEventSubscriptionPayload) => {
-			dispatch(addToastError(`Failed to subscribed to ${cometdChannel}.`));
+			dispatch(addToastError(`Failed to subscribe to ${cometdChannel}. Are you sure that Platform Event exists?`));
 		}
 	);
 
-	socket.on(PLATFORM_EVENT_UNSUBSCRIPTION_SUCCESS, (data: any) => {
-		console.log(PLATFORM_EVENT_UNSUBSCRIPTION_SUCCESS, data);
-		dispatch(addToastSuccess(`Successfully unsubscribed from a Platform Event!`));
-	});
+	socket.on(PLATFORM_EVENT_UNSUBSCRIPTION_SUCCESS,
+		({cometdChannel}: platformEventUnsubscriptionPayload) => {
+			dispatch(addToastSuccess(`Successfully unsubscribed from ${cometdChannel}!`));
+		}
+	);
 
-	socket.on(PLATFORM_EVENT_UNSUBSCRIPTION_FAILURE, (data: any) => {
-		console.log(PLATFORM_EVENT_UNSUBSCRIPTION_FAILURE, data);
-		dispatch(addToastError(`Failed to unsubscribe from a Platform Event.`));
-	});
+	socket.on(PLATFORM_EVENT_UNSUBSCRIPTION_FAILURE,
+		({cometdChannel}: platformEventUnsubscriptionPayload) => {
+			dispatch(addToastError(`Failed to unsubscribe from ${cometdChannel}.`));
+		}
+	);
 
-	socket.on(PLATFORM_EVENT, (data: any) => {
-		console.log(PLATFORM_EVENT, data);
+	socket.on(PLATFORM_EVENT, (eventData: any) => {
 		dispatch(addToastInfo(`Received a Platform Event.`));
+		dispatch(addEvent(createEvent(eventData)));
 	});
 
 };
