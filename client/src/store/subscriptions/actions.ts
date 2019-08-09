@@ -10,8 +10,6 @@ import {
 
 import SocketEvents from '../../../../common/socketEvents';
 
-import { addToastError } from '../toast/actions';
-
 const {
 	PLATFORM_EVENT_SUBSCRIPTION_REQUEST
 } = SocketEvents;
@@ -28,25 +26,14 @@ export const removeSubscription = (eventApiName: string): RemoveSubscriptionActi
 	}
 });
 
-export const subscriptionRequest = (eventApiName: string): SubscriptionRequestAction => {
-
-	const subscription: Subscription = {
-		eventApiName,
-		color: 'red',
-		minuteDuration: 0
-	};
-
-	return {
-		type: SUBSCRIPTION_REQUEST,
-		meta: {
-			socket: {
-				event: PLATFORM_EVENT_SUBSCRIPTION_REQUEST,
-				payload: {
-					successAction: addSubscription(subscription),
-					failureAction: addToastError(`Failed to subscribe to event ${eventApiName}. Make sure you entered in the correct API name.`),
-					cometdChannel: `/event/${eventApiName}`
-				}
+export const subscriptionRequest = (eventApiName: string): SubscriptionRequestAction => ({
+	type: SUBSCRIPTION_REQUEST,
+	meta: {
+		socket: {
+			event: PLATFORM_EVENT_SUBSCRIPTION_REQUEST,
+			payload: {
+				cometdChannel: `/event/${eventApiName}`
 			}
 		}
-	};
-};
+	}
+});
