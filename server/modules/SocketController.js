@@ -65,7 +65,11 @@ class SocketController {
 			}
 		};
 
-		this._client.subscribe(cometdChannel, callback, subscribeCallback);
+		this._client
+			.subscribe(cometdChannel, callback, subscribeCallback)
+			.catch((e) => {
+				console.log(e.message);
+			});
 	}
 
 	_handleUnsubscriptionRequest(payload) {
@@ -80,7 +84,11 @@ class SocketController {
 			}
 		};
 
-		this._client.unsubscribe(cometdChannel, unsubscribeCallback);
+		this._client
+			.unsubscribe(cometdChannel, unsubscribeCallback)
+			.catch((e) => {
+				console.log(e.message);
+			});
 	}
 
 	_handleDisconnect(reason) {
