@@ -4,6 +4,13 @@ export interface Subscription {
 	minuteDuration: number
 }
 
+export interface ActionMetaSocket<TPayload> {
+	socket: {
+		event: string,
+		payload: TPayload
+	}
+}
+
 export type SubscriptionState = Subscription[];
 
 export const ADD_SUBSCRIPTION = 'ADD_SUBSCRIPTION';
@@ -24,12 +31,9 @@ export interface RemoveSubscriptionAction {
 
 export interface SubscriptionRequestAction {
 	type: typeof SUBSCRIPTION_REQUEST,
-	meta: {
-		socket: {
-			event: string,
-			payload: any
-		}
-	}
+	meta: ActionMetaSocket<{
+		cometdChannel: string
+	}>
 }
 
 export type SubscriptionActionTypes = AddSubscriptionAction | RemoveSubscriptionAction;
