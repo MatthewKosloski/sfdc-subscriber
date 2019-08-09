@@ -36,4 +36,4 @@ export interface SubscriptionRequestAction {
 	}>
 }
 
-export type SubscriptionActionTypes = AddSubscriptionAction | RemoveSubscriptionAction;
+export type SubscriptionActionTypes = AddSubscriptionAction | RemoveSubscriptionAction | SubscriptionRequestAction;
