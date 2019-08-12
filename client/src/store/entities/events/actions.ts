@@ -11,10 +11,10 @@ export const addEvent = (newEvent: Event): EventActionTypes => ({
 	payload: newEvent
 });
 
-export const removeEvent = (uuid: string): EventActionTypes => ({
+export const removeEvent = (id: string): EventActionTypes => ({
 	type: REMOVE_EVENT,
 	meta: {
-		uuid
+		id
 	}
 });
 

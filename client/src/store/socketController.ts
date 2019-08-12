@@ -2,12 +2,12 @@ import { Dispatch } from 'redux';
 
 import SocketEvents from '../../../common/socketEvents';
 
-import { addToastSuccess, addToastError, addToastInfo } from './toast/actions';
-import { addEvent } from './events/actions';
+import { addToastSuccess, addToastError, addToastInfo } from './entities/toast/actions';
+import { addEvent } from './entities/events/actions';
 
 import createEvent from '../utils/createEvent';
 import createSubscription from '../utils/createSubscription';
-import { addSubscription } from './subscriptions/actions';
+import { addSubscription } from './entities/subscriptions/actions';
 
 const {
 	PLATFORM_EVENT,

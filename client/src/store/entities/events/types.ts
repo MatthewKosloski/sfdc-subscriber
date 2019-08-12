@@ -1,5 +1,5 @@
 export interface Event {
-	uuid: string,
+	id: string,
 	eventApiName: string,
 	createdById: string,
 	createdDate: string,
@@ -8,7 +8,9 @@ export interface Event {
 	}
 }
 
-export type EventState = Event[];
+export type EventState = {
+	[key: string]: Event
+};
 
 export const ADD_EVENT = 'ADD_EVENT';
 export const REMOVE_EVENT = 'REMOVE_EVENT';
@@ -22,7 +24,7 @@ interface AddEventAction {
 interface RemoveEventAction {
 	type: typeof REMOVE_EVENT,
 	meta: {
-		uuid: string
+		id: string
 	}
 }
 

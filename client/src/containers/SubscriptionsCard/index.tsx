@@ -5,8 +5,8 @@ import uuidv1 from 'uuid/v1';
 import { Card } from '../../design-system/components';
 import { CardListItems as SubscriptionsList, DataContainer } from '../../components';
 import { AppState } from '../../store';
-import { Subscription } from '../../store/subscriptions/types';
-import { subscriptionRequest } from '../../store/subscriptions/actions';
+import { SubscriptionState, Subscription } from '../../store/entities/subscriptions/types';
+import { addSubscription, subscriptionRequest, removeSubscription } from '../../store/entities/subscriptions/actions';
 
 // import randomColor from './randomColor';
 import Container from './Container';
@@ -17,10 +17,12 @@ import SubscriptionsListItem from './SubscriptionsListItem';
 export interface OwnProps {}
 
 interface StateProps {
-	subscriptions: Subscription[]
+	subscriptions: SubscriptionState
 }
 
 interface DispatchProps {
+	addSubscription: typeof addSubscription,
+	removeSubscription: typeof removeSubscription,
 	subscriptionRequest: typeof subscriptionRequest
 }
 
@@ -35,6 +37,21 @@ class SubscriptionsCard extends Component<Props, State> {
 
 		this.handleUnsubscribeClick = this.handleUnsubscribeClick.bind(this);
 		this.handleFormSubmit = this.handleFormSubmit.bind(this);
+	}
+
+	componentDidMount() {
+		this.props.addSubscription({
+			color: 'salmon',
+			eventApiName: 'Dummy_Subscription_1__e',
+			minuteDuration: 0
+		});
+		this.props.addSubscription({
+			id: 'foobar123',
+			color: 'navyblue',
+			eventApiName: 'Dummy_Subscription_2__e',
+			minuteDuration: 0
+		});
+		this.props.removeSubscription('foobar123');
 	}
 
 	public handleUnsubscribeClick(eventApiName: string): void {
@@ -60,10 +77,10 @@ class SubscriptionsCard extends Component<Props, State> {
 	}
 
 	public render(): JSX.Element {
-		const { subscriptions } = this.props;
+		// const { subscriptions } = this.props;
 
 		const sideHeaderComponent: React.ReactElement =
-			<Counter count={subscriptions.length} />;
+			<Counter count={0} />;
 
 		const footerComponent: React.ReactElement =
 			<Form onSubmit={this.handleFormSubmit} />;
@@ -77,12 +94,12 @@ class SubscriptionsCard extends Component<Props, State> {
 					constrictBodyHeight
 					noPaddedBody>
 					<DataContainer
-						hasData={subscriptions.length > 0}
+						hasData={false}
 						noDataText="Not subscribed to any Platform Events.">
 						<SubscriptionsList>
-							{subscriptions.map((subscription) => {
+							{/* {subscriptions.map((subscription) => {
 								return this.renderSubscriptionItem(subscription);
-							})}
+							})} */}
 						</SubscriptionsList>
 					</DataContainer>
 				</Card>
@@ -93,10 +110,12 @@ class SubscriptionsCard extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
-	subscriptions: state.subscriptions
+	subscriptions: state.entities.subscriptions
 });
 
 const dispatchProps: DispatchProps = {
+	addSubscription,
+	removeSubscription,
 	subscriptionRequest
 };
 

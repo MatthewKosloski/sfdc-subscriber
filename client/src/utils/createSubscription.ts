@@ -1,4 +1,4 @@
-import { Subscription } from '../store/subscriptions/types';
+import { Subscription } from '../store/entities/subscriptions/types';
 import randomColor from './randomColor';
 
 export default (eventApiName: string): Subscription => ({

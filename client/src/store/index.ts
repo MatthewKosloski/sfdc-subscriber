@@ -1,31 +1,28 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { subscriptionsReducer } from './subscriptions/reducers';
-import { eventsReducer } from './events/reducers';
-import { toastReducer } from './toast/reducers';
-import { loggerMiddleware, socketMiddlware } from './middleware';
-import socketController from './socketController';
+import entitiesReducer from './entities';
+import { loggerMiddleware, /*socketMiddlware,*/ idMiddleware } from './middleware';
+// import socketController from './socketController';
 
 const rootReducer = combineReducers({
-	subscriptions: subscriptionsReducer,
-	events: eventsReducer,
-	toasts: toastReducer
+	entities: entitiesReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>;
 
 export default function configureStore() {
-	const socket = io('http://localhost:3001');
+	// const socket = io('http://localhost:3001');
 	const store = createStore(rootReducer, composeWithDevTools(
 		applyMiddleware(
 			loggerMiddleware(),
-			socketMiddlware(socket)
+			idMiddleware()
+			// socketMiddlware(socket)
 		)
 	));
 
-	socketController(socket, store.dispatch);
+	// socketController(socket, store.dispatch);
 
 	return store;
 }

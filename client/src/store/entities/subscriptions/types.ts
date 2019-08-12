@@ -1,4 +1,6 @@
 export interface Subscription {
+	// make id prop optional so middleware can add ids
+	id?: string,
 	color: string,
 	eventApiName: string,
 	minuteDuration: number
@@ -11,7 +13,9 @@ export interface ActionMetaSocket<TPayload> {
 	}
 }
 
-export type SubscriptionState = Subscription[];
+export type SubscriptionState = {
+	[key: string]: Subscription
+};
 
 export const ADD_SUBSCRIPTION = 'ADD_SUBSCRIPTION';
 export const REMOVE_SUBSCRIPTION = 'REMOVE_SUBSCRIPTION';
@@ -25,7 +29,7 @@ export interface AddSubscriptionAction {
 export interface RemoveSubscriptionAction {
 	type: typeof REMOVE_SUBSCRIPTION,
 	meta: {
-		eventApiName: string
+		id: string
 	}
 }
 

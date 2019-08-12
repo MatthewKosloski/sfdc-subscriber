@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Titles } from '../../../design-system/components';
 
-import { Event } from '../../../store/events/types';
+import { Event } from '../../../store/entities/events/types';
 
 import Container from './Container';
 import Timestamp from './Timestamp';

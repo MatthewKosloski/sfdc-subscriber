@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 
 import { Toast } from '../../design-system/components';
-import { removeToast } from '../../store/toast/actions';
-import { Toast as IToast } from '../../store/toast/types';
+import { removeToast } from '../../store/entities/toast/actions';
+import { Toast as IToast } from '../../store/entities/toast/types';
 import { AppState } from '../../store';
 
 import Container from './Container';
@@ -49,7 +49,7 @@ class ToastContainer extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
-	toasts: state.toasts
+	toasts: state.entities.toasts
 });
 
 const dispatchProps: DispatchProps = {
