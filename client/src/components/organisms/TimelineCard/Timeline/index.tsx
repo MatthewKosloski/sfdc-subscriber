@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import TimeSeriesChart from './TimeSeriesChart';
 
@@ -26,15 +26,15 @@ export default class Chart extends Component<Props, State> {
     }
 
     handleButtonClick() {
-        this._chart.appendCircle('#df4747', 1, Date.now() - 4000);
+        this._chart.appendCircle('#df4747', 16, Date.now() - 10000);
     }
 
     render() {
         return(
-            <>
-            <button onClick={this.handleButtonClick}>circle</button>
-            <svg ref={(ref: SVGSVGElement) => this._svgRef = ref}></svg>
-            </>
+            <Fragment>
+				<button onClick={this.handleButtonClick} style={{display: 'block'}}>circle</button>
+				<svg ref={(ref: SVGSVGElement) => this._svgRef = ref}></svg>
+            </Fragment>
         );
     }
 }
