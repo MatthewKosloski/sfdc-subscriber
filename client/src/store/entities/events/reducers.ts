@@ -19,10 +19,10 @@ export function eventsReducer(
 		case ADD_EVENT: {
 			const payload = action.payload as Event;
 			return {
-				...state,
 				[payload.id as string]: {
 					...payload
-				}
+				},
+				...state
 			};
 		}
 		case REMOVE_EVENT: {
