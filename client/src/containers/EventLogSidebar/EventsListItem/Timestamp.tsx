@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 import { spacingEm } from '../../../design-system/abstracts';
 
-const Timestamp = styled.p`
-    ${spacingEm(['MB'], 'Half')};
+const Timestamp = styled.time`
+	${spacingEm(['MB'], 'Half')};
+	display: inline-block;
     font-weight: 700;
 	color: ${({theme}) => theme.pantoneCoolGray4};
 	border-color: ${(props) => props.color};
