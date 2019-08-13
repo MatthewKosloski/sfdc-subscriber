@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import uuidv1 from 'uuid/v1';
 
 import { Card } from '../../design-system/components';
 import { CardListItems as SubscriptionsList, DataContainer } from '../../components';
 import { AppState } from '../../store';
-import { SubscriptionState, Subscription } from '../../store/entities/subscriptions/types';
+import { Subscription } from '../../store/entities/subscriptions/types';
+import { selectSubscriptions } from '../../store/entities/subscriptions/selectors';
 import { addSubscription, subscriptionRequest, removeSubscription } from '../../store/entities/subscriptions/actions';
 
-// import randomColor from './randomColor';
 import Container from './Container';
 import Counter from './Counter';
 import Form from './Form';
@@ -17,7 +16,7 @@ import SubscriptionsListItem from './SubscriptionsListItem';
 export interface OwnProps {}
 
 interface StateProps {
-	subscriptions: SubscriptionState
+	subscriptions: Subscription[]
 }
 
 interface DispatchProps {
@@ -44,12 +43,16 @@ class SubscriptionsCard extends Component<Props, State> {
 			eventApiName: 'Dummy_Subscription_1__e'
 		});
 		this.props.addSubscription({
-			id: 'foobar123',
-			color: 'navyblue',
-			eventApiName: 'Dummy_Subscription_2__e',
-			minuteDuration: 0
+			eventApiName: 'Dummy_Subscription_2__e'
 		});
-		this.props.removeSubscription('foobar123');
+		this.props.addSubscription({
+			eventApiName: 'Dummy_Subscription_3__e'
+		});
+		// this.props.removeSubscription('foobar123');
+	}
+
+	componentDidUpdate() {
+		console.log(this.props.subscriptions);
 	}
 
 	public handleUnsubscribeClick(eventApiName: string): void {
@@ -61,24 +64,22 @@ class SubscriptionsCard extends Component<Props, State> {
 	}
 
 	public renderSubscriptionItem(subscription: Subscription): JSX.Element {
-		const key: string = uuidv1();
-
 		const onUnsubscribeClick = this.handleUnsubscribeClick.bind(null,
 			subscription.eventApiName);
 
 		return (
 			<SubscriptionsListItem
 				{...subscription}
-				key={key}
+				key={subscription.eventApiName}
 				onUnsubscribeClick={onUnsubscribeClick} />
 		);
 	}
 
 	public render(): JSX.Element {
-		// const { subscriptions } = this.props;
+		const { subscriptions } = this.props;
 
 		const sideHeaderComponent: React.ReactElement =
-			<Counter count={0} />;
+			<Counter count={subscriptions.length} />;
 
 		const footerComponent: React.ReactElement =
 			<Form onSubmit={this.handleFormSubmit} />;
@@ -92,12 +93,12 @@ class SubscriptionsCard extends Component<Props, State> {
 					constrictBodyHeight
 					noPaddedBody>
 					<DataContainer
-						hasData={false}
+						hasData={subscriptions.length > 0}
 						noDataText="Not subscribed to any Platform Events.">
 						<SubscriptionsList>
-							{/* {subscriptions.map((subscription) => {
-								return this.renderSubscriptionItem(subscription);
-							})} */}
+							{subscriptions.map((subscription) =>
+								this.renderSubscriptionItem(subscription)
+							)}
 						</SubscriptionsList>
 					</DataContainer>
 				</Card>
@@ -108,7 +109,7 @@ class SubscriptionsCard extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
-	subscriptions: state.entities.subscriptions
+	subscriptions: selectSubscriptions(state)
 });
 
 const dispatchProps: DispatchProps = {
