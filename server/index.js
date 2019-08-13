@@ -21,8 +21,9 @@ const {
 	SALESFORCE_LOGIN_FAILURE
 } = require('../common/socketEvents');
 
-const { DISCONNECT } = require('./socketEvents');
+const { createClientFriendlyEvent } = require('./utils');
 
+const { DISCONNECT } = require('./socketEvents');
 const { SFDCClient, SocketController } = require('./modules');
 
 const {
@@ -78,7 +79,7 @@ io.on('connection', (socket) => {
 
 	socketController.onEvent = (eventData) => {
 		console.log(`Sent a ${eventData.channel} event to socket ${socket.id}.`);
-		socket.emit(PLATFORM_EVENT, eventData);
+		socket.emit(PLATFORM_EVENT, createClientFriendlyEvent(eventData));
 	};
 
 	socketController.onSuccessfulSubscription = (data) => {
