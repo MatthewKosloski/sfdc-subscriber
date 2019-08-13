@@ -2,16 +2,15 @@ import {
 	Toast,
 	ADD_TOAST,
 	REMOVE_TOAST,
-	AddToastAction,
-	RemoveToastAction
+	ToastActionTypes
 } from './types';
 
-export const addToast = (newToast: Toast): AddToastAction => ({
+export const addToast = (newToast: Toast): ToastActionTypes => ({
 	type: ADD_TOAST,
 	payload: newToast
 });
 
-export const addToastError = (message: string): AddToastAction => ({
+export const addToastError = (message: string): ToastActionTypes => ({
 	type: ADD_TOAST,
 	payload: {
 		variant: 'danger',
@@ -19,7 +18,7 @@ export const addToastError = (message: string): AddToastAction => ({
 	} as Toast
 });
 
-export const addToastSuccess = (message: string): AddToastAction => ({
+export const addToastSuccess = (message: string): ToastActionTypes => ({
 	type: ADD_TOAST,
 	payload: {
 		variant: 'success',
@@ -27,7 +26,7 @@ export const addToastSuccess = (message: string): AddToastAction => ({
 	} as Toast
 });
 
-export const addToastInfo = (message: string): AddToastAction => ({
+export const addToastInfo = (message: string): ToastActionTypes => ({
 	type: ADD_TOAST,
 	payload: {
 		variant: 'primary',
@@ -35,7 +34,7 @@ export const addToastInfo = (message: string): AddToastAction => ({
 	} as Toast
 });
 
-export const removeToast = (id: string): RemoveToastAction => ({
+export const removeToast = (id: string): ToastActionTypes => ({
 	type: REMOVE_TOAST,
 	meta: {
 		id
