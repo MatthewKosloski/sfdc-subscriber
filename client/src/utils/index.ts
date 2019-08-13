@@ -1,9 +1,15 @@
 import hasObjectWithPropVal from './hasObjectWithPropVal';
+import toHhMmSs from './toHhMmSs';
+import pad from './pad';
 
 export {
-	hasObjectWithPropVal
+	hasObjectWithPropVal,
+	toHhMmSs,
+	pad
 };
 
 export default {
-	hasObjectWithPropVal
+	hasObjectWithPropVal,
+	toHhMmSs,
+	pad
 };
