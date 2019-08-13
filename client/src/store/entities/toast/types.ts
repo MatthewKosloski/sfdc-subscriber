@@ -1,7 +1,7 @@
-import { 
-	Entity, 
-	AddEntityAction, 
-	RemoveEntityAction 
+import {
+	Entity,
+	AddEntityAction,
+	RemoveEntityAction
 } from '../types';
 
 export interface Toast extends Entity {
@@ -16,7 +16,7 @@ export type ToastState = {
 export const ADD_TOAST = 'ADD_TOAST';
 export const REMOVE_TOAST = 'REMOVE_TOAST';
 
-export interface AddToastAction extends AddEntityAction<typeof ADD_TOAST> {}
-export interface RemoveToastAction extends RemoveEntityAction<typeof REMOVE_TOAST> {}
+interface AddToastAction extends AddEntityAction<typeof ADD_TOAST> {}
+interface RemoveToastAction extends RemoveEntityAction<typeof REMOVE_TOAST> {}
 
 export type ToastActionTypes = AddToastAction | RemoveToastAction;
