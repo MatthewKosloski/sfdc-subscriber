@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 
 import { Toast } from '../../design-system/components';
-import { removeToast } from '../../store/entities/toast/actions';
+import { addToast, removeToast } from '../../store/entities/toast/actions';
 import { ToastState } from '../../store/entities/toast/types';
+import { selectToasts } from '../../store/entities/toast/selectors';
 import { AppState } from '../../store';
 
 import Container from './Container';
@@ -12,10 +13,11 @@ import Container from './Container';
 export interface OwnProps {}
 
 interface StateProps {
-	toasts: ToastState
+	toasts: Toast[]
 }
 
 interface DispatchProps {
+	addToast: typeof addToast,
 	removeToast: typeof removeToast
 }
 
@@ -25,12 +27,12 @@ interface State {}
 
 class ToastContainer extends Component<Props, State> {
 
-	public renderToast(toast: Toast, index: number): JSX.Element {
+	public renderToast(toast: Toast): JSX.Element {
 		const key: string = uuidv1();
 		return (
 			<Toast
 				key={key}
-				onClick={() => {}}
+				onClick={() => {this.props.removeToast(toast.id);}}
 				{...toast}
 			/>
 		);
@@ -39,9 +41,9 @@ class ToastContainer extends Component<Props, State> {
 	public render(): JSX.Element {
 		return (
 			<Container>
-				{/* {this.props.toasts.map((toast, index) => {
-					return this.renderToast(toast, index);
-				})} */}
+				{this.props.toasts.map((toast) => {
+					return this.renderToast(toast);
+				})}
 			</Container>
 		);
 	}
@@ -49,10 +51,11 @@ class ToastContainer extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
-	toasts: state.entities.toasts
+	toasts: selectToasts(state)
 });
 
 const dispatchProps: DispatchProps = {
+	addToast,
 	removeToast
 };
 
