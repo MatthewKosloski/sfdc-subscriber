@@ -3,13 +3,15 @@ import {
 	ADD_SUBSCRIPTION,
 	REMOVE_SUBSCRIPTION,
 	SUBSCRIPTION_REQUEST,
-	SubscriptionActionTypes
+	SubscriptionActionTypes,
+	UNSUBSCRIPTION_REQUEST
 } from './types';
 
 import SocketEvents from '../../../../../common/socketEvents';
 
 const {
-	PLATFORM_EVENT_SUBSCRIPTION_REQUEST
+	PLATFORM_EVENT_SUBSCRIPTION_REQUEST,
+	PLATFORM_EVENT_UNSUBSCRIPTION_REQUEST
 } = SocketEvents;
 
 export const addSubscription = (newSubscription: Subscription): SubscriptionActionTypes => ({
@@ -29,6 +31,18 @@ export const subscriptionRequest = (eventApiName: string): SubscriptionActionTyp
 	meta: {
 		socket: {
 			event: PLATFORM_EVENT_SUBSCRIPTION_REQUEST,
+			payload: {
+				cometdChannel: `/event/${eventApiName}`
+			}
+		}
+	}
+});
+
+export const unsubscriptionRequest = (eventApiName: string): SubscriptionActionTypes => ({
+	type: UNSUBSCRIPTION_REQUEST,
+	meta: {
+		socket: {
+			event: PLATFORM_EVENT_UNSUBSCRIPTION_REQUEST,
 			payload: {
 				cometdChannel: `/event/${eventApiName}`
 			}
