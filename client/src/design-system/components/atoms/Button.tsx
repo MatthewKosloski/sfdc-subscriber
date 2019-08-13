@@ -36,7 +36,11 @@ export const StyledButton = styled.button<IButtonProps>`
 
     ${(props) => props.large && `
         font-size: ${pxToRem(20)};
-    `}
+	`}
+
+	${(props) => props.fullWidth && `
+		width: 100%;
+	`}
 
     ${(props) => buttonVariant(props)};
 
