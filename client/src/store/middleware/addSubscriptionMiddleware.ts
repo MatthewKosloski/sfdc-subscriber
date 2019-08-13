@@ -1,13 +1,18 @@
 import { Dispatch } from 'redux';
-import uuidv1 from 'uuid/v1';
-
 import { ADD_SUBSCRIPTION } from '../entities/subscriptions/types';
-import { ADD_EVENT } from '../entities/events/types';
+import randomColor from '../../utils/randomColor';
 
 export default () => () => (next: Dispatch) => (action: any) => {
+
 	if(action.type === ADD_SUBSCRIPTION) {
-		if(action.payload && action.payload.id === undefined) {
+		if(!action.payload.id && action.payload.eventApiName) {
 			action.payload.id = action.payload.eventApiName;
+		}
+		if(!action.payload.color) {
+			action.payload.color = randomColor();
+		}
+		if(!action.payload.minuteDuration) {
+			action.payload.minuteDuration = 0;
 		}
 	}
 

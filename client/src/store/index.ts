@@ -3,7 +3,12 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import entitiesReducer from './entities';
-import { loggerMiddleware, /*socketMiddlware,*/ idMiddleware } from './middleware';
+import { 
+	loggerMiddleware, 
+	/*socketMiddlware,*/ 
+	addEventMiddleware,
+	addSubscriptionMiddleware
+} from './middleware';
 // import socketController from './socketController';
 
 const rootReducer = combineReducers({
@@ -17,7 +22,8 @@ export default function configureStore() {
 	const store = createStore(rootReducer, composeWithDevTools(
 		applyMiddleware(
 			loggerMiddleware(),
-			idMiddleware()
+			addEventMiddleware(),
+			addSubscriptionMiddleware()
 			// socketMiddlware(socket)
 		)
 	));

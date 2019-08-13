@@ -41,9 +41,7 @@ class SubscriptionsCard extends Component<Props, State> {
 
 	componentDidMount() {
 		this.props.addSubscription({
-			color: 'salmon',
-			eventApiName: 'Dummy_Subscription_1__e',
-			minuteDuration: 0
+			eventApiName: 'Dummy_Subscription_1__e'
 		});
 		this.props.addSubscription({
 			id: 'foobar123',

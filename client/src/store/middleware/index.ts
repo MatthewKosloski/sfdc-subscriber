@@ -1,15 +1,18 @@
 import loggerMiddleware from './loggerMiddleware';
 import socketMiddlware from './socketMiddleware';
-import idMiddleware from './idMiddleware';
+import addEventMiddleware from './addEventMiddleware';
+import addSubscriptionMiddleware from './addSubscriptionMiddleware';
 
 export {
 	loggerMiddleware,
 	socketMiddlware,
-	idMiddleware
+	addEventMiddleware,
+	addSubscriptionMiddleware
 };
 
 export default {
 	loggerMiddleware,
 	socketMiddlware,
-	idMiddleware
+	addEventMiddleware,
+	addSubscriptionMiddleware
 };

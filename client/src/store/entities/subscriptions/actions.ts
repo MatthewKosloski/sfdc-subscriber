@@ -3,9 +3,7 @@ import {
 	ADD_SUBSCRIPTION,
 	REMOVE_SUBSCRIPTION,
 	SUBSCRIPTION_REQUEST,
-	AddSubscriptionAction,
-	RemoveSubscriptionAction,
-	SubscriptionRequestAction
+	SubscriptionActionTypes
 } from './types';
 
 import SocketEvents from '../../../../../common/socketEvents';
@@ -14,19 +12,19 @@ const {
 	PLATFORM_EVENT_SUBSCRIPTION_REQUEST
 } = SocketEvents;
 
-export const addSubscription = (newSubscription: Subscription): AddSubscriptionAction => ({
+export const addSubscription = (newSubscription: Subscription): SubscriptionActionTypes => ({
 	type: ADD_SUBSCRIPTION,
 	payload: newSubscription
 });
 
-export const removeSubscription = (id: string): RemoveSubscriptionAction => ({
+export const removeSubscription = (id: string): SubscriptionActionTypes => ({
 	type: REMOVE_SUBSCRIPTION,
 	meta: {
 		id
 	}
 });
 
-export const subscriptionRequest = (eventApiName: string): SubscriptionRequestAction => ({
+export const subscriptionRequest = (eventApiName: string): SubscriptionActionTypes => ({
 	type: SUBSCRIPTION_REQUEST,
 	meta: {
 		socket: {

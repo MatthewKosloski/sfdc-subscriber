@@ -1,23 +1,22 @@
-export interface Toast {
+import { 
+	Entity, 
+	AddEntityAction, 
+	RemoveEntityAction 
+} from '../types';
+
+export interface Toast extends Entity {
 	variant: string,
 	message: string
 }
 
-export type ToastState = Toast[];
+export type ToastState = {
+	[key: string]: Toast
+};
 
 export const ADD_TOAST = 'ADD_TOAST';
 export const REMOVE_TOAST = 'REMOVE_TOAST';
 
-export interface AddToastAction {
-	type: typeof ADD_TOAST,
-	payload: Toast
-}
-
-export interface RemoveToastAction {
-	type: typeof REMOVE_TOAST,
-	meta: {
-		index: number
-	}
-}
+export interface AddToastAction extends AddEntityAction<typeof ADD_TOAST> {}
+export interface RemoveToastAction extends RemoveEntityAction<typeof REMOVE_TOAST> {}
 
 export type ToastActionTypes = AddToastAction | RemoveToastAction;

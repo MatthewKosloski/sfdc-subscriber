@@ -4,7 +4,7 @@ import uuidv1 from 'uuid/v1';
 
 import { Toast } from '../../design-system/components';
 import { removeToast } from '../../store/entities/toast/actions';
-import { Toast as IToast } from '../../store/entities/toast/types';
+import { ToastState } from '../../store/entities/toast/types';
 import { AppState } from '../../store';
 
 import Container from './Container';
@@ -12,7 +12,7 @@ import Container from './Container';
 export interface OwnProps {}
 
 interface StateProps {
-	toasts: IToast[]
+	toasts: ToastState
 }
 
 interface DispatchProps {
@@ -30,7 +30,7 @@ class ToastContainer extends Component<Props, State> {
 		return (
 			<Toast
 				key={key}
-				onClick={this.props.removeToast.bind(null, index)}
+				onClick={() => {}}
 				{...toast}
 			/>
 		);
@@ -39,9 +39,9 @@ class ToastContainer extends Component<Props, State> {
 	public render(): JSX.Element {
 		return (
 			<Container>
-				{this.props.toasts.map((toast, index) => {
+				{/* {this.props.toasts.map((toast, index) => {
 					return this.renderToast(toast, index);
-				})}
+				})} */}
 			</Container>
 		);
 	}

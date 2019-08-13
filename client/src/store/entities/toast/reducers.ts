@@ -1,22 +1,12 @@
 import {
+	Toast,
 	ToastState,
 	ToastActionTypes,
 	ADD_TOAST,
 	REMOVE_TOAST
 } from './types';
 
-const initialState: ToastState = [];
-
-/**
- * Indicates if there exists a toast object in state with a
- * particular index.
- *
- * @param state The reducer state
- * @param index The index of the toast
- */
-function hasToast(state: ToastState, index: number): boolean {
-	return state[index] !== undefined;
-};
+const initialState: ToastState = {};
 
 export function toastReducer(
 	state = initialState,
@@ -25,15 +15,22 @@ export function toastReducer(
 
 	switch(action.type) {
 		case ADD_TOAST: {
-			return [action.payload, ...state];
+			const payload = action.payload as Toast;
+			return {
+				...state,
+				[payload.id as string]: {
+					...payload
+				}
+			};
 		}
 		case REMOVE_TOAST: {
-			const { index } = action.meta;
-			if(hasToast(state, index)) {
-				return [...state.slice(0, index), ...state.slice(index + 1)];
-			} else {
-				return state;
+			if(state[action.meta.id] !== undefined) {
+				const newState = {...state};
+				delete newState[action.meta.id];
+				return newState;
 			}
+
+			return state;
 		}
 		default: {
 			return state;

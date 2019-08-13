@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Sidebar, DataContainer } from '../../components/organisms';
 import { AppState } from '../../store';
 import { EventState, Event } from '../../store/entities/events/types';
-import { SubscriptionState } from '../../store/entities/subscriptions/types';
 import { removeAllEvents, addEvent, removeEvent } from '../../store/entities/events/actions';
 
 import Header from './Header';
@@ -29,6 +28,29 @@ interface State {}
 
 class EventLogSidebar extends Component<Props, State> {
 
+	componentDidMount() {
+		this.props.addEvent({
+			subscriptionId: 'Dummy_Subscription_1__e',
+			createdById: '0052E00000JAW4MQAX',
+			createdDate: '2019-08-13T00:30:00Z',
+			customFields: {
+				Data_Center_Id__c: 'a032E00000xzevTQAQ',
+				Name__c: 'Applied-Denver'
+			}
+		});
+		this.props.addEvent({
+			id: 'foobar123',
+			subscriptionId: 'Dummy_Subscription_1__e',
+			createdById: '0052E00000JAW4MQAX',
+			createdDate: '2019-08-13T00:30:14Z',
+			customFields: {
+				Data_Center_Id__c: 'a032E00000xzevTQAQ',
+				Name__c: 'Applied-Toronto'
+			}
+		});
+		// this.props.removeEvent('foobar123');
+	}
+
 	public renderEventItem(event: Event): JSX.Element {
 		return (
 			<EventsListItem
@@ -40,7 +62,7 @@ class EventLogSidebar extends Component<Props, State> {
 
 	public render(): JSX.Element {
 
-		const { events, removeAllEvents } = this.props;
+		const { removeAllEvents } = this.props;
 
 		const headerComponent: JSX.Element =
 			<Header

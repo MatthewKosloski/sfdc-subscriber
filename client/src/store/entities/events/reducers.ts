@@ -1,4 +1,5 @@
 import {
+	Event,
 	EventState,
 	EventActionTypes,
 	ADD_EVENT,
@@ -16,15 +17,13 @@ export function eventsReducer(
 
 	switch(action.type) {
 		case ADD_EVENT: {
-
-			const { payload } = action;
+			const payload = action.payload as Event;
 			return {
 				...state,
 				[payload.id as string]: {
 					...payload
 				}
 			};
-
 		}
 		case REMOVE_EVENT: {
 			if(state[action.meta.id] !== undefined) {

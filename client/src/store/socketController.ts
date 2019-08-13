@@ -53,8 +53,9 @@ export default (socket: SocketIOClient.Socket, dispatch: Dispatch) => {
 
 	socket.on(PLATFORM_EVENT_SUBSCRIPTION_SUCCESS,
 		({cometdChannel}: platformEventSubscriptionPayload) => {
-			dispatch(addToastSuccess(`Successfully subscribed to ${cometdChannel}!`));
-			dispatch(addSubscription(createSubscription(cometdChannel)));
+			const eventApiName: string = cometdChannel.replace('/event', '');
+			dispatch(addToastSuccess(`Successfully subscribed to the ${eventApiName} Platform Event!`));
+			dispatch(addSubscription({eventApiName}));
 		}
 	);
 

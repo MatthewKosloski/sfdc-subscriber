@@ -16,7 +16,7 @@ export const addToastError = (message: string): AddToastAction => ({
 	payload: {
 		variant: 'danger',
 		message
-	}
+	} as Toast
 });
 
 export const addToastSuccess = (message: string): AddToastAction => ({
@@ -24,7 +24,7 @@ export const addToastSuccess = (message: string): AddToastAction => ({
 	payload: {
 		variant: 'success',
 		message
-	}
+	} as Toast
 });
 
 export const addToastInfo = (message: string): AddToastAction => ({
@@ -32,12 +32,12 @@ export const addToastInfo = (message: string): AddToastAction => ({
 	payload: {
 		variant: 'primary',
 		message
-	}
+	} as Toast
 });
 
-export const removeToast = (index: number): RemoveToastAction => ({
+export const removeToast = (id: string): RemoveToastAction => ({
 	type: REMOVE_TOAST,
 	meta: {
-		index
+		id
 	}
 });
