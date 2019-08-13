@@ -1,6 +1,6 @@
 import React, { Fragment, FunctionComponent } from 'react';
 
-import { DefaultTemplate, Header, TimelineCard, TrendsCard } from '../../components';
+import { DefaultTemplate, Header, TimelineCard } from '../../components';
 import { SubscriptionsCard, ToastContainer, EventLogSidebar } from '../../containers';
 
 const Dashboard: FunctionComponent = () => (
@@ -10,7 +10,7 @@ const Dashboard: FunctionComponent = () => (
 			headerComponent={<Header title="SFDC Subscriber" />}
 			topComponent={<TimelineCard />}
 			bottomLeftComponent={<SubscriptionsCard />}
-			bottomRightComponent={<TrendsCard />}
+			// bottomRightComponent={<TrendsCard />}
 			sidebarComponent={<EventLogSidebar />}
 		/>
 	</Fragment>
