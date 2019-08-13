@@ -6,7 +6,7 @@ import { CardListItems as SubscriptionsList, DataContainer } from '../../compone
 import { AppState } from '../../store';
 import { Subscription } from '../../store/entities/subscriptions/types';
 import { selectSubscriptions } from '../../store/entities/subscriptions/selectors';
-import { addSubscription, subscriptionRequest, removeSubscription } from '../../store/entities/subscriptions/actions';
+import { subscriptionRequest } from '../../store/entities/subscriptions/actions';
 
 import Container from './Container';
 import Counter from './Counter';
@@ -20,8 +20,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	addSubscription: typeof addSubscription,
-	removeSubscription: typeof removeSubscription,
 	subscriptionRequest: typeof subscriptionRequest
 }
 
@@ -36,23 +34,6 @@ class SubscriptionsCard extends Component<Props, State> {
 
 		this.handleUnsubscribeClick = this.handleUnsubscribeClick.bind(this);
 		this.handleFormSubmit = this.handleFormSubmit.bind(this);
-	}
-
-	componentDidMount() {
-		this.props.addSubscription({
-			eventApiName: 'Dummy_Subscription_1__e'
-		});
-		this.props.addSubscription({
-			eventApiName: 'Dummy_Subscription_2__e'
-		});
-		this.props.addSubscription({
-			eventApiName: 'Dummy_Subscription_3__e'
-		});
-		// this.props.removeSubscription('foobar123');
-	}
-
-	componentDidUpdate() {
-		console.log(this.props.subscriptions);
 	}
 
 	public handleUnsubscribeClick(eventApiName: string): void {
@@ -113,8 +94,6 @@ const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
 });
 
 const dispatchProps: DispatchProps = {
-	addSubscription,
-	removeSubscription,
 	subscriptionRequest
 };
 
