@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { ADD_SUBSCRIPTION } from '../entities/subscriptions/types';
-import randomColor from '../../utils/randomColor';
+import { randomColor } from '../../utils/';
 
 export default () => () => (next: Dispatch) => (action: any) => {
 
