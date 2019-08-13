@@ -29,3 +29,19 @@ export interface RemoveEntityAction<TAction> {
 export interface RemoveAllEntityAction<TAction> {
 	type: TAction
 }
+
+/**
+ * The general shape of a socket action. If an entity action
+ * extends this interface, the action will be intercepted by
+ * the socket middleware.
+ *
+ */
+export interface SocketEntityAction<TAction, TSocketPayload> {
+	type: TAction,
+	meta: {
+		socket: {
+			event: string,
+			payload: TSocketPayload
+		}
+	}
+}
