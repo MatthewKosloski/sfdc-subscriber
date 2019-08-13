@@ -13,7 +13,7 @@ const Container = styled.article`
         content: '';
         display: block;
         ${vrEm(['height'], 2)};
-    }
+	}
     ${spacingEm(['PL'], 'Two')};
     ${spacingEm(['PR'], 'One')};
     position: relative;

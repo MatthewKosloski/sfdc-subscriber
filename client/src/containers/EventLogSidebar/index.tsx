@@ -3,17 +3,18 @@ import { connect } from 'react-redux';
 
 import { Sidebar, DataContainer } from '../../components/organisms';
 import { AppState } from '../../store';
-import { EventState, Event } from '../../store/entities/events/types';
+import { Event } from '../../store/entities/events/types';
 import { removeAllEvents, addEvent, removeEvent } from '../../store/entities/events/actions';
 
 import Header from './Header';
 import EventsList from './EventsList';
 import EventsListItem from './EventsListItem';
+import { selectEvents } from '../../store/entities/events/selectors';
 
 export interface OwnProps {}
 
 interface StateProps {
-	events: EventState
+	events: Event[]
 }
 
 interface DispatchProps {
@@ -28,57 +29,31 @@ interface State {}
 
 class EventLogSidebar extends Component<Props, State> {
 
-	componentDidMount() {
-		this.props.addEvent({
-			subscriptionId: 'Dummy_Subscription_1__e',
-			createdById: '0052E00000JAW4MQAX',
-			createdDate: '2019-08-13T00:30:00Z',
-			customFields: {
-				Data_Center_Id__c: 'a032E00000xzevTQAQ',
-				Name__c: 'Applied-Denver'
-			}
-		});
-		this.props.addEvent({
-			id: 'foobar123',
-			subscriptionId: 'Dummy_Subscription_1__e',
-			createdById: '0052E00000JAW4MQAX',
-			createdDate: '2019-08-13T00:30:14Z',
-			customFields: {
-				Data_Center_Id__c: 'a032E00000xzevTQAQ',
-				Name__c: 'Applied-Toronto'
-			}
-		});
-		// this.props.removeEvent('foobar123');
-	}
-
 	public renderEventItem(event: Event): JSX.Element {
 		return (
-			<EventsListItem
-				{...event}
-				color="red"
-				key={event.id} />
+			<EventsListItem key={event.id} {...event} />
 		);
 	}
 
 	public render(): JSX.Element {
 
-		const { removeAllEvents } = this.props;
+		const { events, removeAllEvents } = this.props;
 
 		const headerComponent: JSX.Element =
 			<Header
-				count={0}
+				count={events.length}
 				onButtonClick={removeAllEvents}
-				isButtonDisabled={true} />;
+				isButtonDisabled={events.length === 0} />;
 
 		return(
 			<Sidebar headerComponent={headerComponent}>
 				<DataContainer
-					hasData={false}
+					hasData={events.length > 0}
 					noDataText="No Platform Events have transpired.">
 					<EventsList>
-						{/* {events.map((event) => {
-							return this.renderEventItem(event);
-						})} */}
+						{events.map((event) =>
+							this.renderEventItem(event)
+						)}
 					</EventsList>
 				</DataContainer>
 			</Sidebar>
@@ -88,7 +63,7 @@ class EventLogSidebar extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
-	events: state.entities.events,
+	events: selectEvents(state)
 });
 
 const dispatchProps: DispatchProps = {
