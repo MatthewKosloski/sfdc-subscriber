@@ -17,10 +17,10 @@ export function toastReducer(
 		case ADD_TOAST: {
 			const payload = action.payload as Toast;
 			return {
-				...state,
 				[payload.id as string]: {
 					...payload
-				}
+				},
+				...state
 			};
 		}
 		case REMOVE_TOAST: {
