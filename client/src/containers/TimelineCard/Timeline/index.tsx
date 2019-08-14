@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import TimeSeriesChart from './TimeSeriesChart';
-import Container from './Container';
 
 interface Props {
 

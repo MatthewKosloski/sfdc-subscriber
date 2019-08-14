@@ -7,7 +7,6 @@ import {
 import {
     Header,
     Main,
-    TimelineCard,
     TrendsCard,
     Sidebar,
 	CardListItems,
@@ -25,7 +24,6 @@ import {
 export {
     Header,
     Main,
-    TimelineCard,
     GlobalStyle,
     TrendsCard,
     Sidebar,
@@ -39,7 +37,6 @@ export {
 export default {
     Header,
     Main,
-    TimelineCard,
     GlobalStyle,
     TrendsCard,
     Sidebar ,
