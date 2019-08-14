@@ -30,11 +30,20 @@ class Form extends React.Component<IFormProps, IStateProps> {
 		this.setState({ value: e.target.value });
 	}
 
-	public handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+	public handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
 		e.preventDefault();
-		if(this.state.value.trim()) {
-			this.props.onSubmit(this.state.value);
+
+		const trimmedValue: string = this.state.value.trim();
+
+		if(trimmedValue) {
+			this.props.onSubmit(trimmedValue);
+			this.clearValue();
 		}
+
+	}
+
+	public clearValue(): void {
+		this.setState({value: ''});
 	}
 
 	public render(): JSX.Element {
