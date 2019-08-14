@@ -14,11 +14,9 @@ export interface Event extends Entity {
 	}
 }
 
-export type EventByIdState = {
-	[key: string]: Event
-};
-
+export type EventByIdState = { [key: string]: Event};
 export type EventAllIdsState = string[];
+export type EventLastIdState = string;
 
 export const ADD_EVENT = 'ADD_EVENT';
 export const REMOVE_EVENT = 'REMOVE_EVENT';
