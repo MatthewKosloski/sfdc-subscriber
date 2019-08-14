@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import SocketEvents from '../../../common/socketEvents';
 
 import { addToastSuccess, addToastError, addToastInfo } from './entities/toast/actions';
-import { addEvent } from './entities/events/actions';
+import { addEvent, removeEventsWithSubscriptionId } from './entities/events/actions';
 import { Event } from './entities/events/types';
 import { addSubscription, removeSubscription } from './entities/subscriptions/actions';
 
@@ -61,33 +61,37 @@ export default (socket: SocketIOClient.Socket, dispatch: Dispatch) => {
 	socket.on(PLATFORM_EVENT_SUBSCRIPTION_SUCCESS,
 		({cometdChannel}: PlatformEventSubscriptionPayload) => {
 			const eventApiName: string = cometdChannel.replace('/event/', '');
-			dispatch(addToastSuccess(`Successfully subscribed to the ${eventApiName} Platform Event!`));
+			dispatch(addToastSuccess(`Successfully subscribed to ${eventApiName}!`));
 			dispatch(addSubscription({eventApiName}));
 		}
 	);
 
 	socket.on(PLATFORM_EVENT_SUBSCRIPTION_FAILURE,
 		({cometdChannel}: PlatformEventSubscriptionPayload) => {
-			dispatch(addToastError(`Failed to subscribe to ${cometdChannel}. Are you sure that Platform Event exists?`));
+			const eventApiName: string = cometdChannel.replace('/event/', '');
+			dispatch(addToastError(`Failed to subscribe to ${eventApiName}. Are you sure that Platform Event exists?`));
 		}
 	);
 
 	socket.on(PLATFORM_EVENT_UNSUBSCRIPTION_SUCCESS,
 		({cometdChannel}: PlatformEventUnsubscriptionPayload) => {
 			const eventApiName: string = cometdChannel.replace('/event/', '');
-			dispatch(addToastSuccess(`Successfully unsubscribed from ${cometdChannel}!`));
+			dispatch(addToastSuccess(`Successfully unsubscribed from ${eventApiName}!`));
+			dispatch(removeEventsWithSubscriptionId(eventApiName));
 			dispatch(removeSubscription(eventApiName));
 		}
 	);
 
 	socket.on(PLATFORM_EVENT_UNSUBSCRIPTION_FAILURE,
 		({cometdChannel}: PlatformEventUnsubscriptionPayload) => {
-			dispatch(addToastError(`Failed to unsubscribe from ${cometdChannel}.`));
+			const eventApiName: string = cometdChannel.replace('/event/', '');
+			dispatch(addToastError(`Failed to unsubscribe from ${eventApiName}.`));
 		}
 	);
 
 	socket.on(PLATFORM_EVENT, (event: Event) => {
-		dispatch(addToastInfo(`Received a ${event.subscriptionId} Platform Event.`));
+		const eventApiName: string = event.subscriptionId.replace('/event/', '');
+		dispatch(addToastInfo(`Received a ${eventApiName} Platform Event.`));
 		dispatch(addEvent(event));
 	});
 
