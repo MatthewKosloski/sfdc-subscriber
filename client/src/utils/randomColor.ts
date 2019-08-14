@@ -1,5 +1,5 @@
 const colors: string[] = [
-	'acquamarine',
+	'aquamarine',
 	'bisque',
 	'blueviolet',
 	'cadetblue',
