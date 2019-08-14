@@ -5,6 +5,7 @@ import {
 	EventByIdState,
 	EventAllIdsState,
 	EventActionTypes,
+	EventLastIdState,
 	ADD_EVENT,
 	REMOVE_EVENT,
 	REMOVE_EVENTS_WITH_SUBSCRIPTION_ID,
@@ -13,6 +14,7 @@ import {
 
 const byIdInitialState: EventByIdState = {};
 const allIdsInitialState: EventAllIdsState = [];
+const lastIdInitialState: EventLastIdState = '';
 
 function byIdReducer(state = byIdInitialState, action: EventActionTypes) {
 	switch(action.type) {
@@ -79,7 +81,22 @@ function allIdsReducer(state = allIdsInitialState, action: EventActionTypes): st
 	}
 }
 
+function lastIdReducer(state = lastIdInitialState, action: EventActionTypes): string {
+	switch(action.type) {
+		case ADD_EVENT: {
+			return action.payload.id as string;
+		}
+		case REMOVE_ALL_EVENTS: {
+			return '';
+		}
+		default: {
+			return state;
+		}
+	}
+}
+
 export default combineReducers({
 	byId: byIdReducer,
-	allIds: allIdsReducer
+	allIds: allIdsReducer,
+	lastId: lastIdReducer
 });
