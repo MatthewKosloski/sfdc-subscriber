@@ -1,6 +1,9 @@
+import { combineReducers } from 'redux';
+
 import {
 	Event,
-	EventState,
+	EventByIdState,
+	EventAllIdsState,
 	EventActionTypes,
 	ADD_EVENT,
 	REMOVE_EVENT,
@@ -8,13 +11,10 @@ import {
 	REMOVE_ALL_EVENTS
 } from './types';
 
-const initialState: EventState = {};
+const byIdInitialState: EventByIdState = {};
+const allIdsInitialState: EventAllIdsState = [];
 
-export function eventsReducer(
-	state = initialState,
-	action: EventActionTypes
-): EventState {
-
+function byIdReducer(state = byIdInitialState, action: EventActionTypes) {
 	switch(action.type) {
 		case ADD_EVENT: {
 			const payload = action.payload as Event;
@@ -56,3 +56,30 @@ export function eventsReducer(
 		}
 	}
 }
+
+function allIdsReducer(state = allIdsInitialState, action: EventActionTypes): string[] {
+
+	switch(action.type) {
+		case ADD_EVENT: {
+			return [...state, action.payload.id as string];
+		}
+		case REMOVE_EVENT: {
+			return state.filter((id) => id !== action.meta.id);
+		}
+		case REMOVE_EVENTS_WITH_SUBSCRIPTION_ID: {
+			// TODO: figure this out...
+			return state;
+		}
+		case REMOVE_ALL_EVENTS: {
+			return [];
+		}
+		default: {
+			return state;
+		}
+	}
+}
+
+export default combineReducers({
+	byId: byIdReducer,
+	allIds: allIdsReducer
+});
