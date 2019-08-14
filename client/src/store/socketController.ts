@@ -69,7 +69,7 @@ export default (socket: SocketIOClient.Socket, dispatch: Dispatch) => {
 	socket.on(PLATFORM_EVENT_SUBSCRIPTION_FAILURE,
 		({cometdChannel}: PlatformEventSubscriptionPayload) => {
 			const eventApiName: string = cometdChannel.replace('/event/', '');
-			dispatch(addToastError(`Failed to subscribe to ${eventApiName}. Are you sure that Platform Event exists?`));
+			dispatch(addToastError(`Failed to subscribe to ${eventApiName}. Are you sure that Platform Event exists? Remember to add the "__e" postfix.`));
 		}
 	);
 
