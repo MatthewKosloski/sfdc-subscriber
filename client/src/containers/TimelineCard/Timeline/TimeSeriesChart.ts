@@ -72,15 +72,15 @@ class TimeSeriesChart {
         });
     }
 
-    public appendCircle(fill: string = 'black', yMultiple: number = Math.random() * this._options.outerHeight,
-    time: number = Date.now(), diameter: number = 16): void {
+	public appendCircle(fill: string = 'black', time: number = Date.now(),
+	yMultiple: number = 16, diameter: number = 16): void {
 
 		const { duration, circlesGroupClass, circleTransitionDuration } = this._options;
 
         const now: number = Date.now();
         const timeDiff: number = now - time;
 
-        if(timeDiff > duration) {
+        if(timeDiff >= duration) {
             return;
 		}
 
