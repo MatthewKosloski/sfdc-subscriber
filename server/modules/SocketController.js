@@ -84,11 +84,12 @@ class SocketController {
 			}
 		};
 
-		this._client
-			.unsubscribe(cometdChannel, unsubscribeCallback)
-			.catch((e) => {
-				console.log(e.message);
-			});
+		try {
+			this._client.unsubscribe(cometdChannel, unsubscribeCallback);
+		} catch(e) {
+			console.log(e.message);
+		}
+
 	}
 
 	_handleDisconnect(reason) {
