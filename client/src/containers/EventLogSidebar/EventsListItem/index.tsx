@@ -5,7 +5,7 @@ import { toHhMmSs } from '../../../utils';
 import { AppState } from '../../../store';
 import { Titles } from '../../../design-system/components';
 import { Event } from '../../../store/entities/events/types';
-import { selectSubscriptionById } from '../../../store/entities/subscriptions/selectors';
+import { selectSubscriptionColorById } from '../../../store/entities/subscriptions/selectors';
 import { removeEvent } from '../../../store/entities/events/actions';
 
 import Container from './Container';
@@ -16,7 +16,7 @@ import RemoveButton from './RemoveButton';
 export interface OwnProps extends Event {}
 
 interface StateProps {
-	color?: string
+	color?: string | null
 }
 
 interface DispatchProps {
@@ -73,7 +73,7 @@ class EventsListItem extends Component<Props, State> {
 			<Container>
 				<Timestamp
 					dateTime={createdDate}
-					color={color}>
+					circleColor={color}>
 					{toHhMmSs(createdDate)}
 				</Timestamp>
 				<ClickableArea
@@ -102,7 +102,7 @@ class EventsListItem extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
-	color: selectSubscriptionById(state, ownProps.subscriptionId).color
+	color: selectSubscriptionColorById(state, ownProps.subscriptionId)
 });
 
 const dispatchProps: DispatchProps = {

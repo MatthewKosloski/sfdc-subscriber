@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../store';
-import { selectSubscriptions } from '../../store/entities/subscriptions/selectors';
+import { selectSubscriptions, selectSubscriptionColorById } from '../../store/entities/subscriptions/selectors';
+import { selectLastEventId, selectLastEvent, selectEventCreatedDateById , selectLastEventSubscriptionId} from '../../store/entities/events/selectors';
+import { Subscription } from '../../store/entities/subscriptions/types';
 import { Card } from '../../design-system/components';
 
 import TimeRange from './TimeRange';
@@ -12,12 +14,15 @@ import LegendItem from './Legend/LegendItem';
 import Container from './Container';
 import TimelineCardColumn from './TimelineCardColumn';
 import TimelineCardRow from './TimelineCardRow';
-import { Subscription } from '../../store/entities/subscriptions/types';
 
 export interface OwnProps {}
 
 interface StateProps {
-	subscriptions: Subscription[]
+	subscriptions: Subscription[] | null,
+	lastEvent: {
+		createdDate: string | null
+		color: string | null
+	}
 }
 
 interface DispatchProps {
@@ -32,7 +37,7 @@ class TimelineCard extends Component<Props, State> {
 
 	public renderLegendItem({color, eventApiName}: Subscription): JSX.Element {
 		return (
-			<LegendItem circleColor={color as string}>
+			<LegendItem key={eventApiName} circleColor={color as string}>
 				{eventApiName}
 			</LegendItem>
 		);
@@ -40,7 +45,7 @@ class TimelineCard extends Component<Props, State> {
 
 	public render() {
 
-		const { subscriptions } = this.props;
+		const { subscriptions, lastEvent } = this.props;
 
 		return(
 			<Card
@@ -53,13 +58,13 @@ class TimelineCard extends Component<Props, State> {
 					<TimelineCardRow>
 						<TimelineCardColumn>
 							<Legend>
-								{subscriptions.map((subscription) =>
+								{subscriptions && subscriptions.map((subscription) =>
 									this.renderLegendItem(subscription)
 								)}
 							</Legend>
 						</TimelineCardColumn>
 						<TimelineCardColumn>
-							<Timeline />
+							<Timeline lastEvent={lastEvent}/>
 						</TimelineCardColumn>
 					</TimelineCardRow>
 				</Container>
@@ -70,7 +75,11 @@ class TimelineCard extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps  => ({
-	subscriptions: selectSubscriptions(state)
+	subscriptions: selectSubscriptions(state),
+	lastEvent: {
+		createdDate: selectEventCreatedDateById(state, selectLastEventId(state)),
+		color: selectSubscriptionColorById(state, selectLastEventSubscriptionId(state))
+	}
 });
 
 export default connect<StateProps, DispatchProps, OwnProps, AppState>(

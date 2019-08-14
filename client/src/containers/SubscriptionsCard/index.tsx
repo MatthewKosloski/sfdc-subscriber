@@ -16,7 +16,7 @@ import SubscriptionsListItem from './SubscriptionsListItem';
 export interface OwnProps {}
 
 interface StateProps {
-	subscriptions: Subscription[]
+	subscriptions: Subscription[] | null
 }
 
 interface DispatchProps {
@@ -35,6 +35,7 @@ class SubscriptionsCard extends Component<Props, State> {
 
 		this.handleUnsubscribeClick = this.handleUnsubscribeClick.bind(this);
 		this.handleFormSubmit = this.handleFormSubmit.bind(this);
+		this.getSubscriptionsLength = this.getSubscriptionsLength.bind(this);
 	}
 
 	public handleUnsubscribeClick(eventApiName: string): void {
@@ -43,6 +44,11 @@ class SubscriptionsCard extends Component<Props, State> {
 
 	public handleFormSubmit(eventApiName: string): void {
 		this.props.subscriptionRequest(eventApiName);
+	}
+
+	public getSubscriptionsLength(): number {
+		const { subscriptions } = this.props;
+		return subscriptions ? subscriptions.length : 0;
 	}
 
 	public renderSubscriptionItem(subscription: Subscription): JSX.Element {
@@ -60,8 +66,9 @@ class SubscriptionsCard extends Component<Props, State> {
 	public render(): JSX.Element {
 		const { subscriptions } = this.props;
 
+
 		const sideHeaderComponent: React.ReactElement =
-			<Counter count={subscriptions.length} />;
+			<Counter count={this.getSubscriptionsLength()} />;
 
 		const footerComponent: React.ReactElement =
 			<Form onSubmit={this.handleFormSubmit} />;
@@ -75,10 +82,10 @@ class SubscriptionsCard extends Component<Props, State> {
 					constrictBodyHeight
 					noPaddedBody>
 					<DataContainer
-						hasData={subscriptions.length > 0}
+						hasData={this.getSubscriptionsLength() > 0}
 						noDataText="Not subscribed to any Platform Events.">
 						<SubscriptionsList>
-							{subscriptions.map((subscription) =>
+							{subscriptions && subscriptions.map((subscription) =>
 								this.renderSubscriptionItem(subscription)
 							)}
 						</SubscriptionsList>

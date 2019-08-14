@@ -2,12 +2,16 @@ import styled from 'styled-components';
 
 import { spacingEm } from '../../../design-system/abstracts';
 
-const Timestamp = styled.time`
+type Props = {
+	circleColor?: string | null
+}
+
+const Timestamp = styled.time<Props>`
 	${spacingEm(['MB'], 'Half')};
 	display: inline-block;
     font-weight: 700;
 	color: ${({theme}) => theme.pantoneCoolGray4};
-	border-color: ${(props) => props.color};
+	border-color: ${(props) => props.circleColor};
     &::before {
         content: "";
         width: 20px;
@@ -23,5 +27,9 @@ const Timestamp = styled.time`
         box-shadow: 0 0 0 6px ${({theme}) => theme.white};
     }
 `;
+
+Timestamp.defaultProps = {
+	circleColor: '#000'
+};
 
 export default Timestamp;
