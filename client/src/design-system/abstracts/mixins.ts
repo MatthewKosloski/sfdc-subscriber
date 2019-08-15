@@ -6,6 +6,8 @@ import buttonVariants, { IButtonProps } from '../theme/buttons';
 import { neutralBlack } from '../theme/colors';
 import typography from '../theme/typography';
 
+import { Props as ToastProps } from '../components/atoms/Toast';
+
 /* Public API */
 
 /**
@@ -200,6 +202,23 @@ export function buttonVariant(props: IButtonProps, borderWidth: number = 1): str
 	return css;
 }
 
+export function toastVariant(props: ToastProps): string {
+	let css: string = '';
+
+	if(props.variant) {
+		const {
+			backgroundColor
+		} = buttonVariants[props.variant];
+
+		css += `
+			background-color: ${backgroundColor};
+		`;
+
+	}
+
+	return css;
+}
+
 export function createSpacingUtilClasses(): string {
 	let css: string = '';
 
@@ -270,7 +289,7 @@ export function dropdownButtonVariant(props: IButtonProps): string {
 }
 
 export function vrEm(properties: string[], stepXs: number, stepLg: number = stepXs,
-	isNegative: boolean = false, isImportant: boolean = false, ratioXs: number = typography.ratioXs, 
+	isNegative: boolean = false, isImportant: boolean = false, ratioXs: number = typography.ratioXs,
 	ratioLg: number = typography.ratioLg): string {
 	let css: string = '';
 	css += _responsiveVrEm(properties, stepXs, stepLg, ratioXs, ratioLg, isNegative, isImportant);
@@ -278,7 +297,7 @@ export function vrEm(properties: string[], stepXs: number, stepLg: number = step
 }
 
 export function vrRem(properties: string[], stepXs: number, stepLg: number = stepXs,
-	isNegative: boolean = false, isImportant: boolean = false, ratioXs: number = typography.ratioXs, 
+	isNegative: boolean = false, isImportant: boolean = false, ratioXs: number = typography.ratioXs,
 	ratioLg: number = typography.ratioLg): string {
 	let css: string = '';
 	css += _responsiveVrRem(properties, stepXs, stepLg, ratioXs, ratioLg, isNegative, isImportant);

@@ -13,7 +13,9 @@ export interface IButtonProps {
     small?: boolean,
 	large?: boolean,
 	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void,
-	type?: string
+	type?: string,
+	disabled?: boolean,
+	fullWidth?: boolean
 };
 
 export const defaultButtonProps: IButtonProps = {

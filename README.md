@@ -65,6 +65,11 @@ npm run test:coverage-silent
 
 [Composition vs. Inheritance](https://reactjs.org/docs/composition-vs-inheritance.html)
 
+### Redux
+[Proper Typing of react-redux Connected Components](https://medium.com/knerd/typescript-tips-series-proper-typing-of-react-redux-connected-components-eda058b6727d)
+[Socket.io Middlware](http://nmajor.com/posts/using-socket-io-with-redux-websocket-redux-middleware)
+[Beginner's Guide to Redux Middleware](https://www.codementor.io/vkarpov/beginner-s-guide-to-redux-middleware-du107uyud)
+
 ### CometD
 
 [JavaScript Documentation](https://docs.cometd.org/current4/reference/#_javascript)

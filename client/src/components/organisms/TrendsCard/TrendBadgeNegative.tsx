@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReactComponent as ArrowDown } from './TrendBadge/trendArrowDown.svg';
+import ArrowDown from './TrendBadge/ArrowDownIcon';
 import TrendBadge, { ITrendBadgeProps } from './TrendBadge';
 
 interface ITrendBadgeNegativeProps extends ITrendBadgeProps {}

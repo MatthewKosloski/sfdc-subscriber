@@ -1,33 +1,48 @@
 import GlobalStyle from './GlobalStyle';
 
 import {
+	CardListItem
+} from './molecules';
+
+import {
     Header,
     Main,
-    TimelineCard,
-    SubscriptionsCard,
     TrendsCard,
     Sidebar,
-    EventLogSidebar 
+	CardListItems,
+	DataContainer
 } from './organisms';
+
+import {
+	DefaultTemplate
+} from './templates';
+
+import {
+	Dashboard
+} from './pages';
 
 export {
     Header,
     Main,
-    TimelineCard,
     GlobalStyle,
-    SubscriptionsCard,
     TrendsCard,
     Sidebar,
-    EventLogSidebar 
+	CardListItem,
+	CardListItems,
+	DataContainer,
+	Dashboard,
+	DefaultTemplate
 };
 
 export default {
     Header,
     Main,
-    TimelineCard,
     GlobalStyle,
-    SubscriptionsCard,
     TrendsCard,
     Sidebar ,
-    EventLogSidebar
+	CardListItem,
+	CardListItems,
+	DataContainer,
+	Dashboard,
+	DefaultTemplate
 };

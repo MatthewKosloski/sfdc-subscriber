@@ -1,4 +1,4 @@
-import { Badge, Button, Label, TextInput, Select } from './atoms';
+import { Badge, Button, Label, TextInput, Select, Toast } from './atoms';
 import { Titles } from './molecules';
 import { Card } from './organisms';
 
@@ -9,7 +9,8 @@ export {
     TextInput,
     Card,
     Titles,
-    Select
+	Select,
+	Toast
 };
 
 export default {
@@ -19,5 +20,6 @@ export default {
     TextInput,
     Card,
     Titles,
-    Select
+	Select,
+	Toast
 };
