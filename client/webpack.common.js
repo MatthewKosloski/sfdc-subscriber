@@ -3,14 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-	mode: 'development',
-  	entry: './src/index.tsx',
-	devtool: 'inline-source-map',
-	devServer: {
-		contentBase: './dist',
-		port: 3000,
-		hot: true
-	},
+	entry: './src/index.tsx',
 	module: {
 		rules: [
 			{
@@ -27,14 +20,14 @@ module.exports = {
 	resolve: {
 		extensions: [ '.tsx', '.ts', '.js' ]
 	},
- 	plugins: [
+	plugins: [
 		new CleanWebpackPlugin(),
 		new HtmlWebpackPlugin({
 			title: 'Development',
 			template: 'src/index.html'
 		})
-  	],
-	output: {
+	  ],
+	  output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist')
 	}
