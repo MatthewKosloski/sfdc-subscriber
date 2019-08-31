@@ -18,20 +18,14 @@ A Node app that subscribes to Salesforce Platform Events via CometD.
     ```
 ### Production
 
+The following script builds the production files, creating a `dist` directory.  The production files include minified, production-optimized HTML and JavaScript.
+
 ```
 cd client
 npm run build
 ```
 
-
-
 ## Tests
-
-### Client
-
-```
-npm run test
-```
 
 ### Server
 
